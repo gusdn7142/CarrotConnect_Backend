@@ -3,6 +3,9 @@ package com.example.demo.src.product;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.product.model.*;
+import com.example.demo.src.product.ProductDao;
+import com.example.demo.src.product.ProductProvider;
+import com.example.demo.src.user.model.PatchUserReq;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -19,4 +22,29 @@ import static com.example.demo.config.BaseResponseStatus.*;
 @Service
 public class ProductService {
 
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final ProductDao productDao;
+    private final ProductProvider productProvider;
+    private final JwtService jwtService;
+
+    @Autowired
+    public ProductService(ProductDao productDao, ProductProvider productProvider, JwtService jwtService) {
+        this.productDao = productDao;
+        this.productProvider = productProvider;
+        this.jwtService = jwtService;
+
+    }
+
+    public void patchProductStatus(PatchProductStatus patchProductStatus) throws BaseException {
+        try{
+            int result = productDao.patchProductStatus(patchProductStatus);
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
