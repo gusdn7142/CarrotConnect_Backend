@@ -1,6 +1,7 @@
 package com.example.demo.src.product;
 
 import com.example.demo.src.product.model.*;
+import com.example.demo.src.user.model.PatchUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -39,7 +40,7 @@ public class ProductDao {
                 "       from ProductInterest\n" +
                 "       group by productIdx) as y on p.productIdx = y.productIdx, Region, User\n" +
                 "where p.regionidx = Region.regionIdx\n" +
-                "and Region.userIdx = User.userIdx and User.userIdx = ?";
+                "and Region.userIdx = User.userIdx and p.status = 1 and User.userIdx = ?";
         int getProductListParams = userIdx;
         return this.jdbcTemplate.query(getProductListQuery,
                 (rs, rowNum) -> new GetProductList(
@@ -85,11 +86,11 @@ public class ProductDao {
                 "        from ProductLookup\n" +
                 "        group by productIdx) as z on p.productIdx = z.productIdx\n" +
                 "where p.userIdx = u.userIdx\n" +
-                "and p.categoryIdx = c.categoryIdx\n" +
+                "and p.categoryIdx = c.categoryIdx and p.status = 1 \n" +
                 "and p.productIdx = ? ";
         String getProductImageQuery = "select pi.image as images\n" +
                 "from ProductImage pi, Product p\n" +
-                "where pi.productIdx = p.productIdx\n" +
+                "where pi.productIdx = p.productIdx and and p.status = 1 \n" +
                 "and p.productIdx = ? ";
 
         int getProductParams = productIdx;
@@ -111,5 +112,11 @@ public class ProductDao {
                         rs.getString("lookupCount"),
                         this.jdbcTemplate.query(getProductImageQuery, (rs1, rowNum1) -> new String(rs1.getString("images")), getProductParams)
                 ), getProductParams);
+    }
+
+    public int patchProductStatus(PatchProductStatus patchProductStatus){
+        String patchProductStatusQuery = "update Product set status = ? where productIdx = ? ";
+        Object[] patchProductStatusParams = new Object[]{patchProductStatus.getStatus(), patchProductStatus.getProductIdx()};
+        return this.jdbcTemplate.update(patchProductStatusQuery,patchProductStatusParams);
     }
 }
