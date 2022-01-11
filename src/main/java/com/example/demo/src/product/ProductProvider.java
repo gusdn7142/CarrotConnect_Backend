@@ -39,4 +39,13 @@ public class ProductProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    public List<GetProduct> getProduct(int productIdx) throws BaseException{
+        try{
+            List<GetProduct> getProduct = productDao.getProduct(productIdx);
+            return getProduct;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

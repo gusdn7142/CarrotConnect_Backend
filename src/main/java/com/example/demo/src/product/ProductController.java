@@ -43,12 +43,30 @@ public class ProductController {
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/product/userIdx
+    @GetMapping("/{userIdx}/all") // (GET) 127.0.0.1:9000/product/:userIdx/all
     public BaseResponse<List<GetProductList>> getProductList(@PathVariable("userIdx") int userIdx) {
         try{
             // Get Product List
             List<GetProductList> getProductList = productProvider.getProductList(userIdx);
             return new BaseResponse<>(getProductList);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 상품 조회 API
+     * [GET] /products/:productIdx
+     * @return BaseResponse<GetProduct>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/product/:productIdx
+    public BaseResponse<List<GetProduct>> getProduct(@PathVariable("productIdx") int productIdx) {
+        try{
+            // Get Product
+            List<GetProduct> getProduct = productProvider.getProduct(productIdx);
+            return new BaseResponse<>(getProduct);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
