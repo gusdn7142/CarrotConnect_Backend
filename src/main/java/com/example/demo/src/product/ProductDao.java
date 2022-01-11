@@ -90,7 +90,7 @@ public class ProductDao {
                 "and p.productIdx = ? ";
         String getProductImageQuery = "select pi.image as images\n" +
                 "from ProductImage pi, Product p\n" +
-                "where pi.productIdx = p.productIdx and and p.status = 1 \n" +
+                "where pi.productIdx = p.productIdx and p.status = 1 \n" +
                 "and p.productIdx = ? ";
 
         int getProductParams = productIdx;
