@@ -54,13 +54,15 @@ com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/src/product/model/GetProductComplete.java
  com.example.demo.src.product.model.GetProductComplete
+com/example/demo/src/product/model/GetProductHidden.java
+ com.example.demo.src.product.model.GetProductHidden
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
 com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
-com/example/demo/src/product/model/GetProductHidden.java
- com.example.demo.src.product.model.GetProductHidden
 com/example/demo/src/product/ProductController.java
  com.example.demo.src.product.ProductController
+com/example/demo/src/product/model/GetProductPurchased.java
+ com.example.demo.src.product.model.GetProductPurchased

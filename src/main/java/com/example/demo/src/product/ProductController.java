@@ -108,7 +108,7 @@ public class ProductController {
     /**
      * 판매중인 상품 조회 API
      * [GET] /products/:userIdx/sale
-     * @return BaseResponse<GetProductList>
+     * @return BaseResponse<GetProductSale>
      */
     // Path-variable
     @ResponseBody
@@ -126,7 +126,7 @@ public class ProductController {
     /**
      * 거래완료 상품 조회 API
      * [GET] /products/:userIdx/complete
-     * @return BaseResponse<GetProductList>
+     * @return BaseResponse<GetProductComplete>
      */
     // Path-variable
     @ResponseBody
@@ -144,7 +144,7 @@ public class ProductController {
     /**
      * 숨김 상품 조회 API
      * [GET] /products/:userIdx/hidden
-     * @return BaseResponse<GetProductList>
+     * @return BaseResponse<GetProductHidden>
      */
     // Path-variable
     @ResponseBody
@@ -154,6 +154,24 @@ public class ProductController {
             // Get Product Hidden
             List<GetProductHidden> getProductHidden = productProvider.getProductHidden(userIdx);
             return new BaseResponse<>(getProductHidden);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 구매 내역 조회 API
+     * [GET] /products/:userIdx/purchased
+     * @return BaseResponse<GetProductPurchased>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}/purchased") // (GET) 127.0.0.1:9000/products/:userIdx/purchased
+    public BaseResponse<List<GetProductPurchased>> getProductPurchased(@PathVariable("userIdx") int userIdx) {
+        try{
+            // Get Product Hidden
+            List<GetProductPurchased> getProductPurchased = productProvider.getProductPurchased(userIdx);
+            return new BaseResponse<>(getProductPurchased);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
