@@ -47,4 +47,16 @@ public class ProductService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void createProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
+        try{
+            int result = productDao.createProduct(userIdx, postProductReq);
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
