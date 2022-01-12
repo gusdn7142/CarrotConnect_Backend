@@ -1,4 +1,15 @@
+<<<<<<< Updated upstream
 07:34:39.342 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
 00:49:57.178 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
 01:03:38.934 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
 21:01:41.046 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
+=======
+07:34:39.342 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
+01:03:38.934 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+02:19:11.769 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+02:19:14.658 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+02:19:27.090 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+18:32:52.043 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+18:32:54.209 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+18:32:54.937 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+>>>>>>> Stashed changes
