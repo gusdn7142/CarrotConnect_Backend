@@ -25,5 +25,6 @@ public class GetProduct {
     private String chatCount;
     private String interestCount;
     private String lookupCount;
+    private String productStatus;
     private List<String> images;
 }

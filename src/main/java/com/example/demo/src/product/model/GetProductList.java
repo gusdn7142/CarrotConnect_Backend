@@ -17,4 +17,5 @@ public class GetProductList {
     private String image;
     private int chatCount;
     private int interestCount;
+    private String productStatus;
 }
