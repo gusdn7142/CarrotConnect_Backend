@@ -1,10 +1,7 @@
 package com.example.demo.src.product;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.secret.Secret;
 import com.example.demo.src.product.model.*;
-import com.example.demo.src.product.ProductDao;
-import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +61,16 @@ public class ProductProvider {
         try{
             List<GetProductComplete> getProductComplete = productDao.getProductComplete(userIdx);
             return getProductComplete;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetProductHidden> getProductHidden(int userIdx) throws BaseException{
+        try{
+            List<GetProductHidden> getProductHidden = productDao.getProductHidden(userIdx);
+            return getProductHidden;
         }
         catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

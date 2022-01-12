@@ -1,10 +1,5 @@
 package com.example.demo.src.product;
 
-import com.example.demo.src.user.UserProvider;
-import com.example.demo.src.user.UserService;
-import com.example.demo.src.user.model.GetUserRes;
-import com.example.demo.src.user.model.PatchUserReq;
-import com.example.demo.src.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -15,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexEmail;
 
 @RestController
 @RequestMapping("/products")
@@ -144,6 +136,24 @@ public class ProductController {
             // Get Product Complete
             List<GetProductComplete> getProductComplete = productProvider.getProductComplete(userIdx);
             return new BaseResponse<>(getProductComplete);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 숨김 상품 조회 API
+     * [GET] /products/:userIdx/hidden
+     * @return BaseResponse<GetProductList>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}/hidden") // (GET) 127.0.0.1:9000/product/:userIdx/hidden
+    public BaseResponse<List<GetProductHidden>> getProductHidden(@PathVariable("userIdx") int userIdx) {
+        try{
+            // Get Product Hidden
+            List<GetProductHidden> getProductHidden = productProvider.getProductHidden(userIdx);
+            return new BaseResponse<>(getProductHidden);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

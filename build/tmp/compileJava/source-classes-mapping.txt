@@ -60,5 +60,7 @@ com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
+com/example/demo/src/product/model/GetProductHidden.java
+ com.example.demo.src.product.model.GetProductHidden
 com/example/demo/src/product/ProductController.java
  com.example.demo.src.product.ProductController
