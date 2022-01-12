@@ -19,21 +19,26 @@ import static com.example.demo.config.BaseResponseStatus.*;
 @Service
 public class JwtService {
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////    /
     /*
-    JWT 생성
+    일반 계정 JWT 발급
     @param userIdx
     @return String
      */
-    public String createJwt(int userIdx){
+    public String createJwt(int userIdx){  //jwt 생성
         Date now = new Date();
         return Jwts.builder()
-                .setHeaderParam("type","jwt")
-                .claim("userIdx",userIdx)
-                .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*365)))
-                .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
+                .setHeaderParam("type","jwt")  //헤더 (type)
+                .claim("userIdx",userIdx)      //페이로드 (유저의 idx (primary 키)값)
+                .setIssuedAt(now)               //페이로드 (발급 시간)
+                .setExpiration(new Date(System.currentTimeMillis()+(1000*60*60*24*365)))  //페이로드 (파기 시간 (ex, 1년).  개발 단계에서는 클라이언트 개발자가 테스트를 원활하게 하기 위해 길게 주는게 좋다)
+                .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)                 //서명 (헤더의 alg인 HS256 알고리즘 사용, 비밀키로 JWT_SECRET_KEY 사용)
                 .compact();
     }
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /*
     Header에서 X-ACCESS-TOKEN 으로 JWT 추출
@@ -41,7 +46,7 @@ public class JwtService {
      */
     public String getJwt(){
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-        return request.getHeader("X-ACCESS-TOKEN");
+        return request.getHeader("X-ACCESS-TOKEN");    //X-ACCESS-TOKEN의 키에 대한 값을 가져옴 (헤더에 넣어주어야 한다)
     }
 
     /*
@@ -51,7 +56,7 @@ public class JwtService {
      */
     public int getUserIdx() throws BaseException{
         //1. JWT 추출
-        String accessToken = getJwt();
+        String accessToken = getJwt();   //
         if(accessToken == null || accessToken.length() == 0){
             throw new BaseException(EMPTY_JWT);
         }
@@ -59,15 +64,54 @@ public class JwtService {
         // 2. JWT parsing
         Jws<Claims> claims;
         try{
-            claims = Jwts.parser()
+            claims = Jwts.parser()  //유효한 토큰인지 확인,  즉 로그인시 부여한 jwt 토큰인지 확인
                     .setSigningKey(Secret.JWT_SECRET_KEY)
                     .parseClaimsJws(accessToken);
         } catch (Exception ignored) {
             throw new BaseException(INVALID_JWT);
         }
 
-        // 3. userIdx 추출
+        // 3. userIdx 추출  (위의 과정에서 문제가 없다면 수행)
         return claims.getBody().get("userIdx",Integer.class);
     }
+
+
+
+
+
+ //////////////////////////////////////////////////////////////////
+    //토큰 정보(만료시각) 확인 메서드
+    public void getJwtContents(String jwt) {  //Claims
+        Jws<Claims> claims;
+        claims = Jwts.parser()  //유효한 토큰인지 확인,  즉 로그인시 부여한 jwt 토큰인지 확인
+                .setSigningKey(Secret.JWT_SECRET_KEY)
+                .parseClaimsJws(jwt);
+        //try문 추가해야 만료되도 오류 안난다!!
+
+
+        System.out.println("\n 현재!! 날짜!! ");                         //현재 날짜 및 시간 확인
+        System.out.println(new Date(System.currentTimeMillis()));
+        System.out.println("\n 현재!! 날짜를 초로 표시!! ");                         //현재 날짜 및 시간 확인
+        System.out.println(new Date(System.currentTimeMillis()).getTime()/1000);
+
+        System.out.println("\n jwt 토큰 만료시각 (카카오 jwt는 현재 날짜와 6시간 차이)");
+        System.out.println(claims.getBody().getExpiration());                    //토큰 정보 확인
+        System.out.println("\n jwt 토큰 만료시각 (날짜를 초로 표시)!!");
+        System.out.println(claims.getBody().getExpiration().getTime()/1000);   //토큰의 날짜를 초로 변환
+
+
+//        return claims;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }
