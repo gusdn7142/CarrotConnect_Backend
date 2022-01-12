@@ -32,6 +32,8 @@ com/example/demo/src/product/model/PatchProductStatus.java
  com.example.demo.src.product.model.PatchProductStatus
 com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
+com/example/demo/src/product/model/GetProductSale.java
+ com.example.demo.src.product.model.GetProductSale
 com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
 com/example/demo/src/user/model/PostUserRes.java
