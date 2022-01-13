@@ -3,16 +3,12 @@ package com.example.demo.src.user;
 
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
-import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -152,12 +148,15 @@ public class UserService {
 
     /* 유저 로그아웃 - logout()  */
     public void logout(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+
+//        //로그아웃 여부 확인
+//        if(userProvider.checklogoutUser(patchUserReq.getUserIdx()) == 1){
+//            throw new BaseException(logout_FAIL_USER);   //"이미 로그아웃 되었습니다."
+//        }
+
         try{
             //유저 로그아웃
             int result = userDao.logout(patchUserReq);
-            if(result == 0){
-                throw new BaseException(logout_FAIL_USER);   //"이미 로그아웃 되었습니다."
-            }
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR_FAIL_LOGOUT);   //"로그아웃에 실패 하였습니다."
         }
@@ -192,11 +191,61 @@ public class UserService {
 
 
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 회원탈퇴 (유저 비활성화) - deleteUser()  */
+    public void deleteUser(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+
+        //회원 탈퇴 여부 확인
+        if(userProvider.checkdeleteUser(patchUserReq.getUserIdx()) == 1){      //닉네임이 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+            throw new BaseException(PATCH_USERS_DELETE_USER);                   //"이미 탈퇴된 계정입니다."
+        }
+
+        try{
+            //유저 정보 변경
+            int result = userDao.deleteUser(patchUserReq);
+//            if(result == 0){
+//                System.out.println("이미 회원탈퇴 되었습니다.");
+//                throw new BaseException(FAILED_TO_DELETE_USER);   //'유저가 이미 회원탈퇴 되었습니다.'
+//            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_DELETE_USER);   //'회원탈퇴에 실패했습니다.'
+        }
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 차단 - blockUser()  */
+    public void blockUser(PostUserBlockReq postUserBlockReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+
+        //사용자 차단 여부 확인
+        if(userProvider.checkBlcokUser(postUserBlockReq) == 1){              //닉네임이 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+            throw new BaseException(POST_USERS_BLOCKS_NICKNAME);        //"이미 차단한 사용자 입니다."
+        }
+
+        try{
+            //사용자 차단
+            int result = userDao.blockUser(postUserBlockReq);
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_BLOCK_USER); //"사용자 차단에 실패했습니다. 닉네임을 확인해 주세요."
+        }
+    }
 
 
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 차단 해제 - blockCancell()  */
+    public void blockCancell(PatchUserBlockCancellReq patchUserBlockCancellReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
+//        //사용자 차단 해제 여부 확인
+//        if(userProvider.checkBlcokCancellUser(patchUserBlockCancellReq) == 1){              //닉네임이 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+//            throw new BaseException(PATCH_USERS_BLOCKS_CANCELL_NICKNAME);                   //"이미 차단 해제한 사용자 입니다."
+//        }
 
-
+        try{
+            //사용자 차단 해제
+            int result = userDao.blockCancell(patchUserBlockCancellReq);
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_BLOCK_CANCELL_USER); //"사용자 차단 해제에 실패했습니다. 닉네임을 확인해 주세요."
+        }
+    }
 
 
 

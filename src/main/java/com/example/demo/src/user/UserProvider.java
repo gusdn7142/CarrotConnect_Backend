@@ -2,9 +2,7 @@ package com.example.demo.src.user;
 
 
 import com.example.demo.config.BaseException;
-import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
-import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +101,6 @@ public class UserProvider {
     public void checkByUser(String jwt) throws BaseException{
 
         int checkNum = userDao.checkByUser(jwt);
-//        System.out.println(checkNum);
         if(checkNum == 1){
             throw new BaseException(LOGOUT_USER_JWT);
         }
@@ -133,6 +130,49 @@ public class UserProvider {
     }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 차단 여부 확인 - checkBlcokUser()  */
+    public int checkBlcokUser(PostUserBlockReq postUserBlockReq) throws BaseException{
+        try{
+            return userDao.checkBlcokUser(postUserBlockReq);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR_BLOCK_CHECK_USER);   //"사용자 차단 여부 확인에 실패하였습니다."
+        }
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    /* 사용자 차단 해제 여부 확인 - checkBlcokCancellUser()  */
+//    public int checkBlcokCancellUser(PatchUserBlockCancellReq patchUserBlockCancellReq) throws BaseException{
+//        try{
+//            return userDao.checkBlcokCancellUser(patchUserBlockCancellReq);
+//        } catch (Exception exception){
+//            throw new BaseException(DATABASE_ERROR_BLOCK_CANCELL_CHECK_USER);   //"사용자 차단 해제 여부 확인에 실패하였습니다."
+//        }
+//    }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 차단한 사용자 정보 조회 - getBlockUser() */
+    public List<GetUserBlockRes> getBlockUser(int userIdx) throws BaseException {
+        try {
+            List<GetUserBlockRes> getUserBlockRes = userDao.getBlockUser(userIdx);
+            return getUserBlockRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR_BLOCK_USER_INFO);   //"차단한 사용자 프로필 조회에 실패하였습니다."
+        }
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 회원 탈퇴 여부 확인 - checkdeleteUser()  */
+    public int checkdeleteUser(int useIdx) throws BaseException{
+        try{
+            return userDao.checkdeleteUser(useIdx);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR_DELETE_CHECK_USER);   //"회원탈퇴 여부 확인에 실패하였습니다."
+        }
+
+
+    }
 
 
 

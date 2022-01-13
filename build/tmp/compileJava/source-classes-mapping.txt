@@ -1,3 +1,5 @@
+com/example/demo/src/user/model/PatchUserBlockCancellReq.java
+ com.example.demo.src.user.model.PatchUserBlockCancellReq
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
 com/example/demo/src/user/model/PostUserReq.java
@@ -22,10 +24,14 @@ com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
 com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
+com/example/demo/src/user/model/GetUserBlockRes.java
+ com.example.demo.src.user.model.GetUserBlockRes
 com/example/demo/src/WebSecurityConfig.java
  com.example.demo.src.WebSecurityConfig
 com/example/demo/src/product/model/GetProductComplete.java
  com.example.demo.src.product.model.GetProductComplete
+com/example/demo/src/user/model/PostUserBlockReq.java
+ com.example.demo.src.user.model.PostUserBlockReq
 com/example/demo/src/test/TestController.java
  com.example.demo.src.test.TestController
 com/example/demo/src/product/model/GetProductList.java
