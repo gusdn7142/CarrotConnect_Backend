@@ -1,13 +1,13 @@
 com/example/demo/src/user/model/PatchUserBlockCancellReq.java
  com.example.demo.src.user.model.PatchUserBlockCancellReq
-com/example/demo/src/product/ProductProvider.java
- com.example.demo.src.product.ProductProvider
+com/example/demo/utils/JwtService.java
+ com.example.demo.utils.JwtService
 com/example/demo/src/user/model/PostUserReq.java
  com.example.demo.src.user.model.PostUserReq
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
-com/example/demo/src/product/ProductService.java
- com.example.demo.src.product.ProductService
+com/example/demo/src/user/UserProvider.java
+ com.example.demo.src.user.UserProvider
 com/example/demo/src/product/model/GetProduct.java
  com.example.demo.src.product.model.GetProduct
 com/example/demo/src/product/model/GetProductHidden.java
@@ -40,8 +40,8 @@ com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/product/model/PatchProductStatus.java
  com.example.demo.src.product.model.PatchProductStatus
-com/example/demo/src/product/ProductDao.java
- com.example.demo.src.product.ProductDao
+com/example/demo/src/user/model/PatchJoinAuthReq.java
+ com.example.demo.src.user.model.PatchJoinAuthReq
 com/example/demo/src/product/model/GetProductSale.java
  com.example.demo.src.product.model.GetProductSale
 com/example/demo/config/secret/Secret.java
@@ -66,11 +66,27 @@ com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/DemoApplication.java
  com.example.demo.DemoApplication
-com/example/demo/utils/JwtService.java
- com.example.demo.utils.JwtService
-com/example/demo/src/user/UserProvider.java
- com.example.demo.src.user.UserProvider
-com/example/demo/src/user/model/PatchJoinAuthReq.java
- com.example.demo.src.user.model.PatchJoinAuthReq
+com/example/demo/src/product/model/GetProductInterest.java
+ com.example.demo.src.product.model.GetProductInterest
+com/example/demo/src/product/ProductProvider.java
+ com.example.demo.src.product.ProductProvider
+com/example/demo/src/product/model/PatchProductInterest.java
+ com.example.demo.src.product.model.PatchProductInterest
+com/example/demo/src/product/ProductDao.java
+ com.example.demo.src.product.ProductDao
+com/example/demo/src/product/ProductService.java
+ com.example.demo.src.product.ProductService
 com/example/demo/src/product/ProductController.java
  com.example.demo.src.product.ProductController
+com/example/demo/src/category/model/GetCategoryInterest.java
+ com.example.demo.src.category.model.GetCategoryInterest
+com/example/demo/src/category/CategoryProvider.java
+ com.example.demo.src.category.CategoryProvider
+com/example/demo/src/category/model/PatchCategoryInterest.java
+ com.example.demo.src.category.model.PatchCategoryInterest
+com/example/demo/src/category/CategoryController.java
+ com.example.demo.src.category.CategoryController
+com/example/demo/src/category/CategoryService.java
+ com.example.demo.src.category.CategoryService
+com/example/demo/src/category/CategoryDao.java
+ com.example.demo.src.category.CategoryDao

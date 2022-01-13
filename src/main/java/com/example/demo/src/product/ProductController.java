@@ -264,7 +264,7 @@ public class ProductController {
      */
     // Path-variable
     @ResponseBody
-    @PostMapping("/{userIdx}/{productIdx}")
+    @PostMapping("/{userIdx}/{productIdx}/interest")
     public BaseResponse<String> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
         try {
             /**
@@ -284,6 +284,66 @@ public class ProductController {
             //같다면 변경
             productService.createInterestProduct(userIdx, productIdx);
             String result = "관심 목록 등록 성공";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 관심 목록 조회 API
+     * [GET] /products/:userIdx/interest-list
+     * @return BaseResponse<GetProductPurchased>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}/interest-list") // (GET) 127.0.0.1:9000/products/:userIdx/interest-list
+    public BaseResponse<List<GetProductInterest>> getProductInterest(@PathVariable("userIdx") int userIdx) {
+        try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Product Purchased
+            List<GetProductInterest> getProductInterest = productProvider.getProductInterest(userIdx);
+            return new BaseResponse<>(getProductInterest);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 관심 목록 삭제 (관심 목록 상태 변경) API
+     * [PATCH] /products/:interestIdx/interest-status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{interestIdx}/interest-status")
+    public BaseResponse<String> patchProductInterest(@PathVariable("interestIdx") int interestIdx, @RequestBody PatchProductInterest patchProductInterest){
+        try {
+            /**
+             * validation 처리해야될것
+             * 1. 접근한 유저가 관심 목록을 누른 유저가 맞는지
+             */
+
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            int userIdx = patchProductInterest.getUserIdx();
+
+            // userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // 데이터 베이스에서 interest 값으로 userIdx 값을 반환
+            // userIdx와 접근한 유저가 같은지 확인
+
+            productService.patchProductInterest(interestIdx);
+            String result = "관심 목록 삭제 성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
