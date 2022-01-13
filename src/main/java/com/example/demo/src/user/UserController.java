@@ -8,7 +8,11 @@ import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.*;
@@ -163,6 +167,154 @@ public class UserController {
 
 
     }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 유저 로그아웃 API
+     * [PATCH] /users:id/logout/
+     * @return BaseResponse<String>
+     */
+
+    @ResponseBody
+    @PatchMapping("/{id}/logout")
+    public BaseResponse<String> logout (@PathVariable("id") int userIdx){   //BaseResponse<String>      //@PathVariable("id") int userIdx
+
+        try {
+//            /* 접근 제한 구현 */
+//            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+//            //String jwt = userProvider.getUserToken(userIdx);
+//            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+//
+            //클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            System.out.println(userIdxByJwt);
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+////            //로그아웃된 유저 (만료된 토큰 접근)인지 확인
+////            HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+////            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현끝 */
+
+            PatchUserReq patchUserReq = new PatchUserReq(userIdx,null,null);
+            //유저 로그아웃
+            userService.logout(patchUserReq);
+//
+//
+            String result = "유저가 로그아웃되었습니다.";   //정보 변경 성공시 메시지 지정
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+
+
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 프로필 수정 API
+     * [PATCH] /users/:idx
+     * @return BaseResponse<String>
+     */
+
+    @ResponseBody
+    @PatchMapping("/{id}/profile")  //jwt가 탈취될수 있기 때문에 path-variable 방식 사용
+    public BaseResponse<String> modifyInfo(@PathVariable("id") int userIdx, @RequestBody PatchUserReq patchUserReq){
+
+
+        try {
+            /* 접근 제한 구현 */
+            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+            //String jwt = userProvider.getUserToken(userIdx);
+            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+
+            //클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 (만료된 토큰 접근)인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            //유저 정보를 객체에 넣음
+            patchUserReq.setUserIdx(userIdx);
+
+            //유저 정보 변경
+            userService.modifyInfo(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
+
+
+
+            String result = "회원 정보 변경이 완료되었습니다.";   //정보 변경 성공시 메시지 지정
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));  //어떤상황에서?.. 오류 뱉어줌
+        }
+    }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 프로필 조회 API
+     * [GET] /users/:idx/profile
+     * @return BaseResponse<GetUserRes>
+     */
+
+    /* GET 방식 - Path-variable (패스 베리어블) */
+    @ResponseBody             // JSON 혹은 xml 로 요청에 응답할수 있게 해주는 Annotation
+    @GetMapping("/{id}/profile") // (GET) 127.0.0.1:9000/users/:userIdx
+    public BaseResponse<GetUserRes> getUserProfile(@PathVariable("id") int userIdx) {              //BaseResponse<GetUserRes>
+
+        try {
+            /* 접근 제한 구현 */
+            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+            //String jwt = userProvider.getUserToken(userIdx);
+            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+
+            //클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 (만료된 토큰 접근)인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            //프로필 조회 - getUserProfile()
+            GetUserRes getUserRes = userProvider.getUserProfile(userIdx);
+
+
+
+            return new BaseResponse<>(getUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+
+
 
 
 

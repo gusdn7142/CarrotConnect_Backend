@@ -98,10 +98,39 @@ public class UserProvider {
     }
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 로그아웃된 유저 (만료된 토큰 접근)인지 확인 */
+    public void checkByUser(String jwt) throws BaseException{
+
+        int checkNum = userDao.checkByUser(jwt);
+//        System.out.println(checkNum);
+        if(checkNum == 1){
+            throw new BaseException(LOGOUT_USER_JWT);
+        }
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    /* 프로필 조회 - getUserProfile() */
+//    public GetUserRes getUserProfile(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
+//        try {
+//            GetUserRes getUserRes = userDao.getUserProfile(userIdx);  //userDao.getUser()에게 userIdx값을 그대로 넘겨줌
+//            return getUserRes;
+//        } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
+//            throw new BaseException(DATABASE_ERROR_USER_INFO);
+//        }
+//    }
 
 
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 프로필 조회 - getUserProfile() */
+    public GetUserRes getUserProfile(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
+        try {
+            GetUserRes getUserRes = userDao.getUserProfile(userIdx);  //userDao.getUser()에게 userIdx값을 그대로 넘겨줌
+            return getUserRes;
+        } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
+            throw new BaseException(DATABASE_ERROR_USER_INFO);
+        }
+    }
 
 
 

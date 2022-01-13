@@ -3,7 +3,9 @@ package com.example.demo.src.user;
 
 
 import com.example.demo.config.BaseException;
+import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
+import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,11 +148,50 @@ public class UserService {
 
 
 
+//// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /* 유저 로그아웃 - logout()  */
+    public void logout(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+        try{
+            //유저 로그아웃
+            int result = userDao.logout(patchUserReq);
+            if(result == 0){
+                throw new BaseException(logout_FAIL_USER);   //"이미 로그아웃 되었습니다."
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_FAIL_LOGOUT);   //"로그아웃에 실패 하였습니다."
+        }
+    }
 
 
 
+///// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 프로필 수정 - modifyInfo()  */
+    public void modifyInfo(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+
+        try{
+        //닉네임 값 변경
+        if(patchUserReq.getNickName() != null){
+            //닉네임 정보 변경
+            int result = userDao.modifyNickName(patchUserReq);
+//            if(result == 0){
+//                throw new BaseException(MODIFY_FAIL_NICKNAME);   //DB에서 nickName 값의 수정 실패시이면 에러코드 반환  (이미 인가과정이 있어서 필요 없음)
+//            }
+        }
+        //이미지 값 변경
+        if(patchUserReq.getImage() != null){
+            //이미지 변경
+            int result = userDao.modifyImage(patchUserReq);
+//            if(result == 0){
+//                throw new BaseException(MODIFY_FAIL_IMAGE);   //DB에서 Password 값의 수정 실패시이면 에러코드 반환 (이미 인가과정이 있어서 필요 없음)
+//            }
+        }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_MODIFY_FAIL_USER);   //"사용자 정보 변경에 실패하였습니다."
+        }
 
 
+    }
 
 
 
