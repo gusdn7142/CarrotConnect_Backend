@@ -182,18 +182,112 @@ public class UserDao {
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /* 유저 로그아웃 - logout()  */
+    public int logout(PatchUserReq patchUserReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String logoutQuery = "update Logout set status = 0 where userIdx = ? and status = 1";
+
+        //idx를 변수에 저장
+        int logoutParams = patchUserReq.getUserIdx();
+
+        //유저 로그아웃 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(logoutQuery,logoutParams);
+    }
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 프로필 수정 - modifyNickName()  */
+    public int modifyNickName(PatchUserReq patchUserReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String modifyNickNameQuery = "update User set nickName = ? where userIdx = ?";
+
+        //닉네임과, idx를 새로운 객체에 저장
+        Object[] modifyNickNameParams = new Object[]{patchUserReq.getNickName(), patchUserReq.getUserIdx()};  //patchUserReq 객체의 nickName 값과 id값을 modifyUserNameParams객체에 저장
+
+        //닉네임 변경 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(modifyNickNameQuery,modifyNickNameParams);
+    }
+
+    /* 유저 이미지 정보 변경 - modifyPassword()  */
+    public int modifyImage(PatchUserReq patchUserReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String modifyImageQuery = "update User set image = ? where userIdx = ?";
+
+        //이미지와 idx를 새로운 객체에 저장
+        Object[] modifyImageParams = new Object[]{patchUserReq.getImage(), patchUserReq.getUserIdx()};  //patchUserReq 객체의 nickName 값과 id값을 modifyUserNameParams객체에 저장
+
+        //이미지 변경 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(modifyImageQuery,modifyImageParams);
+    }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 로그아웃된 유저 (만료된 토큰 접근)인지 확인 */
+    public int checkByUser(String jwt) {
+
+        //쿼리문 생성
+        String checkByUserQuery = "select exists(select jwt from Logout where jwt = ? and status = 0)";   //로그아웃된 상태이면... 토큰을 만료해줘야 하는데 (jwt 만료시간을 변경할수 없기 때문에 이렇게 조치... )
+        String checkByUserParams = jwt;
+//        System.out.println(getUserTokenParams);
 
 
+        //쿼리문 실행
+        return this.jdbcTemplate.queryForObject(checkByUserQuery,     //토큰은 로그인시마다 바뀌기 때문에 테이블에 토큰이 같을리가 없기 때문에 queryForObject를 사용하였다.
+                int.class,
+                checkByUserParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
+    }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 프로필 조회 - getUserProfile() */
+    public GetUserRes getUserProfile(int userIdx){
+        //쿼리문 생성
+        String getUserProfileQuery = "select u.image as image,\n" +
+                "       u.nickName as nickName,\n" +
+                "       u.mannerTemp as mannerTemp ,\n" +
+                "       u.tradeRate as tradeRate,\n" +
+                "       u.responseRate as responseRate,\n" +
+                "       DATE_FORMAT(u.createAt,'%Y년 %m월 %d일') as createAt,\n" +
+                "       r.regionName as regionName,\n" +
+                "       r.authCount as authCount,\n" +
+                "       badgeCount,\n" +
+                "       productSellCount\n" +
+                "       from Region r, User u\n" +
+                "           left join (\n" +
+                "               select userIdx , count(userIdx) as 'badgeCount'\n" +
+                "               from Badge\n" +
+                "               group by userIdx) as x on u.userIdx = x.userIdx\n" +
+                "           left join (\n" +
+                "               select userIdx, count(userIdx) as 'productSellCount'\n" +
+                "               from Product\n" +
+                "               group by userIdx) as y on u.userIdx = y.userIdx\n" +
+                "where u.userIdx = r.userIdx\n" +
+                "and r.mainStatus = 1\n" +
+                "and u.userIdx = ?";
 
+        //userIdx를 객체에 저장.
+//        Object[] getUserProfileParams = new Object[]{userIdx, userIdx, userIdx, userIdx};
 
+        int getUserProfileParams = userIdx;      //파라미터(id) 값 저장
 
+        //쿼리문 실행
+        return this.jdbcTemplate.queryForObject(getUserProfileQuery,          //하나의 행을 불러오기 때문에 jdbcTemplate.queryForObject 실행
+                (rs, rowNum) -> new GetUserRes(                //rs.getString(" ")값이 DB와 일치해야 한다!
+                        rs.getString("image"),             //각 칼럼은 DB와 매칭이 되어야 한다.
+                        rs.getString("nickName"),
+                        rs.getDouble("mannerTemp"),
+                        rs.getDouble("tradeRate"),
+                        rs.getDouble("responseRate"),
+                        rs.getString("createAt"),
+                        rs.getString("regionName"),
+                        rs.getInt("authCount"),
+                        rs.getInt("badgeCount"),
+                        rs.getInt("productSellCount")),
+                getUserProfileParams);
+    }
 
 
 

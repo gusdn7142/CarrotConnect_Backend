@@ -45,7 +45,19 @@ public enum BaseResponseStatus {
 //    FAILED_TO_LOGIN(false,5100,"로그인에 실패하였습니다."),  //없어도 될듯???
     FAILED_TO_JOIN_CHECK(false,3002,"가입되지 않은 전화번호입니다. 가입을 먼저 진행해 주세요."),
     MODIFY_FAIL_AUTHCODE(false,3304,"인증코드에 해당하는 사용자가 없어서 인증코드를 변경하지 못했습니다."),
+    logout_FAIL_USER(false,3111,"이미 로그아웃 되었습니다."),
 
+    LOGOUT_USER_JWT(false, 4103, "로그아웃된 유저입니다."),
+
+
+
+
+
+
+
+
+//    MODIFY_FAIL_NICKNAME(false,5102,"닉네임을 변경할 수 없습니다."),
+//    MODIFY_FAIL_IMAGE(false,5102,"이미지를 변경 과정에 오류가 "),
 
 
 //    RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
@@ -74,8 +86,9 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_NOT_EXISTS_USER(false, 4002, "사용자 정보를 DB에서 조회하지 못했습니다. "),
     DATABASE_ERROR_MODIFY_FAIL_AUTHCODE(false,3304,"인증 코드 변경에 실패했습니다."),
 
-
-
+    DATABASE_ERROR_FAIL_LOGOUT(false, 4002, "로그아웃에 실패 하였습니다."),
+    DATABASE_ERROR_MODIFY_FAIL_USER(false, 4002, "사용자 정보 변경에 실패하였습니다."),
+    DATABASE_ERROR_USER_INFO(false, 5206, "프로필 조회에 실패하였습니다."),
 
 
 

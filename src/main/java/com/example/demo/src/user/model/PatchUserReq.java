@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class PatchUserReq {
+
     private int userIdx;
-    private String userName;
+    private String nickName;
+    private String image;
 }
