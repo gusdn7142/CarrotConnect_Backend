@@ -32,8 +32,8 @@ com/example/demo/src/product/model/GetProductList.java
  com.example.demo.src.product.model.GetProductList
 com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
-com/example/demo/src/product/model/PatchProductStatus.java
- com.example.demo.src.product.model.PatchProductStatus
+com/example/demo/src/user/model/PatchJoinAuthReq.java
+ com.example.demo.src.user.model.PatchJoinAuthReq
 com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/product/model/GetProductSale.java
@@ -54,8 +54,8 @@ com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
 com/example/demo/src/user/model/GetUserRes.java
  com.example.demo.src.user.model.GetUserRes
-com/example/demo/src/product/ProductController.java
- com.example.demo.src.product.ProductController
+com/example/demo/src/product/model/GetProductPurchased.java
+ com.example.demo.src.product.model.GetProductPurchased
 com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/DemoApplication.java
@@ -64,7 +64,7 @@ com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.UserProvider
-com/example/demo/src/user/model/PatchJoinAuthReq.java
- com.example.demo.src.user.model.PatchJoinAuthReq
-com/example/demo/src/product/model/GetProductPurchased.java
- com.example.demo.src.product.model.GetProductPurchased
+com/example/demo/src/product/model/PatchProductStatus.java
+ com.example.demo.src.product.model.PatchProductStatus
+com/example/demo/src/product/ProductController.java
+ com.example.demo.src.product.ProductController

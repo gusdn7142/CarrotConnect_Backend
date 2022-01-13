@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.POST_USERS_EMPTY_PHONENUMBER;
-import static com.example.demo.config.BaseResponseStatus.POST_USERS_INVALID_PHONENUMBER;
+import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexPhoneNumber;
 
 @RestController
@@ -85,25 +84,25 @@ public class ProductController {
      * @return BaseResponse<String>
      */
     @ResponseBody
-    @PatchMapping("/{productIdx}/status")
-    public BaseResponse<String> patchProductStatus(@PathVariable("productIdx") int productIdx, @RequestBody PatchProductStatus status){
+    @PatchMapping("/{productIdx}/{userIdx}/status")
+    public BaseResponse<String> patchProductStatus(@PathVariable("productIdx") int productIdx, @PathVariable("userIdx") int userIdx ){
         try {
-
             /**
              * validation 처리해야될것
              * 1. 인증코드여부
              * 2. 올바른 값인지 ex. 숫자형
              * 3. 존재하는 상품인지
-             * 4. status에 0말고 다른 값이 들어오는지
              */
 
             // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
             //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
 
-            //같다면 변경
-            PatchProductStatus patchProductStatus = new PatchProductStatus(productIdx, status.getStatus());
-            productService.patchProductStatus(patchProductStatus);
-
+            productService.patchProductStatus(productIdx);
             String result = "상품 삭제 성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {

@@ -36,9 +36,9 @@ public class ProductService {
 
     }
 
-    public void patchProductStatus(PatchProductStatus patchProductStatus) throws BaseException {
+    public void patchProductStatus(int productIdx) throws BaseException {
         try{
-            int result = productDao.patchProductStatus(patchProductStatus);
+            int result = productDao.patchProductStatus(productIdx);
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");

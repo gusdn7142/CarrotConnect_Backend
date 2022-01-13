@@ -143,9 +143,9 @@ public class ProductDao {
                 ), getProductParams);
     }
 
-    public int patchProductStatus(PatchProductStatus patchProductStatus){
-        String patchProductStatusQuery = "update Product set status = ? where productIdx = ? ";
-        Object[] patchProductStatusParams = new Object[]{patchProductStatus.getStatus(), patchProductStatus.getProductIdx()};
+    public int patchProductStatus(int productIdx){
+        String patchProductStatusQuery = "update Product set status = 0 where productIdx = ? ";
+        Object[] patchProductStatusParams = new Object[]{productIdx};
         return this.jdbcTemplate.update(patchProductStatusQuery,patchProductStatusParams);
     }
 
