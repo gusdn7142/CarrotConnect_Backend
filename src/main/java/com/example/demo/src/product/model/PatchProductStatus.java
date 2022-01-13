@@ -12,4 +12,5 @@ import lombok.Setter;
 @JsonAutoDetect
 public class PatchProductStatus {
     private int userIdx;
+    private int status;
 }
