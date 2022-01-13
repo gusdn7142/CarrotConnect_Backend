@@ -289,4 +289,30 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 관심 목록 조회 API
+     * [GET] /products/:userIdx/interest-list
+     * @return BaseResponse<GetProductPurchased>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}/interest-list") // (GET) 127.0.0.1:9000/products/:userIdx/interest-list
+    public BaseResponse<List<GetProductInterest>> getProductInterest(@PathVariable("userIdx") int userIdx) {
+        try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Product Purchased
+            List<GetProductInterest> getProductInterest = productProvider.getProductInterest(userIdx);
+            return new BaseResponse<>(getProductInterest);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
