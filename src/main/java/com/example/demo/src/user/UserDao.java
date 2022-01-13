@@ -1,15 +1,12 @@
 package com.example.demo.src.user;
 
-
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Random;
 
 @Repository
 public class UserDao {
@@ -186,7 +183,7 @@ public class UserDao {
 
     /* 유저 로그아웃 - logout()  */
     public int logout(PatchUserReq patchUserReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
-        //쿼리문 생성
+        //쿼리문 생성fcheckByUser
         String logoutQuery = "update Logout set status = 0 where userIdx = ? and status = 1";
 
         //idx를 변수에 저장
@@ -289,7 +286,136 @@ public class UserDao {
                 getUserProfileParams);
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 회원탈퇴 (유저 비활성화)- deleteUser()  */
+    public int deleteUser(PatchUserReq patchUserReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String deleteUserQuery = "update User set status = 0 where userIdx = ?";
+
+        //idx를 변수에 저장
+        int deleteUserParams = patchUserReq.getUserIdx();
+
+        //유저 삭제(비활성화) 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(deleteUserQuery,deleteUserParams);
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 차단 - blockUser()  */
+    public int blockUser(PostUserBlockReq postUserBlockReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String blockUserQuery = "Insert Into Block (userIdx, blockedUserIdx) VALUES (? ,(select userIdx from User where nickName = ?))";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] blockUserParams = new Object[]{postUserBlockReq.getUserIdx(), postUserBlockReq.getBlockNickName()};
+
+        //사용자 차단 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(blockUserQuery,blockUserParams);
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 차단 여부 확인 - checkBlcokUser()  */
+    public int checkBlcokUser(PostUserBlockReq postUserBlockReq){
+        String checkBlcokUserQuery = "select exists(select userIdx from Block where userIdx = ? and blockedUserIdx = (select userIdx from User where nickName = ?) and status = 1)";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] checkBlcokUserParams = new Object[]{postUserBlockReq.getUserIdx(), postUserBlockReq.getBlockNickName()};
+
+        return this.jdbcTemplate.queryForObject(checkBlcokUserQuery,
+                int.class,
+                checkBlcokUserParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 차단 해제 - blockCancell()  */
+    public int blockCancell(PatchUserBlockCancellReq patchUserBlockCancellReq){
+        //쿼리문 생성
+        String blockCancellQuery = "update Block set status = 0 where userIdx = ? and blockedUserIdx = (select userIdx from User where nickName = ?)";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] blockCancellrParams = new Object[]{patchUserBlockCancellReq.getUserIdx(), patchUserBlockCancellReq.getBlockCancellNickName()};
+
+        //사용자 차단 해제 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(blockCancellQuery,blockCancellrParams);
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    /* 사용자 차단 해제 여부 확인 - checkBlcokCancellUser()  */
+//    public int checkBlcokCancellUser(PatchUserBlockCancellReq patchUserBlockCancellReq){
+//        String checkBlcokUserQuery = "select exists(select userIdx from Block where userIdx = ? and blockedUserIdx = (select userIdx from User where nickName = ?) and status = 0)";
+//
+//        //userIdx와 blockedUserIdx를 객체에 저장
+//        Object[] checkBlcokUserParams = new Object[]{patchUserBlockCancellReq.getUserIdx(), patchUserBlockCancellReq.getBlockCancellNickName()};
+//
+//        return this.jdbcTemplate.queryForObject(checkBlcokUserQuery,
+//                int.class,
+//                checkBlcokUserParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
+//    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 차단한 사용자 조회 - getBlockUser() */
+    public List<GetUserBlockRes> getBlockUser(int userIdx){
+
+        //쿼리문 생성
+        String getBlockUserQuery = "select u.image,\n" +
+                "       u.nickName,\n" +
+                "       r.regionName\n" +
+                "from User u\n" +
+                "join (select DISTINCT blockedUserIdx from Block where userIdx = ?) b\n" +
+                "    on u.userIdx = b.blockedUserIdx\n" +
+                "join Region r\n" +
+                "    on u.userIdx = r.userIdx\n" +
+                "where r.mainStatus = 1";
+
+        //userIdx값 저장
+        int getBlockUserParams = userIdx;
+
+        //쿼리문 실행
+        return this.jdbcTemplate.query(getBlockUserQuery,
+                (rs, rowNum) -> new GetUserBlockRes(
+                        rs.getString("image"),
+                        rs.getString("nickName"),             //각 칼럼은 DB와 매칭이 되어야 한다.
+                        rs.getString("regionName")),
+                getBlockUserParams);
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 회원 탈퇴 여부 확인 - checkdeleteUser()  */
+    public int checkdeleteUser(int userIdx){
+        //쿼리문 생성
+        String checkdeleteUserQuery = "select exists(select userIdx from User where userIdx = ? and status = 0)";
+        //userIdx와 blockedUserIdx를 객체에 저장
+        int checkdeleteUserParams = userIdx;
+
+        //회원 탈퇴 여부 확인 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.queryForObject(checkdeleteUserQuery,
+                int.class,
+                checkdeleteUserParams);
+    }
+
+
+
+
+
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
