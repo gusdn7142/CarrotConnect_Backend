@@ -452,5 +452,11 @@ public class ProductDao {
                 ),
                 getProductInterestParams);
     }
+
+    public int patchProductInterest(int interestIdx){
+        String patchProductInterestQuery = "update ProductInterest set status = 0 where interestIdx = ? ";
+        Object[] patchProductInterestParams = new Object[]{interestIdx};
+        return this.jdbcTemplate.update(patchProductInterestQuery,patchProductInterestParams);
+    }
 }
 

@@ -70,6 +70,8 @@ com/example/demo/src/product/model/GetProductInterest.java
  com.example.demo.src.product.model.GetProductInterest
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
+com/example/demo/src/product/model/PatchProductInterest.java
+ com.example.demo.src.product.model.PatchProductInterest
 com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/product/ProductService.java
