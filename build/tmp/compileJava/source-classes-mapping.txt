@@ -82,6 +82,8 @@ com/example/demo/src/category/model/GetCategoryInterest.java
  com.example.demo.src.category.model.GetCategoryInterest
 com/example/demo/src/category/CategoryProvider.java
  com.example.demo.src.category.CategoryProvider
+com/example/demo/src/category/model/PatchCategoryInterest.java
+ com.example.demo.src.category.model.PatchCategoryInterest
 com/example/demo/src/category/CategoryController.java
  com.example.demo.src.category.CategoryController
 com/example/demo/src/category/CategoryService.java

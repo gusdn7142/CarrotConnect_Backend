@@ -39,4 +39,16 @@ public class CategoryService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void patchCategoryInterest(int idx) throws BaseException {
+        try{
+            int result = categoryDao.patchCategoryInterest(idx);
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

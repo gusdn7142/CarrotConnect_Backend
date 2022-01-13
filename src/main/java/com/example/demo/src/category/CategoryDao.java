@@ -42,4 +42,10 @@ public class CategoryDao {
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public int patchCategoryInterest(int idx){
+        String patchCategoryInterestQuery = "update InterestCategory set status = 0 where interestCategoryIdx = ? ";
+        Object[] patchCategoryInterestParams = new Object[]{idx};
+        return this.jdbcTemplate.update(patchCategoryInterestQuery,patchCategoryInterestParams);
+    }
 }
