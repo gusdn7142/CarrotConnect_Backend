@@ -59,4 +59,37 @@ public class CategoryController {
         }
     }
 
+    /**
+     * 관심 카테고리 등록 API
+     * [POST] /interst-categorys/:userIdx/:categoryIdx
+     * @return BaseResponse<String>
+     */
+    // Path-variable
+    @ResponseBody
+    @PostMapping("/{userIdx}/{categoryIdx}")
+    public BaseResponse<String> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("categoryIdx") int categoryIdx) {
+        try {
+            /**
+             * validation 처리해야될것
+             * 1. 존재하는 사용자인지
+             * 2. 존재하는 카테고리인지
+             */
+
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //같다면 변경
+            categoryService.createInterestCategory(userIdx, categoryIdx);
+            String result = "관심 카테고리 등록 성공";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

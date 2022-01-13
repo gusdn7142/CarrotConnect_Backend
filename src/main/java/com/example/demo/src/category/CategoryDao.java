@@ -33,4 +33,13 @@ public class CategoryDao {
                 ),
                 getCategoryInterestParams);
     }
+
+    public int createInterestCategory(int userIdx, int categoryIdx){
+        String createInterestCategoryQuery = "insert into InterestCategory (userIdx, categoryIdx) values (?, ?) ";
+        Object[] createInterestCategoryParams = new Object[]{userIdx, categoryIdx};
+        this.jdbcTemplate.update(createInterestCategoryQuery, createInterestCategoryParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }
