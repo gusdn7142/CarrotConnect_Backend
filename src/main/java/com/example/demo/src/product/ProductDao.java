@@ -387,4 +387,13 @@ public class ProductDao {
         // productIdx 값 반환
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public int createInterestProduct(int userIdx, int productIdx){
+        String createInterestProductQuery = "insert into ProductInterest (userIdx, productIdx) values (?, ?) ";
+        Object[] createInterestParams = new Object[]{userIdx, productIdx};
+        this.jdbcTemplate.update(createInterestProductQuery, createInterestParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }

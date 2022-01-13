@@ -45,6 +45,14 @@ public class ProductController {
     @GetMapping("/{userIdx}/all") // (GET) 127.0.0.1:9000/product/:userIdx/all
     public BaseResponse<List<GetProductList>> getProductList(@PathVariable("userIdx") int userIdx) {
         try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             // Get Product List
             List<GetProductList> getProductList = productProvider.getProductList(userIdx);
             return new BaseResponse<>(getProductList);
@@ -84,18 +92,18 @@ public class ProductController {
      * @return BaseResponse<String>
      */
     @ResponseBody
-    @PatchMapping("/{productIdx}/{userIdx}/status")
-    public BaseResponse<String> patchProductStatus(@PathVariable("productIdx") int productIdx, @PathVariable("userIdx") int userIdx ){
+    @PatchMapping("/{productIdx}/status")
+    public BaseResponse<String> patchProductStatus(@PathVariable("productIdx") int productIdx, @RequestBody PatchProductStatus patchProductStatus){
         try {
             /**
              * validation 처리해야될것
-             * 1. 인증코드여부
-             * 2. 올바른 값인지 ex. 숫자형
-             * 3. 존재하는 상품인지
+             * 1. 존재하는 상품인지
+             * 2. 상품을 올린 유저와 접근한 유저가 맞는지
              */
 
             // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            int userIdx = patchProductStatus.getUserIdx();
 
             //userIdx와 접근한 유저가 같은지 확인
             if(userIdx != userIdxByJwt){
@@ -120,6 +128,14 @@ public class ProductController {
     @GetMapping("/{userIdx}/sale") // (GET) 127.0.0.1:9000/product/:userIdx/sale
     public BaseResponse<List<GetProductSale>> getProductSale(@PathVariable("userIdx") int userIdx) {
         try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             // Get Product Sale
             List<GetProductSale> getProductSale = productProvider.getProductSale(userIdx);
             return new BaseResponse<>(getProductSale);
@@ -138,6 +154,14 @@ public class ProductController {
     @GetMapping("/{userIdx}/complete") // (GET) 127.0.0.1:9000/product/:userIdx/complete
     public BaseResponse<List<GetProductComplete>> getProductComplete(@PathVariable("userIdx") int userIdx) {
         try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             // Get Product Complete
             List<GetProductComplete> getProductComplete = productProvider.getProductComplete(userIdx);
             return new BaseResponse<>(getProductComplete);
@@ -156,6 +180,14 @@ public class ProductController {
     @GetMapping("/{userIdx}/hidden") // (GET) 127.0.0.1:9000/product/:userIdx/hidden
     public BaseResponse<List<GetProductHidden>> getProductHidden(@PathVariable("userIdx") int userIdx) {
         try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             // Get Product Hidden
             List<GetProductHidden> getProductHidden = productProvider.getProductHidden(userIdx);
             return new BaseResponse<>(getProductHidden);
@@ -174,7 +206,15 @@ public class ProductController {
     @GetMapping("/{userIdx}/purchased") // (GET) 127.0.0.1:9000/products/:userIdx/purchased
     public BaseResponse<List<GetProductPurchased>> getProductPurchased(@PathVariable("userIdx") int userIdx) {
         try{
-            // Get Product Hidden
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Product Purchased
             List<GetProductPurchased> getProductPurchased = productProvider.getProductPurchased(userIdx);
             return new BaseResponse<>(getProductPurchased);
         } catch(BaseException exception){
@@ -201,11 +241,49 @@ public class ProductController {
              */
 
             // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
             //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
 
             //같다면 변경
             productService.createProduct(userIdx, postProductReq);
             String result = "상품 등록 성공";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 관심 상품 등록 API
+     * [POST] /products/:userIdx/:productIdx
+     * @return BaseResponse<String>
+     */
+    // Path-variable
+    @ResponseBody
+    @PostMapping("/{userIdx}/{productIdx}")
+    public BaseResponse<String> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
+        try {
+            /**
+             * validation 처리해야될것
+             * 1. 존재하는 사용자인지
+             * 2. 존재하는 상품인지
+             */
+
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //같다면 변경
+            productService.createInterestProduct(userIdx, productIdx);
+            String result = "관심 목록 등록 성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
