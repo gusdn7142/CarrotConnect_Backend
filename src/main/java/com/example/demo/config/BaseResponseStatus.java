@@ -29,7 +29,7 @@ public enum BaseResponseStatus {
 
     //    REQUEST_ERROR(false, 2000, "입력값을 확인해주세요."),
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
-    INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
+    INVALID_JWT(false, 2002, "jWT가 변조되었거나 만료시간이 지났습니다. 다시 확인해 주세요."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
 
 
@@ -45,14 +45,19 @@ public enum BaseResponseStatus {
 //    FAILED_TO_LOGIN(false,5100,"로그인에 실패하였습니다."),  //없어도 될듯???
     FAILED_TO_JOIN_CHECK(false,3002,"가입되지 않은 전화번호입니다. 가입을 먼저 진행해 주세요."),
     MODIFY_FAIL_AUTHCODE(false,3304,"인증코드에 해당하는 사용자가 없어서 인증코드를 변경하지 못했습니다."),
-    logout_FAIL_USER(false,3111,"이미 로그아웃 되었습니다."),
+//    logout_FAIL_USER(false,3111,"이미 로그아웃 되었습니다."), 삭제예정~~~
 
-    LOGOUT_USER_JWT(false, 4103, "로그아웃된 유저입니다."),
+    LOGOUT_USER_JWT(false, 4103, "로그아웃된 상태입니다."),
+//    FAILED_TO_DELETE_USER(false,4110,"유저가 이미 회원탈퇴 되었습니다."), //삭제 예정
+
+    AUTO_LOGOUT_FAIL_USER(false,5112,"아직 유저의 jwt 토큰이 만료되지 않아 자동 로그아웃에 실패했습니다."),
 
 
 
+    PATCH_USERS_DELETE_USER(false,3008,"이미 탈퇴된 계정입니다."),
 
-
+    POST_USERS_BLOCKS_NICKNAME(false,3008,"이미 차단한 사용자입니다."),
+//    PATCH_USERS_BLOCKS_CANCELL_NICKNAME(false,3008,"이미 차단 해제한 사용자입니다."), 지울 예정
 
 
 
@@ -88,8 +93,18 @@ public enum BaseResponseStatus {
 
     DATABASE_ERROR_FAIL_LOGOUT(false, 4002, "로그아웃에 실패 하였습니다."),
     DATABASE_ERROR_MODIFY_FAIL_USER(false, 4002, "사용자 정보 변경에 실패하였습니다."),
-    DATABASE_ERROR_USER_INFO(false, 5206, "프로필 조회에 실패하였습니다."),
+    DATABASE_ERROR_USER_INFO(false, 4242, "프로필 조회에 실패하였습니다."),
 
+
+    DATABASE_ERROR_DELETE_CHECK_USER(false, 4242, "회원탈퇴 여부 확인에 실패하였습니다."),
+    DATABASE_ERROR_DELETE_USER(false, 4242, "회원 탈퇴에 실패하였습니다."),
+
+    DATABASE_ERROR_BLOCK_USER(false, 4242, "사용자 차단에 실패했습니다. 닉네임을 확인해 주세요."),
+    DATABASE_ERROR_BLOCK_CANCELL_USER(false, 4242, "사용자 차단 해제에 실패했습니다. 닉네임을 확인해 주세요."),
+
+    DATABASE_ERROR_BLOCK_CHECK_USER(false, 4242, "사용자 차단 여부 확인에 실패하였습니다."),
+//    DATABASE_ERROR_BLOCK_CANCELL_CHECK_USER(false, 4242, "사용자 차단 해제 여부 확인에 실패하였습니다."), 지울 예정
+    DATABASE_ERROR_BLOCK_USER_INFO(false, 4242, "차단한 사용자 프로필 조회에 실패하였습니다."),
 
 
 
