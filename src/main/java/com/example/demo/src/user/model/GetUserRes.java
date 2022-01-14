@@ -20,6 +20,7 @@ public class GetUserRes {
     private int authCount;
     private int badgeCount;
     private int productSellCount;
+    private int sellReviewCount;
 
 
 }

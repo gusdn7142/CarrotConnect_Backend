@@ -106,23 +106,12 @@ public class UserProvider {
         }
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    /* 프로필 조회 - getUserProfile() */
-//    public GetUserRes getUserProfile(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
-//        try {
-//            GetUserRes getUserRes = userDao.getUserProfile(userIdx);  //userDao.getUser()에게 userIdx값을 그대로 넘겨줌
-//            return getUserRes;
-//        } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
-//            throw new BaseException(DATABASE_ERROR_USER_INFO);
-//        }
-//    }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 프로필 조회 - getUserProfile() */
-    public GetUserRes getUserProfile(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
+    public GetUserRes getUserProfile(String nickName) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
         try {
-            GetUserRes getUserRes = userDao.getUserProfile(userIdx);  //userDao.getUser()에게 userIdx값을 그대로 넘겨줌
+            GetUserRes getUserRes = userDao.getUserProfile(nickName);  //userDao.getUser()에게 userIdx값을 그대로 넘겨줌
             return getUserRes;
         } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
             throw new BaseException(DATABASE_ERROR_USER_INFO);
