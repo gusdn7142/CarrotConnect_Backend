@@ -240,7 +240,7 @@ public class UserDao {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 프로필 조회 - getUserProfile() */
-    public GetUserRes getUserProfile(int userIdx){
+    public GetUserRes getUserProfile(String nickName){
         //쿼리문 생성
         String getUserProfileQuery = "select u.image as image,\n" +
                 "       u.nickName as nickName,\n" +
@@ -251,24 +251,25 @@ public class UserDao {
                 "       r.regionName as regionName,\n" +
                 "       r.authCount as authCount,\n" +
                 "       badgeCount,\n" +
-                "       productSellCount\n" +
-                "       from Region r, User u\n" +
-                "           left join (\n" +
-                "               select userIdx , count(userIdx) as 'badgeCount'\n" +
-                "               from Badge\n" +
-                "               group by userIdx) as x on u.userIdx = x.userIdx\n" +
-                "           left join (\n" +
-                "               select userIdx, count(userIdx) as 'productSellCount'\n" +
-                "               from Product\n" +
-                "               group by userIdx) as y on u.userIdx = y.userIdx\n" +
+                "       productSellCount,\n" +
+                "       sellReviewCount\n" +
+                "\n" +
+                "from Region r, User u\n" +
+                "left join (\n" +
+                "     select userIdx , count(userIdx) as 'badgeCount' from Badge\n" +
+                "     group by userIdx) as x on u.userIdx = x.userIdx\n" +
+                "left join (select userIdx, count(userIdx) as 'productSellCount' from Product\n" +
+                "     group by userIdx) as y on u.userIdx = y.userIdx\n" +
+                "left join (select receiverIdx, count(receiverIdx) as 'sellReviewCount' from DealReview\n" +
+                "     group by receiverIdx) as d on u.userIdx = d.receiverIdx\n" +
                 "where u.userIdx = r.userIdx\n" +
                 "and r.mainStatus = 1\n" +
-                "and u.userIdx = ?";
+                "and u.userIdx = (select userIdx from User where nickName = ?)";
 
         //userIdx를 객체에 저장.
 //        Object[] getUserProfileParams = new Object[]{userIdx, userIdx, userIdx, userIdx};
 
-        int getUserProfileParams = userIdx;      //파라미터(id) 값 저장
+        String getUserProfileParams = nickName;      //파라미터(id) 값 저장
 
         //쿼리문 실행
         return this.jdbcTemplate.queryForObject(getUserProfileQuery,          //하나의 행을 불러오기 때문에 jdbcTemplate.queryForObject 실행
@@ -282,7 +283,8 @@ public class UserDao {
                         rs.getString("regionName"),
                         rs.getInt("authCount"),
                         rs.getInt("badgeCount"),
-                        rs.getInt("productSellCount")),
+                        rs.getInt("productSellCount"),
+                        rs.getInt("sellReviewCount")),
                 getUserProfileParams);
     }
 

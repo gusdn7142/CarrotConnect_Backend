@@ -22,7 +22,7 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_PHONENUMBER(false, 2016, "전화번호 형식을 확인해주세요."),
     POST_lOGINS_EMPTY_AUTHCODE(false, 2015, "인증번호를 입력해주세요."),
     POST_lOGINS_INVALID_AUTHCODE(false, 2016, "인증번호는 네 자리 숫자만 입력 가능합니다."),
-
+    POST_USERS_EMPTY_NICKNAME(false, 2015, "조회할 닉네임을 파라미터에 입력해주세요."),
 
 
 
@@ -31,6 +31,13 @@ public enum BaseResponseStatus {
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "jWT가 변조되었거나 만료시간이 지났습니다. 다시 확인해 주세요."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
+
+
+
+
+
+    //keyword 리소스
+    POST_KEYWORDS_EMPTY_KEYWORD(false, 2015, "키워드를 입력해주세요.(예:자전거)"),
 
 
 
@@ -47,10 +54,10 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_AUTHCODE(false,3304,"인증코드에 해당하는 사용자가 없어서 인증코드를 변경하지 못했습니다."),
 //    logout_FAIL_USER(false,3111,"이미 로그아웃 되었습니다."), 삭제예정~~~
 
-    LOGOUT_USER_JWT(false, 4103, "로그아웃된 상태입니다."),
+    LOGOUT_USER_JWT(false, 3103, "로그아웃된 상태입니다."),
 //    FAILED_TO_DELETE_USER(false,4110,"유저가 이미 회원탈퇴 되었습니다."), //삭제 예정
 
-    AUTO_LOGOUT_FAIL_USER(false,5112,"아직 유저의 jwt 토큰이 만료되지 않아 자동 로그아웃에 실패했습니다."),
+    AUTO_LOGOUT_FAIL_USER(false,3112,"아직 유저의 jwt 토큰이 만료되지 않아 자동 로그아웃에 실패했습니다."),
 
 
 
@@ -73,8 +80,12 @@ public enum BaseResponseStatus {
 
 
 
+    //Keyword 리소스
+    POST_KEYWORDS_EXISTS_KEYWORD(false,3001,"이미 추가된 키워드에요"),
+//    PATCH_KEYWORDS_DELETE_KEYWORD(false,3008,"이미 삭제된 키워드입니다."),  삭제  예정
 
-
+    PATCH_KEYWORDS_ACTIVE_REGION(false,3008,"이미 알림 동네가 활성화된 상태입니다."),
+    PATCH_KEYWORDS_INACTIVE_REGION(false,3008,"이미 알림 동네가 비활성화된 상태입니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -91,7 +102,7 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_NOT_EXISTS_USER(false, 4002, "사용자 정보를 DB에서 조회하지 못했습니다. "),
     DATABASE_ERROR_MODIFY_FAIL_AUTHCODE(false,3304,"인증 코드 변경에 실패했습니다."),
 
-    DATABASE_ERROR_FAIL_LOGOUT(false, 4002, "로그아웃에 실패 하였습니다."),
+    DATABASE_ERROR_FAIL_LOGOUT(false, 4002, "로그아웃에 처리에 실패 하였습니다."),
     DATABASE_ERROR_MODIFY_FAIL_USER(false, 4002, "사용자 정보 변경에 실패하였습니다."),
     DATABASE_ERROR_USER_INFO(false, 4242, "프로필 조회에 실패하였습니다."),
 
@@ -107,21 +118,27 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_BLOCK_USER_INFO(false, 4242, "차단한 사용자 프로필 조회에 실패하였습니다."),
 
 
-
-
 //    //[PATCH] /users/{userIdx}
 //    MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 //
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
 
+    //keyword 리소스
+    DATABASE_ERROR_CREATE_KEYWORD(false, 4000, "키워드를 DB에 등록하지 못하였습니다."),
+    DATABASE_ERROR_CHECK_KEYWORD(false, 4002, "키워드 중복 검사에 실패하였습니다."),
+    DATABASE_ERROR_DELETE_KEYWORD(false, 4242, "알림 키워드 삭제에 실패하였습니다."),
+//    DATABASE_ERROR_CHECK_DELETE_KEYWORD(false, 4002, "키워드 삭제 여부 확인에 실패하였습니다."),   삭제  예정
 
+    DATABASE_ERROR_ACTIVE_REGION_STATUS(false, 4242, "알림 동네 활성화에 실패하였습니다."),
+    DATABASE_ERROR_INACTIVE_REGION_STATUS(false, 4242, "알림 동네 비활성화에 실패하였습니다."),
+    DATABASE_ERROR_CHECK_ACTIVE_REGION_STATUS(false, 4242, "알림 동네 활성 상태 확인 실패하였습니다."),
 
+    DATABASE_ERROR_GET_ALERT_KEYWORD(false, 4242, "설정한 알림 키워드 조회에 실패하였습니다."),
+    DATABASE_ERROR_GET_ALERT_REGION(false, 4242, "알림 설정한 동네 조회에 실패하였습니다."),
 
-
-
-
+    DATABASE_ERROR_GET_ALERT_PRODUCT(false, 4242, "키워드 알림 상품 조회에 실패하였습니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요

@@ -273,14 +273,14 @@ public class UserController {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * 9. 프로필 조회 API
-     * [GET] /users/:idx/profile
+     * [GET] /users/:idx/profile?NickName=
      * @return BaseResponse<GetUserRes>
      */
 
-    /* GET 방식 - Path-variable (패스 베리어블) */
-    @ResponseBody             // JSON 혹은 xml 로 요청에 응답할수 있게 해주는 Annotation
-    @GetMapping("/{idx}/profile") // (GET) 127.0.0.1:9000/users/:userIdx
-    public BaseResponse<GetUserRes> getUserProfile(@PathVariable("idx") int userIdx) {              //BaseResponse<GetUserRes>
+    /* GET 방식 */
+    @ResponseBody
+    @GetMapping("/{idx}/profile")
+    public BaseResponse<GetUserRes> getUserProfile(@PathVariable("idx") int userIdx, @RequestParam(required = false) String nickName ) {              //BaseResponse<GetUserRes>
 
         try {
             /* 접근 제한 구현 */
@@ -302,8 +302,14 @@ public class UserController {
             /*접근 제한 구현 끝 */
 
 
-            //프로필 조회 - getUserProfile()
-            GetUserRes getUserRes = userProvider.getUserProfile(userIdx);
+            //닉네임 입력여부 체크
+            if(nickName == null){
+                return new BaseResponse<>(POST_USERS_EMPTY_NICKNAME);
+            }
+
+            /* 프로필 조회 - getUserProfile() */
+            GetUserRes getUserRes = userProvider.getUserProfile(nickName);
+
 
 
 
