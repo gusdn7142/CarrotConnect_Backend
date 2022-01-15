@@ -113,8 +113,7 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            productService.patchProductStatus(productIdx);
-            String result = "상품 삭제 성공";
+            String result = productService.patchProductStatus(productIdx, userIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
