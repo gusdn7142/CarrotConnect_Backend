@@ -3,7 +3,6 @@ package com.example.demo.src.alertKeyword;
 import com.example.demo.config.BaseException;
 import static com.example.demo.config.BaseResponseStatus.*;
 import com.example.demo.src.alertKeyword.model.*;
-import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +66,7 @@ public class AlertKeywordProvider {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 등록한 알림 키워드 조회 - getUserProfile() */
-    public List<GetAlertkeywardRes> getAlertKeyward(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
+    public List<GetAlertkeywardRes> getAlertKeyward(int userIdx) throws BaseException {
         try {
             List<GetAlertkeywardRes> getAlertkeywardRes = alertkeywordDao.getAlertKeyward(userIdx);
             return getAlertkeywardRes;
@@ -78,7 +77,7 @@ public class AlertKeywordProvider {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 알림 설정한 동네 조회 - getAlertRegion() */
-    public List<GetAlertRegionRes> getAlertRegion(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
+    public List<GetAlertRegionRes> getAlertRegion(int userIdx) throws BaseException {
         try {
             List<GetAlertRegionRes> getAlertRegionRes = alertkeywordDao.getAlertRegion(userIdx);
             return getAlertRegionRes;
@@ -90,13 +89,15 @@ public class AlertKeywordProvider {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 키워드 알림 상품 조회 - getAlertProducts() */
-    public List<GetAlertPrductRes> getAlertProducts(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
+    public GetALLAlertProductRes getAlertProducts(List<GetAlertkeywardRes> getAlertkeywardRes, int userIdx) throws BaseException {
         try {
-            List<GetAlertPrductRes> getAlertPrductRes = alertkeywordDao.getAlertProducts(userIdx);
-            return getAlertPrductRes;
+        GetALLAlertProductRes getALLAlertProductRes = alertkeywordDao.getAlertProducts(getAlertkeywardRes, userIdx);
+            return getALLAlertProductRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR_GET_ALERT_PRODUCT);
         }
+
+
     }
 
 

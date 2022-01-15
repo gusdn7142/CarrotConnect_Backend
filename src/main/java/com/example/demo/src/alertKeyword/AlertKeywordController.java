@@ -9,8 +9,6 @@ import static com.example.demo.config.BaseResponseStatus.*;
 
 //import com.example.demo.src.user.model.*;
 
-import com.example.demo.src.user.model.GetUserRes;
-import com.example.demo.src.user.model.PatchUserReq;
 import com.example.demo.utils.JwtService;
 import com.example.demo.src.user.UserProvider;
 
@@ -324,7 +322,7 @@ public class AlertKeywordController {
 
     @ResponseBody
     @GetMapping("/{userIdx}/products")
-    public BaseResponse<List<GetAlertPrductRes>> getAlertProducts (@PathVariable("userIdx") int userIdx) {              //BaseResponse<GetUserRes>
+    public BaseResponse<GetALLAlertProductRes>  getAlertProducts (@PathVariable("userIdx") int userIdx) {           //BaseResponse<List<GetAlertPrductRes>>
 
         try {
             /* 접근 제한 구현 */
@@ -332,31 +330,35 @@ public class AlertKeywordController {
             //String jwt = userProvider.getUserToken(userIdx);
             //int userIdxByJwt = jwtService.getUserIdx2(jwt);
 
-//            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
-//            int userIdxByJwt = jwtService.getUserIdx();
-//
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userIdx != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//
-//            //로그아웃된 유저 인지 확인
-//            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-//            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-//            /*접근 제한 구현 끝 */
+            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
 
 
-
-            //알림 키워드 불러오기기
+            //알림 키워드 불러오기 - getAlertKeyward()
+            List<GetAlertkeywardRes> getAlertkeywardRes = alertKeywordProvider.getAlertKeyward(userIdx);
 
 
            //키워드 알림 상품 조회 - getAlertProducts()
-            List<GetAlertPrductRes> getAlertPrductRes = alertKeywordProvider.getAlertProducts(userIdx);
+            GetALLAlertProductRes getALLAlertProductRes = alertKeywordProvider.getAlertProducts(getAlertkeywardRes, userIdx);
 
 
+            //키워드 알림 상품이 1개도 없을때
+            if(getALLAlertProductRes.getGetAlertPrductRes().isEmpty()){
+                return new BaseResponse<>(GET_KEYWORDS_EMPTY_KEYWORD);
+            }
 
 
-            return new BaseResponse<>(getAlertPrductRes);
+            return new BaseResponse<>(getALLAlertProductRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
