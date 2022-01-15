@@ -3,12 +3,12 @@ package com.example.demo.src.alertKeyword;
 import com.example.demo.src.alertKeyword.model.*;
 
 
-import com.example.demo.src.user.model.GetUserRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,23 +22,6 @@ public class AlertKeywordDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
-
-
-//        SYSTEM_ID 임의로 생성 : 유저의 이메일중 아이디 앞 뒤 부분에 추가값
-//        String user_id= postUserReq.getEmail().substring(0, postUserReq.getEmail().indexOf("@"));
-//        postUserReq.setSystemId("YOUTUBE" + user_id + "1A3B5"); //시스템_ID 생성
-
-
-//        //기본 닉네임 생성 (핸드폰 뒷번호 4자리만 붙인다.)
-//        String default_nickName = "당근 유저" + postUserReq.getPhoneNumber().substring(postUserReq.getPhoneNumber().length()-4, postUserReq.getPhoneNumber().length());
-//        System.out.println(default_nickName);
-//
-//        //인증 코드 생성 (1000번 ~ 9999번 사이)
-//        int min = 1000;
-//        int max = 9999;
-//        int authCode = (int) ((Math.random() * (max - min)) + min);
-//        System.out.println("인증 코드는" + authCode + "번 입니다.");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 알림키워드 등록-  createKeyword() */
@@ -55,7 +38,7 @@ public class AlertKeywordDao {
         this.jdbcTemplate.update(createKeywordQuery, createKeywordParams);
 
 
-        //유저 Idx 값을 반환
+        //키워드 Idx 값을 반환
         String lastInserIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
 
@@ -216,11 +199,17 @@ public class AlertKeywordDao {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 키워드 알림 상품 조회 - getAlertProducts() */
-    public List<GetAlertPrductRes> getAlertProducts(int userIdx){
+    public GetALLAlertProductRes getAlertProducts (List<GetAlertkeywardRes> getAlertkeywardRes, int userIdx){  //List<GetAlertPrductRes>
+
+//        System.out.println("총 키워드 개수는" + getAlertkeywardRes.size());
+//
+//        for(int i=0; i < getAlertkeywardRes.size(); i++ ){
+//            System.out.println("키워드는" + getAlertkeywardRes.get(i).getKeyword());
+//        }
 
         //쿼리문 생성
         String getAlertProductsQuery = "select img.image as image,\n" +
-                "       CONCAT('[', '선풍기', ' 키워드 알림]') as keyword,\n" +
+                "       CONCAT('[', ?, ' 키워드 알림]') as keyword,\n" +
                 "       p.regionName as regionName,\n" +
                 "       p.title as title,\n" +
                 "\n" +
@@ -245,25 +234,56 @@ public class AlertKeywordDao {
                 "from Product p, ProductImage img\n" +
                 "\n" +
                 "where p.productIdx = img.productIdx\n" +
-                "and p.title LIKE CONCAT('%', '선풍기' , '%')\n" +
+                "and p.title LIKE CONCAT('%', ? , '%')\n" +
                 "and p.regionName IN (select regionName from Region where userIdx=? and keywordAlertStatus = 1 and status = 1)\n" +
                 "and p.status = 1\n" +
                 "and img.firstImage = 1\n" +
                 "and img.status = 1\n" +
                 "order by p.createAt DESC";
 
-        //userIdx값 저장
-        int getAlertProductsParams = userIdx;
 
-        //쿼리문 실행
-        return this.jdbcTemplate.query(getAlertProductsQuery,
-                (rs, rowNum) -> new GetAlertPrductRes(
-                        rs.getString("image"),
-                        rs.getString("keyword"),
-                        rs.getString("regionName"),
-                        rs.getString("title"),
-                        rs.getString("createAt")),
-                getAlertProductsParams);
+        //파라미터 초기화
+        Object[] getAlertProductsParams = null;             // ?에 들어갈 파라미터
+        List<GetAlertPrductRes> getAlertPrductRes =null;   //1키워드 한개에 대항 상품
+
+        GetALLAlertProductRes getALLAlertProductRes = new GetALLAlertProductRes(null);  //모든 키워드에 대한 상품
+        getALLAlertProductRes.setGetAlertPrductRes(new ArrayList<List<GetAlertPrductRes>>());
+
+
+        for(int i=0; i < getAlertkeywardRes.size(); i++ ) {
+            //파라미터 값 생성
+            getAlertProductsParams = new Object[]{getAlertkeywardRes.get(i).getKeyword(), getAlertkeywardRes.get(i).getKeyword(), userIdx};
+
+            //쿼리문 실행
+            getAlertPrductRes = this.jdbcTemplate.query(getAlertProductsQuery,
+                    (rs, rowNum) -> new GetAlertPrductRes(
+                            rs.getString("image"),
+                            rs.getString("keyword"),
+                            rs.getString("regionName"),
+                            rs.getString("title"),
+                            rs.getString("createAt")),
+                    getAlertProductsParams);
+
+            if(getAlertPrductRes.isEmpty()){  //빈값이면 continue
+                continue;
+            }
+            getALLAlertProductRes.getGetAlertPrductRes().add(getAlertPrductRes);
+        }
+
+
+//        //총 상품 개수 파악
+//        System.out.println(getALLAlertProduct.getGetAlertPrductRes().size());
+//
+//        //키워드별 상품 개수 파악
+//        for(int i = 0; i < getALLAlertProduct.getGetAlertPrductRes().size(); i++ ) {
+//            System.out.println(getALLAlertProduct.getGetAlertPrductRes());
+//        }
+
+
+
+
+
+        return getALLAlertProductRes; //모든 키워드에 해당하는 상품 리턴
     }
 
 

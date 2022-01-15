@@ -10,6 +10,8 @@ com/example/demo/src/product/model/GetProductHidden.java
  com.example.demo.src.product.model.GetProductHidden
 com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
+com/example/demo/src/gather/model/PostGatherReq.java
+ com.example.demo.src.gather.model.PostGatherReq
 com/example/demo/src/category/model/PatchCategoryInterest.java
  com.example.demo.src.category.model.PatchCategoryInterest
 com/example/demo/src/product/model/PatchProductInterest.java
@@ -48,8 +50,14 @@ com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
 com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
+com/example/demo/src/alertKeyword/model/GetALLAlertProductRes.java
+ com.example.demo.src.alertKeyword.model.GetALLAlertProductRes
+com/example/demo/src/gather/model/GetGatherProductRes.java
+ com.example.demo.src.gather.model.GetGatherProductRes
 com/example/demo/src/alertKeyword/model/GetAlertPrductRes.java
  com.example.demo.src.alertKeyword.model.GetAlertPrductRes
+com/example/demo/src/gather/GatherController.java
+ com.example.demo.src.gather.GatherController
 com/example/demo/src/product/ProductController.java
  com.example.demo.src.product.ProductController
 com/example/demo/config/BaseException.java
@@ -68,12 +76,16 @@ com/example/demo/src/user/model/PatchUserBlockCancellReq.java
  com.example.demo.src.user.model.PatchUserBlockCancellReq
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
+com/example/demo/src/gather/model/PatchGatherReq.java
+ com.example.demo.src.gather.model.PatchGatherReq
 com/example/demo/src/user/model/PostUserReq.java
  com.example.demo.src.user.model.PostUserReq
 com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
 com/example/demo/src/user/UserDao.java
  com.example.demo.src.user.UserDao
+com/example/demo/src/gather/GatherProvider.java
+ com.example.demo.src.gather.GatherProvider
 com/example/demo/utils/AES128.java
  com.example.demo.utils.AES128
 com/example/demo/src/user/model/PatchUserReq.java
@@ -90,24 +102,30 @@ com/example/demo/src/test/TestController.java
  com.example.demo.src.test.TestController
 com/example/demo/src/alertKeyword/model/PostAlertKeywordRes.java
  com.example.demo.src.alertKeyword.model.PostAlertKeywordRes
-com/example/demo/src/keyword/model.java
- com.example.demo.src.keyword.model
 com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/product/model/PatchProductStatus.java
  com.example.demo.src.product.model.PatchProductStatus
+com/example/demo/src/gather/GatherDao.java
+ com.example.demo.src.gather.GatherDao
 com/example/demo/src/user/UserController.java
  com.example.demo.src.user.UserController
+com/example/demo/src/gather/model/GetGatherUserRes.java
+ com.example.demo.src.gather.model.GetGatherUserRes
 com/example/demo/src/product/model/PostProductReq.java
  com.example.demo.src.product.model.PostProductReq
 com/example/demo/src/alertKeyword/model/PostAlertKeywordReq.java
  com.example.demo.src.alertKeyword.model.PostAlertKeywordReq
 com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
+com/example/demo/src/gather/GatherService.java
+ com.example.demo.src.gather.GatherService
 com/example/demo/src/user/model/GetUserRes.java
  com.example.demo.src.user.model.GetUserRes
 com/example/demo/DemoApplication.java
  com.example.demo.DemoApplication
+com/example/demo/src/gather/model/PostGatherRes.java
+ com.example.demo.src.gather.model.PostGatherRes
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserProvider.java

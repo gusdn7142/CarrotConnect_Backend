@@ -45,11 +45,11 @@ public class AlertKeywordService {
 
         //키워드 등록
         try{
-            //유저 테이블에서 유저 등록
+            //키워드 등록
             int alertKeywordIdx = alertKeywordDao.createKeyword(postAlertKeywordReq);
             //return new PostUserRes(userIdx);
 
-            //유저 idx, 인증코드 반환
+            //키워드 idx
             return new PostAlertKeywordRes(alertKeywordIdx);
 
 

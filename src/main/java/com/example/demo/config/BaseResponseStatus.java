@@ -38,7 +38,7 @@ public enum BaseResponseStatus {
 
     //keyword 리소스
     POST_KEYWORDS_EMPTY_KEYWORD(false, 2015, "키워드를 입력해주세요.(예:자전거)"),
-
+    GET_KEYWORDS_EMPTY_KEYWORD(false, 2015, "설정한 지역과 알림키워드에 해당하는 상품이 없습니다."),
 
 
 
@@ -86,6 +86,10 @@ public enum BaseResponseStatus {
 
     PATCH_KEYWORDS_ACTIVE_REGION(false,3008,"이미 알림 동네가 활성화된 상태입니다."),
     PATCH_KEYWORDS_INACTIVE_REGION(false,3008,"이미 알림 동네가 비활성화된 상태입니다."),
+
+
+    //Gagther 리소스
+    POST_KEYWORDS_EXISTS_GATHER(false,3001,"이미 모아보기에 추가된 사용자에요"),
 
     /**
      * 4000 : Database, Server 오류
@@ -138,7 +142,17 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_GET_ALERT_KEYWORD(false, 4242, "설정한 알림 키워드 조회에 실패하였습니다."),
     DATABASE_ERROR_GET_ALERT_REGION(false, 4242, "알림 설정한 동네 조회에 실패하였습니다."),
 
-    DATABASE_ERROR_GET_ALERT_PRODUCT(false, 4242, "키워드 알림 상품 조회에 실패하였습니다.");
+    DATABASE_ERROR_GET_ALERT_PRODUCT(false, 4242, "키워드 알림 상품 조회에 실패하였습니다."),
+
+
+
+    //gather 리소스
+    DATABASE_ERROR_CREATE_GATHER(false, 4000, "모아보기할 사용자를 DB에 등록하지 못하였습니다."),
+    DATABASE_ERROR_CHECK_GATHER(false, 4002, "모아보기한 사용자 중복 검사에 실패하였습니다."),
+    DATABASE_ERROR_DELETE_GATHER(false, 4242, "모아보기 취소에 실패하였습니다."),
+
+    DATABASE_ERROR_GET_GATHER_USER(false, 4242, "모아보기한 사용자 조회에 실패하였습니다."),
+    DATABASE_ERROR_GET_GATHER_PRODUCT(false, 4242, "모아보기한 상품 조회에 실패하였습니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
