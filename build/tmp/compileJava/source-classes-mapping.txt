@@ -4,8 +4,8 @@ com/example/demo/config/Constant.java
  com.example.demo.config.Constant
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
-com/example/demo/src/product/model/GetProduct.java
- com.example.demo.src.product.model.GetProduct
+com/example/demo/src/product/model/GetProductListReq.java
+ com.example.demo.src.product.model.GetProductListReq
 com/example/demo/src/product/model/GetProductHidden.java
  com.example.demo.src.product.model.GetProductHidden
 com/example/demo/utils/ValidationRegex.java
@@ -130,7 +130,7 @@ com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
+com/example/demo/src/product/model/GetProduct.java
+ com.example.demo.src.product.model.GetProduct
 com/example/demo/src/product/ProductController.java
  com.example.demo.src.product.ProductController
-com/example/demo/src/product/model/GetProductListReq.java
- com.example.demo.src.product.model.GetProductListReq

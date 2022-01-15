@@ -75,15 +75,17 @@ public class ProductDao {
         String getProductQuery = "select u.userIdx as userIdx,\n" +
                 "       u.nickName as nickName,\n" +
                 "       u.image as userImage,\n" +
-                "       concat(u.mannerTemp, '℃') as mannerTemp,\n" +
+                "       u.mannerTemp as mannerTemp,\n" +
                 "       p.productIdx as productIdx,\n" +
+                "       p.regionName as productRegion,\n" +
                 "       p.title as title,\n" +
                 "       c.categoryName as categoryName,\n" +
                 "       case\n" +
                 "           when (timestampdiff(minute, p.createAt, now()) < 1) then concat(timestampdiff(second, p.createAt, now()), '초', ' 전')\n" +
-                "           when (timestampdiff(minute, p.createAt, now()) >= 60) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
-                "           when (timestampdiff(hour, p.createAt, now()) >= 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
-                "           else concat(timestampdiff(minute, p.createAt, now()),'분', ' 전') end as uploadTime,\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) < 1) then concat(timestampdiff(minute, p.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, p.createAt, now()) < 1) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) > 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       p.content as content,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
@@ -97,7 +99,8 @@ public class ProductDao {
                 "           when(p.saleStatus = 1) then '판매중'\n" +
                 "           when (p.saleStatus = 2) then '나눔중'\n" +
                 "           when(p.saleStatus = 3) then '나눔완료'\n" +
-                "           when(p.saleStatus = 4) then '예약완료'\n" +
+                "           when(p.saleStatus = 4) then '예약중'\n" +
+                "           when(p.saleStatus = 5) then '나눔예약중'\n" +
                 "           end as productStatus\n" +
                 "from User u, Category c ,Product p\n" +
                 "    left join(select productIdx, count(productIdx) as 'chatCount'\n" +
@@ -127,8 +130,9 @@ public class ProductDao {
                         rs.getInt("userIdx"),
                         rs.getString("nickName"),
                         rs.getString("userImage"),
-                        rs.getString("mannerTemp"),
+                        rs.getDouble("mannerTemp"),
                         rs.getInt("productIdx"),
+                        rs.getString("productRegion"),
                         rs.getString("title"),
                         rs.getString("categoryName"),
                         rs.getString("uploadTime"),

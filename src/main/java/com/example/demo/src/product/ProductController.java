@@ -35,12 +35,12 @@ public class ProductController {
 
     /**
      * 전체 상품 조회 API
-     * [GET] /products/:userIdx
+     * [GET] /products
      * @return BaseResponse<GetProductList>
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("") // (GET) 127.0.0.1:9000/product/:userIdx/all
+    @GetMapping("") // (GET) 127.0.0.1:9000/products
     public BaseResponse<List<GetProductList>> getProductList(@RequestBody GetProductListReq getProductListReq) {
         try{
             int userIdx = getProductListReq.getUserIdx();
