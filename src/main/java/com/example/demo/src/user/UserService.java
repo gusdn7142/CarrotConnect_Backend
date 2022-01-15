@@ -201,16 +201,35 @@ public class UserService {
         }
 
         try{
-            //유저 정보 변경
+            //회원 탈퇴
             int result = userDao.deleteUser(patchUserReq);
 //            if(result == 0){
-//                System.out.println("이미 회원탈퇴 되었습니다.");
-//                throw new BaseException(FAILED_TO_DELETE_USER);   //'유저가 이미 회원탈퇴 되었습니다.'
+//                throw new BaseException(FAILED_TO_DELETE_USER);   //'탈퇴할 사용자가 존재하지 않습니다.'
 //            }
         } catch(Exception exception){
-            throw new BaseException(DATABASE_ERROR_DELETE_USER);   //'회원탈퇴에 실패했습니다.'
+            throw new BaseException(DATABASE_ERROR_DELETE_USER);   //'회원 탈퇴(유저 비활성화)에 실패하였습니다.'
         }
     }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 회원탈퇴 (동네 비활성화) - deleteUser()  */
+    public void deleteRegion(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+
+        try{
+            //동네 비활성화
+            int result = userDao.deleteRegion(patchUserReq);
+
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_DELETE_USER_REGION);   //'회원 탈퇴(동네 비활성화)에 실패하였습니다.'
+        }
+    }
+
+
+
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 사용자 차단 - blockUser()  */

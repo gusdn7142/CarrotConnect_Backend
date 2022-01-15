@@ -130,16 +130,15 @@ public class GatherDao {
                 "       p.title as title,\n" +
                 "       u.nickName as nickName,\n" +
                 "       r.regionName as regionName,\n" +
-                "       p.price as price,\n" +
+                "       CONCAT(FORMAT(p.price,0),'원') as price,\n" +
                 "       p.saleStatus as saleStatus\n" +
                 "\n" +
                 "from Gather g, Region r, User u  , Product p, ProductImage pimg\n" +
-                "\n" +
                 "where g.selectUserIdx = r.userIdx\n" +
+                "\n" +
                 "and g.selectUserIdx = u.userIdx\n" +
                 "and g.selectUserIdx = p.userIdx\n" +
                 "and p.productIdx = pimg.productIdx\n" +
-                "\n" +
                 "and r.mainStatus = 1\n" +
                 "and pimg.firstImage = 1\n" +
                 "\n" +
