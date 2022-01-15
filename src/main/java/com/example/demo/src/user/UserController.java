@@ -449,9 +449,11 @@ public class UserController {
 
             PatchUserReq patchUserReq = new PatchUserReq(userIdx,null,null);
 
-            //유저 비활성화
+            //유저 상태 비활성화
             userService.deleteUser(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
 
+            //동네 상태 비활성화
+            userService.deleteRegion(patchUserReq);    //동네정보에 들어갈 userIdx 설정
 
             String result = "계정이 삭제되었습니다.";   //정보 변경 성공시 메시지 지정
             return new BaseResponse<>(result);

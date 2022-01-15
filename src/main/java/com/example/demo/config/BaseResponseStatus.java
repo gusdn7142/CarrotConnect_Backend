@@ -112,7 +112,8 @@ public enum BaseResponseStatus {
 
 
     DATABASE_ERROR_DELETE_CHECK_USER(false, 4242, "회원탈퇴 여부 확인에 실패하였습니다."),
-    DATABASE_ERROR_DELETE_USER(false, 4242, "회원 탈퇴에 실패하였습니다."),
+    DATABASE_ERROR_DELETE_USER(false, 4242, "회원 탈퇴(유저 비활성화)에 실패하였습니다."),
+    DATABASE_ERROR_DELETE_USER_REGION(false, 4242, "회원 탈퇴(동네 비활성화)에 실패하였습니다."),
 
     DATABASE_ERROR_BLOCK_USER(false, 4242, "사용자 차단에 실패했습니다. 닉네임을 확인해 주세요."),
     DATABASE_ERROR_BLOCK_CANCELL_USER(false, 4242, "사용자 차단 해제에 실패했습니다. 닉네임을 확인해 주세요."),

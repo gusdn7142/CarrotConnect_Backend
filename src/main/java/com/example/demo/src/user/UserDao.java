@@ -290,7 +290,7 @@ public class UserDao {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 회원탈퇴 (유저 비활성화)- deleteUser()  */
-    public int deleteUser(PatchUserReq patchUserReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+    public int deleteUser(PatchUserReq patchUserReq){
         //쿼리문 생성
         String deleteUserQuery = "update User set status = 0 where userIdx = ?";
 
@@ -301,6 +301,19 @@ public class UserDao {
         return this.jdbcTemplate.update(deleteUserQuery,deleteUserParams);
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 회원탈퇴 (동네 비활성화)- deleteUser()  */
+    public int deleteRegion(PatchUserReq patchUserReq){
+
+        //쿼리문 생성
+        String deleteUserQuery = "update Region set status = 0 where userIdx = ?";
+
+        //idx를 변수에 저장
+        int deleteUserParams = patchUserReq.getUserIdx();
+
+        //동네 삭제(비활성화) 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(deleteUserQuery,deleteUserParams);
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 사용자 차단 - blockUser()  */
