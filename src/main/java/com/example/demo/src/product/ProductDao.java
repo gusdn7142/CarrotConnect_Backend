@@ -370,8 +370,8 @@ public class ProductDao {
     public int createProduct(int userIdx, PostProductReq postProductReq){
 
         // Post 테이블에 데이터 삽입
-        String createProductQuery = "insert into Product (title, price, priceOfferStatus, content, saleStatus, categoryIdx, regionIdx, userIdx) values (?, ?, ?, ?, ?, ?, ?, ?) ";
-        Object[] createProductParams = new Object[]{postProductReq.getTitle(), postProductReq.getPrice(),postProductReq.getPriceOfferStatus() ,postProductReq.getContent(), postProductReq.getSaleStatus(), postProductReq.getCategoryIdx(), postProductReq.getRegionIdx(), userIdx};
+        String createProductQuery = "insert into Product (title, price, priceOfferStatus, content, saleStatus, categoryIdx, regionName, userIdx) values (?, ?, ?, ?, ?, ?, ?, ?) ";
+        Object[] createProductParams = new Object[]{postProductReq.getTitle(), postProductReq.getPrice(),postProductReq.getPriceOfferStatus() ,postProductReq.getContent(), postProductReq.getSaleStatus(), postProductReq.getCategoryIdx(), postProductReq.getRegionName(), userIdx};
 
         // 쿼리 실행
         this.jdbcTemplate.update(createProductQuery, createProductParams);
