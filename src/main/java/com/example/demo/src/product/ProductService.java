@@ -76,13 +76,18 @@ public class ProductService {
         }
     }
 
-    public void patchProductInterest(int interestIdx) throws BaseException {
+    public String patchProductInterest(int interestIdx, int userIdx) throws BaseException {
         try{
-            int result = productDao.patchProductInterest(interestIdx);
+            int result = productDao.patchProductInterest(interestIdx, userIdx);
+            String message = "관심 목록 삭제 성공";
+
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "삭제에 실패했습니다.";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

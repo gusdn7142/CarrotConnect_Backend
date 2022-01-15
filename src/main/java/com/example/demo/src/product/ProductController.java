@@ -101,7 +101,6 @@ public class ProductController {
             /**
              * validation 처리해야될것
              * 1. 존재하는 상품인지
-             * 2. 상품을 올린 유저와 접근한 유저가 맞는지
              */
 
             // 헤더 (인증코드)에서 userIdx 추출.
@@ -327,11 +326,6 @@ public class ProductController {
     @PatchMapping("/{interestIdx}/interest-status")
     public BaseResponse<String> patchProductInterest(@PathVariable("interestIdx") int interestIdx, @RequestBody PatchProductInterest patchProductInterest){
         try {
-            /**
-             * validation 처리해야될것
-             * 1. 접근한 유저가 관심 목록을 누른 유저가 맞는지
-             */
-
             // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
             int userIdx = patchProductInterest.getUserIdx();
@@ -341,11 +335,7 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            // 데이터 베이스에서 interest 값으로 userIdx 값을 반환
-            // userIdx와 접근한 유저가 같은지 확인
-
-            productService.patchProductInterest(interestIdx);
-            String result = "관심 목록 삭제 성공";
+            String result = productService.patchProductInterest(interestIdx, userIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

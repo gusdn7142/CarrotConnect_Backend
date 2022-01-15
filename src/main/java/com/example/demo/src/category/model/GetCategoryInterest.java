@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetCategoryInterest {
     private int interestIdx;
+    private int categoryIdx;
     private String categoryName;
     private int status;
 }

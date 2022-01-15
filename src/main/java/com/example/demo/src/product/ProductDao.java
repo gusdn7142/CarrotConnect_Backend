@@ -154,15 +154,16 @@ public class ProductDao {
     }
 
     public List<GetProductSale> getProductSale(int userIdx){
-        String getProductSaleQuery = "select p.userIdx,\n" +
+        String getProductSaleQuery = "select p.userIdx as userIdx,\n" +
                 "       p.productIdx as productIdx,\n" +
                 "       p.title as title,\n" +
-                "       regionName,\n" +
+                "       p.regionName as regionName,\n" +
                 "       case\n" +
                 "           when (timestampdiff(minute, p.createAt, now()) < 1) then concat(timestampdiff(second, p.createAt, now()), '초', ' 전')\n" +
-                "           when (timestampdiff(minute, p.createAt, now()) >= 60) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
-                "           when (timestampdiff(hour, p.createAt, now()) >= 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
-                "           else concat(timestampdiff(minute, p.createAt, now()),'분', ' 전') end as uploadTime,\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) < 1) then concat(timestampdiff(minute, p.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, p.createAt, now()) < 1) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) > 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
@@ -174,7 +175,8 @@ public class ProductDao {
                 "           when(p.saleStatus = 1) then '판매중'\n" +
                 "           when (p.saleStatus = 2) then '나눔중'\n" +
                 "           when(p.saleStatus = 3) then '나눔완료'\n" +
-                "           when(p.saleStatus = 4) then '예약완료'\n" +
+                "           when(p.saleStatus = 4) then '예약중'\n" +
+                "           when(p.saleStatus = 5) then '나눔예약중'\n" +
                 "           end as productStatus\n" +
                 "from Product p\n" +
                 "   left join(select productIdx, count(productIdx) as 'chatCount'\n" +
@@ -182,14 +184,12 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
-                "       group by productIdx) as y on p.productIdx = y.productIdx, Region, User, ProductImage pi\n" +
-                "where p.regionidx = Region.regionIdx\n" +
-                "and Region.userIdx = User.userIdx\n" +
+                "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
+                "where p.productIdx = pi.productIdx\n" +
                 "and p.status = 1\n" +
-                "and p.productIdx = pi.productIdx\n" +
                 "and pi.firstImage = 1\n" +
                 "and p.hideStatus = 0\n" +
-                "and (p.saleStatus = 1 or p.saleStatus = 2)\n" +
+                "and (p.saleStatus = 1 or p.saleStatus = 2 or p.saleStatus = 4 or p.saleStatus = 5)\n" +
                 "and p.userIdx = ? ";
         int getProductSaleParams = userIdx;
         return this.jdbcTemplate.query(getProductSaleQuery,
@@ -209,15 +209,16 @@ public class ProductDao {
     }
 
     public List<GetProductComplete> getProductComplete(int userIdx){
-        String getProductCompleteQuery = "select p.userIdx,\n" +
+        String getProductCompleteQuery = "select p.userIdx as userIdx,\n" +
                 "       p.productIdx as productIdx,\n" +
                 "       p.title as title,\n" +
-                "       regionName,\n" +
+                "       p.regionName as regionName,\n" +
                 "       case\n" +
                 "           when (timestampdiff(minute, p.createAt, now()) < 1) then concat(timestampdiff(second, p.createAt, now()), '초', ' 전')\n" +
-                "           when (timestampdiff(minute, p.createAt, now()) >= 60) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
-                "           when (timestampdiff(hour, p.createAt, now()) >= 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
-                "           else concat(timestampdiff(minute, p.createAt, now()),'분', ' 전') end as uploadTime,\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) < 1) then concat(timestampdiff(minute, p.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, p.createAt, now()) < 1) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) > 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
@@ -229,7 +230,8 @@ public class ProductDao {
                 "           when(p.saleStatus = 1) then '판매중'\n" +
                 "           when (p.saleStatus = 2) then '나눔중'\n" +
                 "           when(p.saleStatus = 3) then '나눔완료'\n" +
-                "           when(p.saleStatus = 4) then '예약완료'\n" +
+                "           when(p.saleStatus = 4) then '예약중'\n" +
+                "           when(p.saleStatus = 5) then '나눔예약중'\n" +
                 "           end as productStatus\n" +
                 "from Product p\n" +
                 "   left join(select productIdx, count(productIdx) as 'chatCount'\n" +
@@ -237,11 +239,9 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
-                "       group by productIdx) as y on p.productIdx = y.productIdx, Region, User, ProductImage pi\n" +
-                "where p.regionidx = Region.regionIdx\n" +
-                "and Region.userIdx = User.userIdx\n" +
+                "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
+                "where p.productIdx = pi.productIdx\n" +
                 "and p.status = 1\n" +
-                "and p.productIdx = pi.productIdx\n" +
                 "and pi.firstImage = 1\n" +
                 "and p.hideStatus = 0\n" +
                 "and (p.saleStatus = 0 or p.saleStatus = 3)\n" +
@@ -268,12 +268,13 @@ public class ProductDao {
                 "       p.productIdx as productIdx,\n" +
                 "       p.hideStatus as hideStatus,\n" +
                 "       p.title as title,\n" +
-                "       regionName,\n" +
+                "       p.regionName as regionName,\n" +
                 "       case\n" +
                 "           when (timestampdiff(minute, p.createAt, now()) < 1) then concat(timestampdiff(second, p.createAt, now()), '초', ' 전')\n" +
-                "           when (timestampdiff(minute, p.createAt, now()) >= 60) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
-                "           when (timestampdiff(hour, p.createAt, now()) >= 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
-                "           else concat(timestampdiff(minute, p.createAt, now()),'분', ' 전') end as uploadTime,\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) < 1) then concat(timestampdiff(minute, p.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, p.createAt, now()) < 1) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) > 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
@@ -285,7 +286,8 @@ public class ProductDao {
                 "           when(p.saleStatus = 1) then '판매중'\n" +
                 "           when (p.saleStatus = 2) then '나눔중'\n" +
                 "           when(p.saleStatus = 3) then '나눔완료'\n" +
-                "           when(p.saleStatus = 4) then '예약완료'\n" +
+                "           when(p.saleStatus = 4) then '예약중'\n" +
+                "           when(p.saleStatus = 5) then '나눔예약중'\n" +
                 "           end as productStatus\n" +
                 "from Product p\n" +
                 "   left join(select productIdx, count(productIdx) as 'chatCount'\n" +
@@ -293,10 +295,8 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
-                "       group by productIdx) as y on p.productIdx = y.productIdx, Region, User, ProductImage pi\n" +
-                "where p.regionidx = Region.regionIdx\n" +
-                "and Region.userIdx = User.userIdx\n" +
-                "and p.status = 1\n" +
+                "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
+                "where p.status = 1\n" +
                 "and p.productIdx = pi.productIdx\n" +
                 "and pi.firstImage = 1\n" +
                 "and p.hideStatus = 1\n" +
@@ -322,12 +322,13 @@ public class ProductDao {
     public List<GetProductPurchased> getProductPurchased(int userIdx){
         String getProductPurchasedQuery = "select p.productIdx as productIdx,\n" +
                 "       p.title as title,\n" +
-                "       regionName,\n" +
+                "       p.regionName as regionName,\n" +
                 "       case\n" +
                 "           when (timestampdiff(minute, p.createAt, now()) < 1) then concat(timestampdiff(second, p.createAt, now()), '초', ' 전')\n" +
-                "           when (timestampdiff(minute, p.createAt, now()) >= 60) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
-                "           when (timestampdiff(hour, p.createAt, now()) >= 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
-                "           else concat(timestampdiff(minute, p.createAt, now()),'분', ' 전') end as uploadTime,\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) < 1) then concat(timestampdiff(minute, p.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, p.createAt, now()) < 1) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) > 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
@@ -341,15 +342,13 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
-                "       group by productIdx) as y on p.productIdx = y.productIdx, Region, User, ProductImage pi, PurchaseHistory ph\n" +
-                "where p.regionidx = Region.regionIdx\n" +
-                "and Region.userIdx = User.userIdx\n" +
-                "and p.productIdx = pi.productIdx\n" +
+                "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi, PurchaseHistory ph\n" +
+                "where p.productIdx = pi.productIdx\n" +
                 "and p.productIdx = ph.productIdx\n" +
                 "and ph.status = 1\n" +
                 "and p.status = 1\n" +
                 "and pi.firstImage = 1\n" +
-                "and p.saleStatus = 0\n" +
+                "and (p.saleStatus = 0 or p.saleStatus = 3)\n" +
                 "and ph.userIdx = ? ";
         int getProductPurchasedParams = userIdx;
         return this.jdbcTemplate.query(getProductPurchasedQuery,
@@ -406,7 +405,7 @@ public class ProductDao {
         String getProductInterestQuery = "select ProductInterest.interestIdx as interestIdx,\n" +
                 "       p.productIdx as productIdx,\n" +
                 "       p.title as title,\n" +
-                "       regionName,\n" +
+                "       p.regionName,\n" +
                 "       case\n" +
                 "           when (timestampdiff(minute, p.createAt, now()) < 1) then concat(timestampdiff(second, p.createAt, now()), '초', ' 전')\n" +
                 "           when (timestampdiff(hour, p.createAt, now()) < 1) then concat(timestampdiff(minute, p.createAt, now()),'분', ' 전')\n" +
@@ -424,7 +423,8 @@ public class ProductDao {
                 "           when(p.saleStatus = 1) then '판매중'\n" +
                 "           when (p.saleStatus = 2) then '나눔중'\n" +
                 "           when(p.saleStatus = 3) then '나눔완료'\n" +
-                "           when(p.saleStatus = 4) then '예약완료'\n" +
+                "           when(p.saleStatus = 4) then '예약중'\n" +
+                "           when(p.saleStatus = 5) then '나눔예약중'\n" +
                 "           end as productStatus\n" +
                 "from Product p\n" +
                 "   left join(select productIdx, count(productIdx) as 'chatCount'\n" +
@@ -432,9 +432,8 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
-                "       group by productIdx) as y on p.productIdx = y.productIdx, Region, ProductImage pi, ProductInterest\n" +
+                "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi, ProductInterest\n" +
                 "where p.productIdx = ProductInterest.productIdx\n" +
-                "and p.regionidx = Region.regionIdx\n" +
                 "and p.productIdx = pi.productIdx\n" +
                 "and p.status = 1\n" +
                 "and pi.firstImage = 1\n" +
@@ -457,9 +456,9 @@ public class ProductDao {
                 getProductInterestParams);
     }
 
-    public int patchProductInterest(int interestIdx){
-        String patchProductInterestQuery = "update ProductInterest set status = 0 where interestIdx = ? ";
-        Object[] patchProductInterestParams = new Object[]{interestIdx};
+    public int patchProductInterest(int interestIdx, int userIdx){
+        String patchProductInterestQuery = "update ProductInterest set status = 0 where interestIdx = ? and userIdx =? ";
+        Object[] patchProductInterestParams = new Object[]{interestIdx, userIdx};
         return this.jdbcTemplate.update(patchProductInterestQuery,patchProductInterestParams);
     }
 }

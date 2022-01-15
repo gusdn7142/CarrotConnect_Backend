@@ -18,16 +18,19 @@ public class CategoryDao {
     }
 
     public List<GetCategoryInterest> getCategoryInterest(int userIdx){
-        String getCategoryInterestQuery = "select interestCategoryIdx as interestIdx, \n" +
+        String getCategoryInterestQuery = "select interestCategoryIdx as interestIdx,\n" +
+                "       c.categoryIdx as categoryIdx,\n" +
                 "       c.categoryName as categoryName,\n" +
                 "       InterestCategory.status as status\n" +
                 "from InterestCategory, Category c\n" +
                 "where c.categoryIdx = InterestCategory.categoryIdx\n" +
+                "and InterestCategory.status = 1\n" +
                 "and userIdx = ? ";
         int getCategoryInterestParams = userIdx;
         return this.jdbcTemplate.query(getCategoryInterestQuery,
                 (rs, rowNum) -> new GetCategoryInterest(
                         rs.getInt("interestIdx"),
+                        rs.getInt("categoryIdx"),
                         rs.getString("categoryName"),
                         rs.getInt("status")
                 ),
@@ -43,9 +46,9 @@ public class CategoryDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
-    public int patchCategoryInterest(int idx){
-        String patchCategoryInterestQuery = "update InterestCategory set status = 0 where interestCategoryIdx = ? ";
-        Object[] patchCategoryInterestParams = new Object[]{idx};
+    public int patchCategoryInterest(int idx, int userIdx){
+        String patchCategoryInterestQuery = "update InterestCategory set status = 0 where interestCategoryIdx = ? and userIdx = ?";
+        Object[] patchCategoryInterestParams = new Object[]{idx, userIdx};
         return this.jdbcTemplate.update(patchCategoryInterestQuery,patchCategoryInterestParams);
     }
 }
