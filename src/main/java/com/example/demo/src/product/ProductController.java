@@ -1,7 +1,5 @@
 package com.example.demo.src.product;
 
-import com.example.demo.src.user.model.PostUserReq;
-import com.example.demo.src.user.model.PostUserRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -42,9 +40,12 @@ public class ProductController {
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("/{userIdx}/all") // (GET) 127.0.0.1:9000/product/:userIdx/all
-    public BaseResponse<List<GetProductList>> getProductList(@PathVariable("userIdx") int userIdx) {
+    @GetMapping("") // (GET) 127.0.0.1:9000/product/:userIdx/all
+    public BaseResponse<List<GetProductList>> getProductList(@RequestBody GetProductListReq getProductListReq) {
         try{
+            int userIdx = getProductListReq.getUserIdx();
+            String regionName = getProductListReq.getRegionName();
+
             // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -53,8 +54,10 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
+            System.out.println("controller userIdx: " + userIdx + "regionName: " + regionName);
             // Get Product List
-            List<GetProductList> getProductList = productProvider.getProductList(userIdx);
+            List<GetProductList> getProductList = productProvider.getProductList(regionName);
+            System.out.println("controller: " + getProductList);
             return new BaseResponse<>(getProductList);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

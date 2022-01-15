@@ -1,7 +1,6 @@
 package com.example.demo.src.product;
 
 import com.example.demo.src.product.model.*;
-import com.example.demo.src.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,15 +18,16 @@ public class ProductDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetProductList> getProductList(int userIdx){
+    public List<GetProductList> getProductList(String regionName){
         String getProductListQuery = "select p.productIdx as productIdx,\n" +
                 "       p.title as title,\n" +
-                "       regionName,\n" +
+                "       p.regionName as regionName,\n" +
                 "       case\n" +
                 "           when (timestampdiff(minute, p.createAt, now()) < 1) then concat(timestampdiff(second, p.createAt, now()), '초', ' 전')\n" +
-                "           when (timestampdiff(minute, p.createAt, now()) >= 60) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
-                "           when (timestampdiff(hour, p.createAt, now()) >= 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
-                "           else concat(timestampdiff(minute, p.createAt, now()),'분', ' 전') end as uploadTime,\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) < 1) then concat(timestampdiff(minute, p.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, p.createAt, now()) < 1) then concat(timestampdiff(hour, p.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, p.createAt, now()) > 24) then concat(timestampdiff(day, p.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
@@ -39,7 +39,8 @@ public class ProductDao {
                 "           when(p.saleStatus = 1) then '판매중'\n" +
                 "           when (p.saleStatus = 2) then '나눔중'\n" +
                 "           when(p.saleStatus = 3) then '나눔완료'\n" +
-                "           when(p.saleStatus = 4) then '예약완료'\n" +
+                "           when(p.saleStatus = 4) then '예약중'\n" +
+                "           when(p.saleStatus = 5) then '나눔예약중'\n" +
                 "           end as productStatus\n" +
                 "from Product p\n" +
                 "   left join(select productIdx, count(productIdx) as 'chatCount'\n" +
@@ -47,15 +48,14 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
-                "       group by productIdx) as y on p.productIdx = y.productIdx, Region, User, ProductImage pi\n" +
-                "where p.regionidx = Region.regionIdx\n" +
-                "and Region.userIdx = User.userIdx\n" +
-                "and p.status = 1\n" +
-                "and p.productIdx = pi.productIdx\n" +
+                "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
+                "where p.status = 1\n" +
                 "and pi.firstImage = 1\n" +
                 "and p.hideStatus = 0\n" +
-                "and User.userIdx = ?";
-        int getProductListParams = userIdx;
+                "and p.productIdx = pi.productIdx\n" +
+                "and p.regionName = ? ";
+        String getProductListParams = regionName;
+        System.out.println("dao: " + getProductListParams);
         return this.jdbcTemplate.query(getProductListQuery,
                 (rs, rowNum) -> new GetProductList(
                         rs.getInt("productIdx"),

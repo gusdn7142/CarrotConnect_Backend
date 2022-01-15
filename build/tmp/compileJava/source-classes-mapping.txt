@@ -2,8 +2,8 @@ com/example/demo/src/category/CategoryController.java
  com.example.demo.src.category.CategoryController
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
-com/example/demo/src/product/ProductService.java
- com.example.demo.src.product.ProductService
+com/example/demo/utils/JwtService.java
+ com.example.demo.utils.JwtService
 com/example/demo/src/product/model/GetProduct.java
  com.example.demo.src.product.model.GetProduct
 com/example/demo/src/product/model/GetProductHidden.java
@@ -36,8 +36,8 @@ com/example/demo/src/product/model/GetProductList.java
  com.example.demo.src.product.model.GetProductList
 com/example/demo/src/alertKeyword/model/GetAlertRegionRes.java
  com.example.demo.src.alertKeyword.model.GetAlertRegionRes
-com/example/demo/src/product/ProductDao.java
- com.example.demo.src.product.ProductDao
+com/example/demo/src/user/UserProvider.java
+ com.example.demo.src.user.UserProvider
 com/example/demo/src/category/CategoryService.java
  com.example.demo.src.category.CategoryService
 com/example/demo/src/product/model/GetProductSale.java
@@ -58,8 +58,8 @@ com/example/demo/src/alertKeyword/model/GetAlertPrductRes.java
  com.example.demo.src.alertKeyword.model.GetAlertPrductRes
 com/example/demo/src/gather/GatherController.java
  com.example.demo.src.gather.GatherController
-com/example/demo/src/product/ProductController.java
- com.example.demo.src.product.ProductController
+com/example/demo/src/alertKeyword/model/GetAlertkeywardRes.java
+ com.example.demo.src.alertKeyword.model.GetAlertkeywardRes
 com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/src/alertKeyword/model/Keyword.java
@@ -74,8 +74,8 @@ com/example/demo/src/product/model/GetProductPurchased.java
  com.example.demo.src.product.model.GetProductPurchased
 com/example/demo/src/user/model/PatchUserBlockCancellReq.java
  com.example.demo.src.user.model.PatchUserBlockCancellReq
-com/example/demo/src/product/ProductProvider.java
- com.example.demo.src.product.ProductProvider
+com/example/demo/src/gather/model/PostGatherRes.java
+ com.example.demo.src.gather.model.PostGatherRes
 com/example/demo/src/gather/model/PatchGatherReq.java
  com.example.demo.src.gather.model.PatchGatherReq
 com/example/demo/src/user/model/PostUserReq.java
@@ -124,11 +124,13 @@ com/example/demo/src/user/model/GetUserRes.java
  com.example.demo.src.user.model.GetUserRes
 com/example/demo/DemoApplication.java
  com.example.demo.DemoApplication
-com/example/demo/src/gather/model/PostGatherRes.java
- com.example.demo.src.gather.model.PostGatherRes
-com/example/demo/utils/JwtService.java
- com.example.demo.utils.JwtService
-com/example/demo/src/user/UserProvider.java
- com.example.demo.src.user.UserProvider
-com/example/demo/src/alertKeyword/model/GetAlertkeywardRes.java
- com.example.demo.src.alertKeyword.model.GetAlertkeywardRes
+com/example/demo/src/product/ProductProvider.java
+ com.example.demo.src.product.ProductProvider
+com/example/demo/src/product/ProductDao.java
+ com.example.demo.src.product.ProductDao
+com/example/demo/src/product/ProductService.java
+ com.example.demo.src.product.ProductService
+com/example/demo/src/product/ProductController.java
+ com.example.demo.src.product.ProductController
+com/example/demo/src/product/model/GetProductListReq.java
+ com.example.demo.src.product.model.GetProductListReq
