@@ -55,7 +55,7 @@ public enum BaseResponseStatus {
 //    logout_FAIL_USER(false,3111,"이미 로그아웃 되었습니다."), 삭제예정~~~
 
     LOGOUT_USER_JWT(false, 3103, "로그아웃된 상태입니다."),
-//    FAILED_TO_DELETE_USER(false,4110,"유저가 이미 회원탈퇴 되었습니다."), //삭제 예정
+//    FAILED_TO_DELETE_USER(false,4110,"탈퇴할 사용자가 존재하지 않습니다."), 삭제예정
 
     AUTO_LOGOUT_FAIL_USER(false,3112,"아직 유저의 jwt 토큰이 만료되지 않아 자동 로그아웃에 실패했습니다."),
 

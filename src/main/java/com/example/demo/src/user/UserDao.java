@@ -59,7 +59,7 @@ public class UserDao {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 전화번호 중복 검사 - checkphoneNumber()  */
     public int checkphoneNumber(String phoneNumber){
-        String checkphoneNumberQuery = "select exists(select phoneNumber from User where phoneNumber = ?)";
+        String checkphoneNumberQuery = "select exists(select phoneNumber from User where phoneNumber = ? and status = 1)";
         String checkphoneNumberParams = phoneNumber;
         return this.jdbcTemplate.queryForObject(checkphoneNumberQuery,
                 int.class,
