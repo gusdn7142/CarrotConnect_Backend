@@ -14,8 +14,9 @@ public class GetProduct {
     private int userIdx;
     private String nickName;
     private String userImage;
-    private String mannerTemp;
+    private double mannerTemp;
     private int productIdx;
+    private String productRegion;
     private String title;
     private String categoryName;
     private String uploadTime;

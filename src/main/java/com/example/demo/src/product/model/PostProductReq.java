@@ -15,7 +15,7 @@ public class PostProductReq {
     private String content;
     private int saleStatus;
     private int categoryIdx;
-    private int regionIdx;
+    private String regionName;
     private String image;
     private int firstImageCheck;
 }

@@ -36,13 +36,17 @@ public class ProductService {
 
     }
 
-    public void patchProductStatus(int productIdx) throws BaseException {
+    public String patchProductStatus(int productIdx, int userIdx) throws BaseException {
         try{
-            int result = productDao.patchProductStatus(productIdx);
+            int result = productDao.patchProductStatus(productIdx, userIdx);
+            String message = "상품 삭제 성공";
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패, 예외는 곧 추가 예정");
+                System.out.println("실패");
+                message = "삭제에 실패했습니다.";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
