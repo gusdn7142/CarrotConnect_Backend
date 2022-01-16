@@ -32,14 +32,14 @@ public class UserDao {
 
         //기본 닉네임 생성 (핸드폰 뒷번호 4자리만 붙인다.)
         String default_nickName = "당근 유저" + postUserReq.getPhoneNumber().substring(postUserReq.getPhoneNumber().length()-8, postUserReq.getPhoneNumber().length());
-        System.out.println(default_nickName);
+        //System.out.println(default_nickName);
 
 
         //인증 코드 생성 (1000번 ~ 9999번 사이)
         int min = 1000;
         int max = 9999;
         int authCode = (int) ((Math.random() * (max - min)) + min);
-        System.out.println("인증 코드는" + authCode + "번 입니다.");
+        //System.out.println("인증 코드는" + authCode + "번 입니다.");
 
 
         //쿼리문 생성
@@ -301,6 +301,61 @@ public class UserDao {
                         rs.getInt("sellReviewCount")),
                 getUserProfileParams);
     }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 내 프로필 조회 - getMyProfile() */
+    public GetUserRes getMyProfile(int userIdx){
+        //쿼리문 생성
+        String getUserProfileQuery = "select u.image as image,\n" +
+                "       u.nickName as nickName,\n" +
+                "       u.mannerTemp as mannerTemp ,\n" +
+                "       u.tradeRate as tradeRate,\n" +
+                "       u.responseRate as responseRate,\n" +
+                "       DATE_FORMAT(u.createAt,'%Y년 %m월 %d일') as createAt,\n" +
+                "       r.regionName as regionName,\n" +
+                "       r.authCount as authCount,\n" +
+                "       badgeCount,\n" +
+                "       productSellCount,\n" +
+                "       sellReviewCount\n" +
+                "\n" +
+                "from Region r, User u\n" +
+                "left join (\n" +
+                "     select userIdx , count(userIdx) as 'badgeCount' from Badge\n" +
+                "     group by userIdx) as x on u.userIdx = x.userIdx\n" +
+                "left join (select userIdx, count(userIdx) as 'productSellCount' from Product\n" +
+                "     group by userIdx) as y on u.userIdx = y.userIdx\n" +
+                "left join (select receiverIdx, count(receiverIdx) as 'sellReviewCount' from DealReview\n" +
+                "     group by receiverIdx) as d on u.userIdx = d.receiverIdx\n" +
+                "where u.userIdx = r.userIdx\n" +
+                "and r.mainStatus = 1\n" +
+                "and u.status = 1\n" +
+                "and u.userIdx = ?";
+
+        //userIdx를 객체에 저장.
+//        Object[] getUserProfileParams = new Object[]{userIdx, userIdx, userIdx, userIdx};
+
+        int getUserProfileParams = userIdx;      //파라미터(id) 값 저장
+
+        //쿼리문 실행
+        return this.jdbcTemplate.queryForObject(getUserProfileQuery,          //하나의 행을 불러오기 때문에 jdbcTemplate.queryForObject 실행
+                (rs, rowNum) -> new GetUserRes(                //rs.getString(" ")값이 DB와 일치해야 한다!
+                        rs.getString("image"),             //각 칼럼은 DB와 매칭이 되어야 한다.
+                        rs.getString("nickName"),
+                        rs.getDouble("mannerTemp"),
+                        rs.getDouble("tradeRate"),
+                        rs.getDouble("responseRate"),
+                        rs.getString("createAt"),
+                        rs.getString("regionName"),
+                        rs.getInt("authCount"),
+                        rs.getInt("badgeCount"),
+                        rs.getInt("productSellCount"),
+                        rs.getInt("sellReviewCount")),
+                getUserProfileParams);
+    }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 회원탈퇴 (유저 비활성화)- deleteUser()  */

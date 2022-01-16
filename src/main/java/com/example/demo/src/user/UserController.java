@@ -303,13 +303,16 @@ public class UserController {
             /*접근 제한 구현 끝 */
 
 
-            //닉네임 입력여부 체크
-            if(nickName == null){
-                return new BaseResponse<>(POST_USERS_EMPTY_NICKNAME);
-            }
-
             /* 프로필 조회 - getUserProfile() */
-            GetUserRes getUserRes = userProvider.getUserProfile(nickName);
+            GetUserRes getUserRes = null;
+
+            if(nickName == null){          //닉네임 입력여부 체크
+                //System.out.println(nickName);
+                getUserRes = userProvider.getMyProfile(userIdx);
+            }
+            else {
+                getUserRes = userProvider.getUserProfile(nickName);
+            }
 
 
 
