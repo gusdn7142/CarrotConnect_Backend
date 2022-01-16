@@ -30,7 +30,6 @@ public class ProductProvider {
     public List<GetProductList> getProductList(String regionName) throws BaseException{
         try{
             List<GetProductList> getProductList = productDao.getProductList(regionName);
-            System.out.println("provider: " + getProductList);
             return getProductList;
         }
         catch (Exception exception) {

@@ -55,7 +55,6 @@ public class ProductDao {
                 "and p.productIdx = pi.productIdx\n" +
                 "and p.regionName = ? ";
         String getProductListParams = regionName;
-        System.out.println("dao: " + getProductListParams);
         return this.jdbcTemplate.query(getProductListQuery,
                 (rs, rowNum) -> new GetProductList(
                         rs.getInt("productIdx"),
