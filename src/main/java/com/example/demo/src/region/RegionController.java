@@ -65,4 +65,30 @@ public class RegionController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 내 동네 조회 API
+     * [GET] /regions/:userIdx
+     * @return BaseResponse<GetRegion>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/regions/:userIdx
+    public BaseResponse<List<GetRegion>> getRegion(@PathVariable("userIdx") int userIdx) {
+        try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Category Interest
+            List<GetRegion> getRegion = regionProvider.getRegion(userIdx);
+            return new BaseResponse<>(getRegion);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

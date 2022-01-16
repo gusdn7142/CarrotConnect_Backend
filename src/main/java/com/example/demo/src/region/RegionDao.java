@@ -30,4 +30,16 @@ public class RegionDao {
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public List<GetRegion> getRegion(int userIdx){
+        String getRegionQuery = "select regionIdx, regionName, nowStatus from Region where status = 1 and userIdx = ? ";
+        int getRegionParams = userIdx;
+        return this.jdbcTemplate.query(getRegionQuery,
+                (rs, rowNum) -> new GetRegion(
+                        rs.getInt("regionIdx"),
+                        rs.getString("regionName"),
+                        rs.getInt("nowStatus")
+                ),
+                getRegionParams);
+    }
 }

@@ -26,4 +26,14 @@ public class RegionProvider {
         this.regionDao = regionDao;
         this.jwtService = jwtService;
     }
+
+    public List<GetRegion> getRegion(int userIdx) throws BaseException{
+        try{
+            List<GetRegion> getRegion = regionDao.getRegion(userIdx);
+            return getRegion;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
