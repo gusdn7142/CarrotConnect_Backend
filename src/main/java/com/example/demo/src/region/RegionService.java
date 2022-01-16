@@ -77,4 +77,21 @@ public class RegionService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public String patchRegionNow(int idx, int userIdx) throws BaseException {
+        try{
+            int result = regionDao.patchRegionNow(idx, userIdx);
+            String message = "현재 내 동네 설정 성공";
+
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+                message = "현재 내 동네 설정에 실패했습니다.";
+                return message;
+            }
+            return message;
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

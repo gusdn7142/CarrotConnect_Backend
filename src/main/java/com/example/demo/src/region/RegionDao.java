@@ -54,4 +54,14 @@ public class RegionDao {
         Object[] patchRegionAuthStatusParams = new Object[]{idx, userIdx};
         return this.jdbcTemplate.update(patchRegionAuthStatusQuery,patchRegionAuthStatusParams);
     }
+
+    public int patchRegionNow(int idx, int userIdx){
+        String patchRegionNowResetQuery = "update Region set nowStatus = 0, authStatus = 0 where nowStatus = 1 and status = 1 and userIdx = ? ";
+        Object[] patchRegionNowResetParams = new Object[]{userIdx};
+        this.jdbcTemplate.update(patchRegionNowResetQuery,patchRegionNowResetParams);
+
+        String patchRegionNowQuery = "update Region set nowStatus = 1 where nowStatus = 0 and status = 1 and regionIdx = ? and userIdx = ? ";
+        Object[] patchRegionNowParams = new Object[]{idx, userIdx};
+        return this.jdbcTemplate.update(patchRegionNowQuery,patchRegionNowParams);
+    }
 }
