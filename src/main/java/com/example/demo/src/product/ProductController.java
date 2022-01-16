@@ -35,17 +35,14 @@ public class ProductController {
 
     /**
      * 전체 상품 조회 API
-     * [GET] /products
+     * [GET] /products?userIdx=?regionName=
      * @return BaseResponse<GetProductList>
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("") // (GET) 127.0.0.1:9000/products
-    public BaseResponse<List<GetProductList>> getProductList(@RequestBody GetProductListReq getProductListReq) {
+    @GetMapping("") // (GET) 127.0.0.1:9000/products?userIdx=?regionName=
+    public BaseResponse<List<GetProductList>> getProductList(@RequestParam int userIdx, @RequestParam String regionName) {
         try{
-            int userIdx = getProductListReq.getUserIdx();
-            String regionName = getProductListReq.getRegionName();
-
             // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -54,10 +51,8 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            System.out.println("controller userIdx: " + userIdx + "regionName: " + regionName);
             // Get Product List
             List<GetProductList> getProductList = productProvider.getProductList(regionName);
-            System.out.println("controller: " + getProductList);
             return new BaseResponse<>(getProductList);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
