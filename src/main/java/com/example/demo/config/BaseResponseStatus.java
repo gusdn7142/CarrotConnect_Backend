@@ -47,6 +47,7 @@ public enum BaseResponseStatus {
      */
     //user 리소스
     POST_USERS_EXISTS_PHONENUMBER(false,3001,"이미 가입된 전화번호 입니다."),
+    POST_USERS_EXISTS_NICKNAME(false,3001,"사용중인 닉네임 입니다."),
     NOT_EXIST_USER(false,3101,"입력하신 인증코드에 해당하는 사용자가 없습니다."),
 
 //    FAILED_TO_LOGIN(false,5100,"로그인에 실패하였습니다."),  //없어도 될듯???
@@ -91,6 +92,12 @@ public enum BaseResponseStatus {
     //Gagther 리소스
     POST_KEYWORDS_EXISTS_GATHER(false,3001,"이미 모아보기에 추가된 사용자에요"),
 
+
+    //Hidden 리소스
+    POST_USERS_HIDDEN_NICKNAME(false,3008,"이미 미노출된 사용자입니다."),
+
+
+
     /**
      * 4000 : Database, Server 오류
      */
@@ -101,13 +108,17 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_CREATE_USER(false, 4000, "신규 유저 정보를 DB에 등록하지 못하였습니다."),
     DATABASE_ERROR_CREATE_REGION(false, 4001, "유저의 동네 정보를 DB에 등록하지 못하였습니다."),
     DATABASE_ERROR_CHECK_PHONENUMBER(false, 4002, "전화번호 중복 검사에 실패하였습니다."),
+    DATABASE_ERROR_CHECK_NICKNAME(false, 4002, "닉네임 중복 검사에 실패하였습니다."),
 
     SAVE_FAIL_jwt(false,5999,"JWT 토큰 저장에 실패하였습니다."),
     DATABASE_ERROR_NOT_EXISTS_USER(false, 4002, "사용자 정보를 DB에서 조회하지 못했습니다. "),
     DATABASE_ERROR_MODIFY_FAIL_AUTHCODE(false,3304,"인증 코드 변경에 실패했습니다."),
 
     DATABASE_ERROR_FAIL_LOGOUT(false, 4002, "로그아웃에 처리에 실패 하였습니다."),
-    DATABASE_ERROR_MODIFY_FAIL_USER(false, 4002, "사용자 정보 변경에 실패하였습니다."),
+    DATABASE_ERROR_MODIFY_FAIL_USER_NICKNAME(false, 4002, "사용자 닉네임 변경시 오류가 발생하였습니다."),
+    DATABASE_ERROR_MODIFY_FAIL_USER_IMAGE(false, 4002, "사용자 이미지 변경시 오류가 발생하였습니다. 이미지 값을 재확인 해주세요."),
+
+
     DATABASE_ERROR_USER_INFO(false, 4242, "프로필 조회에 실패하였습니다."),
 
 
@@ -153,10 +164,27 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_DELETE_GATHER(false, 4242, "모아보기 취소에 실패하였습니다."),
 
     DATABASE_ERROR_GET_GATHER_USER(false, 4242, "모아보기한 사용자 조회에 실패하였습니다."),
-    DATABASE_ERROR_GET_GATHER_PRODUCT(false, 4242, "모아보기한 상품 조회에 실패하였습니다.");
+    DATABASE_ERROR_GET_GATHER_PRODUCT(false, 4242, "모아보기한 상품 조회에 실패하였습니다."),
+
+
+    //hidden 리소스
+    DATABASE_ERROR_HIDDEN_USER(false, 4242, "미노출 사용자 추가에 실패했습니다. 닉네임을 확인해 주세요."),
+    DATABASE_ERROR_HIDDEN_CHECK_USER(false, 4242, "미노출 사용자 추가 확인에 실패하였습니다."),
+    DATABASE_ERROR_HIDDEN_CANCELL_USER(false, 4242, "미노출 사용자 해제에 실패했습니다. 닉네임을 확인해 주세요."),
+    DATABASE_ERROR_HIDDEN_USER_INFO(false, 4242, "미노출 사용자 조회에 실패하였습니다.");
+
+
+
+
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
+
+
+
+
+
+
 
 
     private final boolean isSuccess;

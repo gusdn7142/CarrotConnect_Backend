@@ -42,6 +42,15 @@ public class UserProvider {
     }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 닉네임 중복 검사 - checkNickName()  */
+    public int checkNickName(String nickName) throws BaseException{
+        try{
+            return userDao.checkNickName(nickName);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR_CHECK_NICKNAME);   //"전화번호 중복 검사에 실패하였습니다."
+        }
+    }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
