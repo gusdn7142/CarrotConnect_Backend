@@ -31,8 +31,9 @@ public class UserDao {
 
 
         //기본 닉네임 생성 (핸드폰 뒷번호 4자리만 붙인다.)
-        String default_nickName = "당근 유저" + postUserReq.getPhoneNumber().substring(postUserReq.getPhoneNumber().length()-4, postUserReq.getPhoneNumber().length());
+        String default_nickName = "당근 유저" + postUserReq.getPhoneNumber().substring(postUserReq.getPhoneNumber().length()-8, postUserReq.getPhoneNumber().length());
         System.out.println(default_nickName);
+
 
         //인증 코드 생성 (1000번 ~ 9999번 사이)
         int min = 1000;
@@ -113,7 +114,7 @@ public class UserDao {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/* 폰번호에 해당하는 유저가 존재하는지 확인 - JoinCheck() */
+    /* 폰번호에 해당하는 유저가 존재하는지 확인 - JoinCheck() */
     public int JoinCheck(String phoneNumber){
         String JoinCheckQuery = "select exists(select phoneNumber from User where phoneNumber = ?)";
         String JoinCheckParams = phoneNumber;
