@@ -129,6 +129,19 @@ public class UserProvider {
     }
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 내 프로필 조회 - getMyProfile() */
+    public GetUserRes getMyProfile(int userIdx) throws BaseException {   //UserComtroller.java에서 userIdx값을 받아옴.
+        try {
+            GetUserRes getUserRes = userDao.getMyProfile(userIdx);  //userDao.getUser()에게 userIdx값을 그대로 넘겨줌
+            return getUserRes;
+        } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
+            throw new BaseException(DATABASE_ERROR_USER_INFO);
+        }
+    }
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 사용자 차단 여부 확인 - checkBlcokUser()  */
     public int checkBlcokUser(PostUserBlockReq postUserBlockReq) throws BaseException{
