@@ -65,6 +65,12 @@ public enum BaseResponseStatus {
     PATCH_USERS_DELETE_USER(false,3008,"이미 탈퇴된 계정입니다."),
 
     POST_USERS_BLOCKS_NICKNAME(false,3008,"이미 차단한 사용자입니다."),
+    POST_USERS_REPORT_NICKNAME(false,3008,"이미 신고한 사용자입니다."),
+
+
+    POST_USERS_REPORT_PRODUCT(false,3008,"이미 신고한 상품 게시글 입니다."),
+
+
 //    PATCH_USERS_BLOCKS_CANCELL_NICKNAME(false,3008,"이미 차단 해제한 사용자입니다."), 지울 예정
 
 
@@ -94,7 +100,7 @@ public enum BaseResponseStatus {
 
 
     //Hidden 리소스
-    POST_USERS_HIDDEN_NICKNAME(false,3008,"이미 미노출된 사용자입니다."),
+    POST_USERS_HIDDEN_NICKNAME(false,3008,"이미 미노출된 등록된 사용자입니다."),
 
 
 
@@ -133,12 +139,21 @@ public enum BaseResponseStatus {
 //    DATABASE_ERROR_BLOCK_CANCELL_CHECK_USER(false, 4242, "사용자 차단 해제 여부 확인에 실패하였습니다."), 지울 예정
     DATABASE_ERROR_BLOCK_USER_INFO(false, 4242, "차단한 사용자 프로필 조회에 실패하였습니다."),
 
+    DATABASE_ERROR_REPORT_USER(false, 4242, "사용자 신고에 실패했습니다."),
+    DATABASE_ERROR_REPORT_CHECK_USER(false, 4242, "사용자 신고 여부 확인에 실패하였습니다."),
+    DATABASE_ERROR_REPORT_PRODUCT(false, 4242, "상품 게시글 신고에 실패했습니다."),
+    DATABASE_ERROR_REPORT_CHECK_PRODUCT(false, 4242, "상품 게시글 신고 여부 확인에 실패하였습니다."),
+
+
 
 //    //[PATCH] /users/{userIdx}
 //    MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 //
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
+
+
+
 
 
     //keyword 리소스

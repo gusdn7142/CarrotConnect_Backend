@@ -3,6 +3,8 @@ package com.example.demo.src.user;
 
 
 import com.example.demo.config.BaseException;
+
+
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -280,6 +282,93 @@ public class UserService {
             throw new BaseException(DATABASE_ERROR_BLOCK_CANCELL_USER); //"사용자 차단 해제에 실패했습니다. 닉네임을 확인해 주세요."
         }
     }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 추가 - hideUser()  */
+    public void hideUser(PostHideUserReq postHideUserReq) throws BaseException {
+
+        //미노출 사용자 추가 여부 확인
+        if(userProvider.checkHideUser(postHideUserReq) == 1){              //닉네임이 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+            throw new BaseException(POST_USERS_HIDDEN_NICKNAME);        //"이미 미노출 등록된 사용자입니다.."
+        }
+
+        try{
+            //미노출 사용자 추가
+            int result = userDao.hideUser(postHideUserReq);
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_HIDDEN_USER); //"미노출 사용자 추가에 실패했습니다. 닉네임을 확인해 주세요."
+        }
+
+    }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 취소 - hideUserCancell()  */
+    public void hideUserCancell(PatchHideUserCancellReq patchHideUserCancellReq) throws BaseException {
+
+        try{
+            //미노출 사용자 취소
+            int result = userDao.hideUserCancell(patchHideUserCancellReq);
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_HIDDEN_CANCELL_USER); //"미노출 사용자 해제에 실패했습니다. 닉네임을 확인해 주세요."
+        }
+    }
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 신고 - reportUser()  */
+    public void reportUser(PostUserReportReq postUserReportReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+
+        //사용자 신고 여부 확인
+        if(userProvider.checkReportUser(postUserReportReq) == 1){              //중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+            throw new BaseException(POST_USERS_REPORT_NICKNAME);        //"이미 신고한 사용자 입니다."
+        }
+
+
+        //사용자 신고
+        try {
+            int result = userDao.reportUser(postUserReportReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR_REPORT_USER); //"사용자 신고에 실패했습니다."
+        }
+
+    }
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 상품 게시글 신고 - reportProduct()  */
+    public void reportProduct(PostProductReportReq postProductReportReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+
+        //상품 게시글 신고 여부 확인
+        if(userProvider.checkReportProduct(postProductReportReq) == 1){              //중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+            throw new BaseException(POST_USERS_REPORT_PRODUCT);        //"이미 신고한 상품 게시글 입니다."
+        }
+
+
+        //상품 게시글 신고
+        try {
+            int result = userDao.reportProduct(postProductReportReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR_REPORT_PRODUCT); //"상품 게시글 신고에 실패했습니다."
+        }
+
+    }
+
+
+
+
+
+
+
+
 
 
 
