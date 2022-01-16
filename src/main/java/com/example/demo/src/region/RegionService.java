@@ -43,4 +43,21 @@ public class RegionService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public String patchRegionStatus(int idx, int userIdx) throws BaseException {
+        try{
+            int result = regionDao.patchRegionStatus(idx, userIdx);
+            String message = "내 동네 삭제 성공";
+
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+                message = "삭제에 실패했습니다.";
+                return message;
+            }
+            return message;
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

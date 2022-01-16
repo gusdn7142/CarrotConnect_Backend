@@ -1,5 +1,6 @@
 package com.example.demo.src.region;
 
+import com.example.demo.src.category.model.PatchCategoryInterest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -88,6 +89,30 @@ public class RegionController {
             List<GetRegion> getRegion = regionProvider.getRegion(userIdx);
             return new BaseResponse<>(getRegion);
         } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 내 동네 삭제 API
+     * [PATCH] /regions/:idx/userIdx/status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/status")
+    public BaseResponse<String> patchRegionStatus(@PathVariable("idx") int idx, @PathVariable("userIdx") int userIdx){
+        try {
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            // userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            String result = regionService.patchRegionStatus(idx, userIdx);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }

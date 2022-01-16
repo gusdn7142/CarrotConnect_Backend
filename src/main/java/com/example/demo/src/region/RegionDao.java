@@ -42,4 +42,10 @@ public class RegionDao {
                 ),
                 getRegionParams);
     }
+
+    public int patchRegionStatus(int idx, int userIdx){
+        String patchRegionStatusQuery = "update Region set status = 0 where status = 1 and regionIdx = ? and userIdx = ?";
+        Object[] patchRegionStatusParams = new Object[]{idx, userIdx};
+        return this.jdbcTemplate.update(patchRegionStatusQuery,patchRegionStatusParams);
+    }
 }
