@@ -1,8 +1,8 @@
-package com.example.demo.src.product;
+package com.example.demo.src.region;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
-import com.example.demo.src.product.model.*;
+import com.example.demo.src.region.model.*;
 import com.example.demo.utils.AES128;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -17,29 +17,41 @@ import static com.example.demo.config.BaseResponseStatus.*;
 
 // Service Create, Update, Delete 의 로직 처리
 @Service
-public class ProductService {
+public class RegionService {
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final ProductDao productDao;
-    private final ProductProvider productProvider;
+    private final RegionDao regionDao;
+    private final RegionProvider regionProvider;
     private final JwtService jwtService;
 
     @Autowired
-    public ProductService(ProductDao productDao, ProductProvider productProvider, JwtService jwtService) {
-        this.productDao = productDao;
-        this.productProvider = productProvider;
+    public RegionService(RegionDao regionDao, RegionProvider regionProvider, JwtService jwtService) {
+        this.regionDao = regionDao;
+        this.regionProvider = regionProvider;
         this.jwtService = jwtService;
-
     }
 
-    public String patchProductStatus(int productIdx, int userIdx) throws BaseException {
+    public void createRegion(int userIdx, PostRegion postRegion) throws BaseException {
         try{
-            int result = productDao.patchProductStatus(productIdx, userIdx);
-            String message = "상품 삭제 성공";
+            int result = regionDao.createRegion(userIdx, postRegion);
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패");
+                System.out.println("실패, 예외는 곧 추가 예정");
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public String patchRegionStatus(int idx, int userIdx) throws BaseException {
+        try{
+            int result = regionDao.patchRegionStatus(idx, userIdx);
+            String message = "내 동네 삭제 성공";
+
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
                 message = "삭제에 실패했습니다.";
                 return message;
             }
@@ -49,39 +61,32 @@ public class ProductService {
         }
     }
 
-    public void createProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
+    public String patchRegionAuth(int idx, int userIdx) throws BaseException {
         try{
-            int result = productDao.createProduct(userIdx, postProductReq);
+            int result = regionDao.patchRegionAuth(idx, userIdx);
+            String message = "내 동네 인증 성공";
+
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "인증에 실패했습니다.";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public void createInterestProduct(int userIdx, int productIdx) throws BaseException {
+    public String patchRegionNow(int idx, int userIdx) throws BaseException {
         try{
-            int result = productDao.createInterestProduct(userIdx, productIdx);
-            if(result == 0){
-                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패, 예외는 곧 추가 예정");
-            }
-        } catch(Exception exception){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    public String patchProductInterest(int interestIdx, int userIdx) throws BaseException {
-        try{
-            int result = productDao.patchProductInterest(interestIdx, userIdx);
-            String message = "관심 목록 삭제 성공";
+            int result = regionDao.patchRegionNow(idx, userIdx);
+            String message = "현재 내 동네 설정 성공";
 
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
-                message = "삭제에 실패했습니다.";
+                message = "현재 내 동네 설정에 실패했습니다.";
                 return message;
             }
             return message;
