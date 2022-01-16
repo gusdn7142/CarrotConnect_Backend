@@ -66,6 +66,17 @@ public class UserDao {
                 checkphoneNumberParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 닉네임 중복 검사 - checkNickName()  */
+    public int checkNickName(String nickName){
+        String checkNickNameQuery = "select exists(select nickName from User where nickName = ? and status = 1)";
+        String checkNickNameParams = nickName;
+        return this.jdbcTemplate.queryForObject(checkNickNameQuery,
+                int.class,
+                checkNickNameParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
+    }
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네 정보 등록 -  createRegion() */
     public int createRegion(PostUserReq postUserReq){  //UserServcie.java에서 postUserReq 객체를 받아옴
@@ -264,6 +275,7 @@ public class UserDao {
                 "     group by receiverIdx) as d on u.userIdx = d.receiverIdx\n" +
                 "where u.userIdx = r.userIdx\n" +
                 "and r.mainStatus = 1\n" +
+                "and u.status = 1\n" +
                 "and u.userIdx = (select userIdx from User where nickName = ?)";
 
         //userIdx를 객체에 저장.
@@ -378,7 +390,7 @@ public class UserDao {
                 "       u.nickName,\n" +
                 "       r.regionName\n" +
                 "from User u\n" +
-                "join (select DISTINCT blockedUserIdx from Block where userIdx = ?) b\n" +
+                "join (select DISTINCT blockedUserIdx from Block where userIdx = ? and status = 1) b\n" +
                 "    on u.userIdx = b.blockedUserIdx\n" +
                 "join Region r\n" +
                 "    on u.userIdx = r.userIdx\n" +

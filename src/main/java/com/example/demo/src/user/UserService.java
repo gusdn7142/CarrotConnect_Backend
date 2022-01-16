@@ -36,7 +36,7 @@ public class UserService {
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
 
         //전화번호 중복 검사
-       if(userProvider.checkphoneNumber(postUserReq.getPhoneNumber()) ==1){              //닉네임이 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+       if(userProvider.checkphoneNumber(postUserReq.getPhoneNumber()) ==1){              //전화번호가 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
             throw new BaseException(POST_USERS_EXISTS_PHONENUMBER); //"이미 가입된 전화번호 입니다."
         }
 
@@ -168,6 +168,25 @@ public class UserService {
     /* 프로필 수정 - modifyInfo()  */
     public void modifyInfo(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
+        //닉네임 중복 검사
+        if(userProvider.checkNickName(patchUserReq.getNickName()) ==1){              //닉네임이 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
+            throw new BaseException(POST_USERS_EXISTS_NICKNAME); //"사용중인 닉네임 입니다."
+        }
+
+        try{
+            //이미지 값 변경
+            if(patchUserReq.getImage() != null){
+                //이미지 변경
+                int result = userDao.modifyImage(patchUserReq);
+//            if(result == 0){
+//                throw new BaseException(MODIFY_FAIL_IMAGE);   //DB에서 Password 값의 수정 실패시이면 에러코드 반환 (이미 인가과정이 있어서 필요 없음)
+//            }
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_MODIFY_FAIL_USER_IMAGE);   //"사용자 이미지 변경에 실패하였습니다."
+        }
+
+
         try{
         //닉네임 값 변경
         if(patchUserReq.getNickName() != null){
@@ -177,20 +196,16 @@ public class UserService {
 //                throw new BaseException(MODIFY_FAIL_NICKNAME);   //DB에서 nickName 값의 수정 실패시이면 에러코드 반환  (이미 인가과정이 있어서 필요 없음)
 //            }
         }
-        //이미지 값 변경
-        if(patchUserReq.getImage() != null){
-            //이미지 변경
-            int result = userDao.modifyImage(patchUserReq);
-//            if(result == 0){
-//                throw new BaseException(MODIFY_FAIL_IMAGE);   //DB에서 Password 값의 수정 실패시이면 에러코드 반환 (이미 인가과정이 있어서 필요 없음)
-//            }
-        }
         } catch(Exception exception){
-            throw new BaseException(DATABASE_ERROR_MODIFY_FAIL_USER);   //"사용자 정보 변경에 실패하였습니다."
+            throw new BaseException(DATABASE_ERROR_MODIFY_FAIL_USER_NICKNAME);   //"사용자 닉네임 변경에 실패하였습니다."
         }
+
+
 
 
     }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 회원탈퇴 (유저 비활성화) - deleteUser()  */
     public void deleteUser(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...

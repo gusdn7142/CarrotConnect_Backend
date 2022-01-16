@@ -4,6 +4,10 @@ com/example/demo/config/Constant.java
  com.example.demo.config.Constant
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
+com/example/demo/src/report/ReportService.java
+ com.example.demo.src.report.ReportService
+com/example/demo/src/hidden/HiddenController.java
+ com.example.demo.src.hidden.HiddenController
 com/example/demo/src/product/model/GetProduct.java
  com.example.demo.src.product.model.GetProduct
 com/example/demo/src/product/model/GetProductHidden.java
@@ -12,6 +16,8 @@ com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/src/gather/model/PostGatherReq.java
  com.example.demo.src.gather.model.PostGatherReq
+com/example/demo/src/report/ReportDao.java
+ com.example.demo.src.report.ReportDao
 com/example/demo/src/category/model/PatchCategoryInterest.java
  com.example.demo.src.category.model.PatchCategoryInterest
 com/example/demo/src/product/model/PatchProductInterest.java
@@ -36,6 +42,10 @@ com/example/demo/src/product/model/GetProductList.java
  com.example.demo.src.product.model.GetProductList
 com/example/demo/src/alertKeyword/model/GetAlertRegionRes.java
  com.example.demo.src.alertKeyword.model.GetAlertRegionRes
+com/example/demo/src/hidden/model/PostHideUserReq.java
+ com.example.demo.src.hidden.model.PostHideUserReq
+com/example/demo/src/hidden/HiddenDao.java
+ com.example.demo.src.hidden.HiddenDao
 com/example/demo/src/product/ProductDao.java
  com.example.demo.src.product.ProductDao
 com/example/demo/src/category/CategoryService.java
@@ -46,6 +56,8 @@ com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
 com/example/demo/src/user/model/PostUserRes.java
  com.example.demo.src.user.model.PostUserRes
+com/example/demo/src/hidden/model/Hidden.java
+ com.example.demo.src.hidden.model.Hidden
 com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
 com/example/demo/src/user/UserService.java
@@ -64,6 +76,8 @@ com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/src/alertKeyword/model/Keyword.java
  com.example.demo.src.alertKeyword.model.Keyword
+com/example/demo/src/report/ReportController.java
+ com.example.demo.src.report.ReportController
 com/example/demo/src/alertKeyword/AlertKeywordService.java
  com.example.demo.src.alertKeyword.AlertKeywordService
 com/example/demo/src/user/model/PatchJoinAuthReq.java
@@ -78,12 +92,18 @@ com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
 com/example/demo/src/gather/model/PatchGatherReq.java
  com.example.demo.src.gather.model.PatchGatherReq
+com/example/demo/src/hidden/HiddenProvider.java
+ com.example.demo.src.hidden.HiddenProvider
 com/example/demo/src/user/model/PostUserReq.java
  com.example.demo.src.user.model.PostUserReq
 com/example/demo/src/product/model/GetProductListReq.java
  com.example.demo.src.product.model.GetProductListReq
+com/example/demo/src/hidden/model/GetHiddenUserRes.java
+ com.example.demo.src.hidden.model.GetHiddenUserRes
 com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
+com/example/demo/src/report/ReportProvider.java
+ com.example.demo.src.report.ReportProvider
 com/example/demo/src/user/UserDao.java
  com.example.demo.src.user.UserDao
 com/example/demo/src/gather/GatherProvider.java
@@ -108,6 +128,8 @@ com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/product/model/PatchProductStatus.java
  com.example.demo.src.product.model.PatchProductStatus
+com/example/demo/src/hidden/HiddenService.java
+ com.example.demo.src.hidden.HiddenService
 com/example/demo/src/gather/GatherDao.java
  com.example.demo.src.gather.GatherDao
 com/example/demo/src/user/UserController.java
@@ -120,6 +142,8 @@ com/example/demo/src/alertKeyword/model/PostAlertKeywordReq.java
  com.example.demo.src.alertKeyword.model.PostAlertKeywordReq
 com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
+com/example/demo/src/hidden/model/PatchHideUserCancellReq.java
+ com.example.demo.src.hidden.model.PatchHideUserCancellReq
 com/example/demo/src/gather/GatherService.java
  com.example.demo.src.gather.GatherService
 com/example/demo/src/user/model/GetUserRes.java
@@ -130,6 +154,8 @@ com/example/demo/src/gather/model/PostGatherRes.java
  com.example.demo.src.gather.model.PostGatherRes
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
+com/example/demo/src/report/model/Report.java
+ com.example.demo.src.report.model.Report
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.UserProvider
 com/example/demo/src/alertKeyword/model/GetAlertkeywardRes.java
