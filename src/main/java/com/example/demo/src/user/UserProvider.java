@@ -2,6 +2,7 @@ package com.example.demo.src.user;
 
 
 import com.example.demo.config.BaseException;
+
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -171,6 +172,63 @@ public class UserProvider {
 
 
     }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 추가 여부 확인 - checkBlcokUser()  */
+    public int checkHideUser(PostHideUserReq postHideUserReq) throws BaseException{
+        try{
+            return userDao.checkHideUser(postHideUserReq);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR_HIDDEN_CHECK_USER);   //"미노출 사용자 추가 확인에 실패하였습니다."
+        }
+    }
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 정보 조회 - getHiddenUser() */
+    public List<GetHiddenUserRes> getHiddenUser(int userIdx) throws BaseException {
+        try {
+            List<GetHiddenUserRes> getHiddenUserRes = userDao.getHiddenUser(userIdx);
+            return getHiddenUserRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR_HIDDEN_USER_INFO);   //"미노출 사용자 조회에 실패하였습니다."
+        }
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 신고 여부 확인 - checkReportUser()  */
+    public int checkReportUser(PostUserReportReq postUserReportReq) throws BaseException{
+        try{
+            return userDao.checkReportUser(postUserReportReq);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR_REPORT_CHECK_USER);   //"사용자 신고 여부 확인에 실패하였습니다."
+        }
+    }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 게시글 신고 여부 확인 - checkReportProduct()  */
+    public int checkReportProduct(PostProductReportReq postProductReportReq) throws BaseException{
+        try{
+            return userDao.checkReportProduct(postProductReportReq);
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR_REPORT_CHECK_PRODUCT);   //"상품 게시글 신고 여부 확인에 실패하였습니다."
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

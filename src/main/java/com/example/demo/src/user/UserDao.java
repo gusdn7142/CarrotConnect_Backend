@@ -1,5 +1,6 @@
 package com.example.demo.src.user;
 
+
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -425,6 +426,148 @@ public class UserDao {
 
 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 추가 - hideUser()  */
+    public int hideUser(PostHideUserReq postHideUserReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String hideUserQuery = "insert  into Hidden (userIdx, hiddenUserIdx) values (?,(select userIdx from User where nickName = ?))";
+
+        //userIdx와 hiddenUserIdx를 객체에 저장
+        Object[] hideUserParams = new Object[]{postHideUserReq.getUserIdx(), postHideUserReq.getHiddenNickName()};
+
+        //사용자 차단 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(hideUserQuery,hideUserParams);
+    }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 추가 여부 확인 - checkHideUser()  */
+    public int checkHideUser(PostHideUserReq postHideUserReq){
+        String checkHideUserQuery = "select exists(select userIdx from Hidden where userIdx = ? and hiddenUserIdx = (select userIdx from User where nickName = ?) and status = 1)";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] checkHideUserParams = new Object[]{postHideUserReq.getUserIdx(), postHideUserReq.getHiddenNickName()};
+
+        return this.jdbcTemplate.queryForObject(checkHideUserQuery,
+                int.class,
+                checkHideUserParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
+    }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 취소 - hideUserCancell()  */
+    public int hideUserCancell(PatchHideUserCancellReq patchHideUserCancellReq){
+        //쿼리문 생성
+        String hideUserCancellQuery = "update Hidden set status = 0 where userIdx = ? and hiddenUserIdx = (select userIdx from User where nickName = ?)";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] hideUserCancellParams = new Object[]{patchHideUserCancellReq.getUserIdx(), patchHideUserCancellReq.getHideCancellNickName()};
+
+        //미노출 사용자 취소 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(hideUserCancellQuery,hideUserCancellParams);
+    }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 미노출 사용자 정보 조회 - getHiddenUser() */
+    public List<GetHiddenUserRes> getHiddenUser(int userIdx){
+
+        //쿼리문 생성
+        String getHiddenUserQuery = "select u.image,\n" +
+                "       u.nickName,\n" +
+                "       r.regionName\n" +
+                "from User u\n" +
+                "join (select DISTINCT hiddenUserIdx from Hidden where userIdx = ? and status = 1) h\n" +
+                "     on u.userIdx = h.hiddenUserIdx\n" +
+                "join Region r\n" +
+                "     on u.userIdx = r.userIdx\n" +
+                "where r.mainStatus = 1";
+
+        //userIdx값 저장
+        int getHiddenUserParams = userIdx;
+
+        //쿼리문 실행
+        return this.jdbcTemplate.query(getHiddenUserQuery,
+                (rs, rowNum) -> new GetHiddenUserRes(
+                        rs.getString("image"),
+                        rs.getString("nickName"),             //각 칼럼은 DB와 매칭이 되어야 한다.
+                        rs.getString("regionName")),
+                getHiddenUserParams);
+    }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 신고 - reportUser()  */
+    public int reportUser(PostUserReportReq postUserReportReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String reportUserQuery = "insert into UserReport (type, content, product, price, informalStatus, unkindStatus, userIdx, reportedUserIdx)\n" +
+                "values (?, ?, ?, ?, ?, ?, ?, (select userIdx from User where nickName = ?))";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] reportUserParams = new Object[]{postUserReportReq.getReportType(), postUserReportReq.getContent(), postUserReportReq.getProduct(), postUserReportReq.getPrice(), postUserReportReq.getInformalStatus(), postUserReportReq.getUnkindStatus(), postUserReportReq.getUserIdx(), postUserReportReq.getReportNickName()};
+
+        //사용자 차단 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(reportUserQuery,reportUserParams);
+    }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 사용자 신고 여부 확인 - checkBlcokUser()  */
+    public int checkReportUser(PostUserReportReq postUserReportReq){
+        String checkBlcokUserQuery = "select exists(select userIdx from UserReport where type = ?  and userIdx = ? and reportedUserIdx = (select userIdx from User where nickName = ?) and status = 1 )";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] checkBlcokUserParams = new Object[]{postUserReportReq.getReportType(), postUserReportReq.getUserIdx(), postUserReportReq.getReportNickName()};
+
+        return this.jdbcTemplate.queryForObject(checkBlcokUserQuery,
+                int.class,
+                checkBlcokUserParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
+    }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 상품 게시글 신고 - reportProduct()  */
+    public int reportProduct(PostProductReportReq postProductReportReq){   //UserService.java에서 객체 값(nickName)을 받아와서...
+        //쿼리문 생성
+        String reportUserQuery = "insert into ProductReport (type, content, product, price, userIdx, reportedproductIdx)\n" +
+                "values (?, ?, ?, ?, ?, (select productIdx\n" +
+                "from Product\n" +
+                "where title = ?\n" +
+                "  and userIdx = (select userIdx from User where nickName = ? )))";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] reportUserParams = new Object[]{postProductReportReq.getReportType(), postProductReportReq.getContent(), postProductReportReq.getProduct(), postProductReportReq.getPrice(), postProductReportReq.getUserIdx(), postProductReportReq.getReportPostTitle(), postProductReportReq.getReportNickName() };
+        //사용자 차단 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(reportUserQuery,reportUserParams);
+    }
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 게시글 신고 여부 확인 - checkReportProduct()  */
+    public int checkReportProduct(PostProductReportReq postProductReportReq){
+        String checkReportProductQuery = "select exists(select userIdx\n" +
+                "              from ProductReport\n" +
+                "              where type = ?\n" +
+                "                and userIdx = ?\n" +
+                "                and reportedproductIdx = (select productIdx from Product where title = ? and userIdx = (select userIdx from User where nickName = ?))\n" +
+                "                and status = 1)";
+
+        //userIdx와 blockedUserIdx를 객체에 저장
+        Object[] checkReportProductParams = new Object[]{postProductReportReq.getReportType(), postProductReportReq.getUserIdx(), postProductReportReq.getReportPostTitle() ,postProductReportReq.getReportNickName()};
+
+        return this.jdbcTemplate.queryForObject(checkReportProductQuery,
+                int.class,
+                checkReportProductParams); //int형으로 쿼리 결과를 넘겨줌 (0,1)
+    }
 
 
 
