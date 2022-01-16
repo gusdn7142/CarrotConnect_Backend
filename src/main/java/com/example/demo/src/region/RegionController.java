@@ -116,4 +116,28 @@ public class RegionController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 내 동네 인증하기 API
+     * [PATCH] /regions/:idx/userIdx/auth-status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/auth-status")
+    public BaseResponse<String> patchRegionAuth(@PathVariable("idx") int idx, @PathVariable("userIdx") int userIdx){
+        try {
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            // userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            String result = regionService.patchRegionAuth(idx, userIdx);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
