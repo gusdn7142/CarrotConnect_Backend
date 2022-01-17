@@ -133,4 +133,35 @@ public class ChatController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 특정 채팅방 내용 조회 API
+     * [GET] /chats/:userIdx/:chatRoomIdx/content
+     * @return BaseResponse<GetChatContent>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}/{chatRoomIdx}/content") // (GET) 127.0.0.1:9000/chats/:userIdx/:chatRoomIdx/content
+    public BaseResponse<List<GetChatContent>> getChatContent(@PathVariable("userIdx") int userIdx, @PathVariable("chatRoomIdx") int chatRoomIdx) {
+        try{
+            /**
+             * validation 처리해야될것
+             * 1. 존재하는 채팅방인지
+             */
+
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get ChatRoom List
+            List<GetChatContent> getChatContent = chatProvider.getChatContent(userIdx, chatRoomIdx);
+            return new BaseResponse<>(getChatContent);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

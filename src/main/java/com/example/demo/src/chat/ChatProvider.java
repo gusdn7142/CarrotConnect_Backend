@@ -36,4 +36,14 @@ public class ChatProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<GetChatContent> getChatContent(int userIdx, int chatRoomIdx) throws BaseException{
+        try{
+            List<GetChatContent> getChatContent = chatDao.getChatContent(userIdx, chatRoomIdx);
+            return getChatContent;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

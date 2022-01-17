@@ -97,4 +97,63 @@ public class ChatDao {
                 ),
                 getChatRoomListParams, getChatRoomListParams);
     }
+
+    public List<GetChatContent> getChatContent(int userIdx, int chatRoomIdx){
+        String getChatContentQuery = "select cr.chatRoomIdx as chatRoomIdx,\n" +
+                "       u.userIdx as opponentIdx,\n" +
+                "       u.nickName as nickName,\n" +
+                "       u.mannerTemp as mannerTemp,\n" +
+                "       p.productIdx as productIdx,\n" +
+                "       u.image as profileImage,\n" +
+                "       p.title as title,\n" +
+                "       case when(p.saleStatus = 2) then '나눔'\n" +
+                "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
+                "           else concat(format(p.price, 0), '원') end as price,\n" +
+                "       pi.image as productImage,\n" +
+                "       case\n" +
+                "           when (p.saleStatus = 0) then '거래완료'\n" +
+                "           when(p.saleStatus = 1) then '판매중'\n" +
+                "           when (p.saleStatus = 2) then '나눔중'\n" +
+                "           when(p.saleStatus = 3) then '나눔완료'\n" +
+                "           when(p.saleStatus = 4) then '예약중'\n" +
+                "           when(p.saleStatus = 5) then '나눔예약중'\n" +
+                "           end as productStatus,\n" +
+                "       DATE_FORMAT(min(cc.createAt), '%Y년 %m월 %d일') as startDate\n" +
+                "from ChatRoom cr, ChatContent cc, User u, Product p, ProductImage pi\n" +
+                "where cc.productIdx = p.productIdx\n" +
+                "and cc.chatRoomIdx = cr.chatRoomIdx\n" +
+                "and p.productIdx = pi.productIdx\n" +
+                "and pi.firstImage = 1\n" +
+                "and cr.status = 1\n" +
+                "and ((cr.buyer = ? and cr.seller = u.userIdx) or (cr.seller = ? and buyer = u.userIdx))\n" +
+                "and cr.chatRoomIdx = ? ";
+        String getContentsQuery = "select senderIdx, content, receiverIdx, DATE_FORMAT(createAt, '%p %l:%i') as time\n" +
+                "from ChatContent\n" +
+                "where chatRoomIdx = ? order by createAt ";
+
+        int getChatContentParams = userIdx;
+        int getContentsParams = chatRoomIdx;
+        return this.jdbcTemplate.query(getChatContentQuery,
+                (rs, rowNum) -> new GetChatContent(
+                        rs.getInt("chatRoomIdx"),
+                        rs.getInt("opponentIdx"),
+                        rs.getString("nickName"),
+                        rs.getDouble("mannerTemp"),
+                        rs.getInt("productIdx"),
+                        rs.getString("profileImage"),
+                        rs.getString("title"),
+                        rs.getString("price"),
+                        rs.getString("productImage"),
+                        rs.getString("productStatus"),
+                        rs.getString("startDate"),
+                        this.jdbcTemplate.query(getContentsQuery,
+                                (rs1, rowNum1) -> new Contents(
+                                        rs1.getInt("senderIdx"),
+                                        rs1.getString("content"),
+                                        rs1.getInt("receiverIdx"),
+                                        rs1.getString("time")
+                                        ), getContentsParams)
+                ), getChatContentParams, getChatContentParams, getContentsParams);
+    }
 }
