@@ -141,7 +141,7 @@ public class ChatController {
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("/{userIdx}/{chatRoomIdx}/content") // (GET) 127.0.0.1:9000/chats/:userIdx/:chatRoomIdx/content
+    @GetMapping("/{userIdx}/{chatRoomIdx}/room") // (GET) 127.0.0.1:9000/chats/:userIdx/:chatRoomIdx/content
     public BaseResponse<List<GetChatContent>> getChatContent(@PathVariable("userIdx") int userIdx, @PathVariable("chatRoomIdx") int chatRoomIdx) {
         try{
             /**
