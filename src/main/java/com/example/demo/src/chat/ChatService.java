@@ -38,4 +38,16 @@ public class ChatService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void createChatContent(int chatRoomIdx, PostChatContent postChatContent) throws BaseException {
+        try{
+            int result = chatDao.createChatContent(chatRoomIdx, postChatContent);
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

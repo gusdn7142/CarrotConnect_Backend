@@ -41,7 +41,7 @@ public class ChatController {
     // Body
     @ResponseBody
     @PostMapping("/{buyerIdx}/{sellerIdx}/{productIdx}")
-    public BaseResponse<String> createProduct(@PathVariable("buyerIdx") int buyerIdx,
+    public BaseResponse<String> createChatRoom(@PathVariable("buyerIdx") int buyerIdx,
                                               @PathVariable("sellerIdx") int sellerIdx,
                                               @PathVariable("productIdx") int productIdx,
                                               @RequestBody PostChatRoom postChatRoom) {
@@ -66,6 +66,42 @@ public class ChatController {
             //같다면 생성
             chatService.createChatRoom(buyerIdx, sellerIdx, productIdx, postChatRoom);
             String result = "채팅방 생성 및 메세지 전송 성공";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 채팅 메세지 생성 API
+     * [POST] /chats/:chatRoomIdx/content
+     * @return BaseResponse<String>
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("/{chatRoomIdx}/content")
+    public BaseResponse<String> createChatContent(@PathVariable("chatRoomIdx") int chatRoomIdx, @RequestBody PostChatContent postChatContent) {
+        try {
+            /**
+             * validation 처리해야될것
+             * 1. 올바른 값들인지
+             * 2. 존재하는 사용자인지
+             * 3. 존재하는 상품인지
+             * 4. 길이 확인
+             * 5. 중복 확인
+             */
+
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(postChatContent.getSenderIdx() != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //같다면 생성
+            chatService.createChatContent(chatRoomIdx, postChatContent);
+            String result = "채팅 메세지 전송 성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

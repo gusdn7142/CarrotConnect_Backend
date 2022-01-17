@@ -43,4 +43,13 @@ public class ChatDao {
         // contentIdx 값 반환
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public int createChatContent(int chatRoomIdx, PostChatContent postChatContent){
+        String createCatchContentQuery = "insert into ChatContent(content, chatRoomIdx, productIdx, senderIdx, receiverIdx)values (?, ?, ?, ?, ?) ";
+        Object[] createCatchContentParams = new Object[]{postChatContent.getContent(), chatRoomIdx, postChatContent.getProductIdx(), postChatContent.getSenderIdx(), postChatContent.getReceiverIdx()};
+        this.jdbcTemplate.update(createCatchContentQuery, createCatchContentParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }
