@@ -52,4 +52,49 @@ public class ChatDao {
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public List<GetChatRoomList> getChatRoomList(int userIdx){
+        String getChatRoomListQuery = "select cr.chatRoomIdx as chatRoomIdx,\n" +
+                "       cr.buyer as buyerIdx,\n" +
+                "       cr.seller as sellerIdx,\n" +
+                "       u.userIdx as opponentIdx,\n" +
+                "       u.image as profileImage,\n" +
+                "       u.nickName as nickName,\n" +
+                "       r.regionName as regionName,\n" +
+                "       case\n" +
+                "           when (timestampdiff(minute, x.createAt, now()) < 1) then concat(timestampdiff(second, x.createAt, now()), '초', ' 전')\n" +
+                "           when (timestampdiff(hour, x.createAt, now()) < 1) then concat(timestampdiff(minute, x.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, x.createAt, now()) < 1) then concat(timestampdiff(hour, x.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, x.createAt, now()) > 24) then concat(timestampdiff(day, x.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , cr.createAt, now()),'달', ' 전') end as uploadTime,\n" +
+                "       x.content as lastContent,\n" +
+                "       pi.image as productImage\n" +
+                "from User u, ChatRoom cr\n" +
+                "   left join(\n" +
+                "       select cc.content as 'content', cc.chatRoomIdx, createAt\n" +
+                "       from ChatContent cc\n" +
+                "       where(chatRoomIdx, createAt) in (select chatRoomIdx, max(createAt) from ChatContent group by chatRoomIdx)\n" +
+                "    ) as x on cr.chatRoomIdx = x.chatRoomIdx, Region r, Product p, ProductImage pi\n" +
+                "where p.productIdx = cr.productIdx\n" +
+                "  and p.productIdx = pi.productIdx\n" +
+                "  and pi.firstImage = 1\n" +
+                "  and r.nowStatus = 1\n" +
+                "  and cr.status = 1\n" +
+                "  and ((cr.buyer = ? and cr.seller = r.userIdx and cr.seller = u.userIdx) or (cr.seller = ? and buyer = r.userIdx and buyer = u.userIdx)) ";
+        int getChatRoomListParams = userIdx;
+        return this.jdbcTemplate.query(getChatRoomListQuery,
+                (rs, rowNum) -> new GetChatRoomList(
+                        rs.getInt("chatRoomIdx"),
+                        rs.getInt("buyerIdx"),
+                        rs.getInt("sellerIdx"),
+                        rs.getInt("opponentIdx"),
+                        rs.getString("profileImage"),
+                        rs.getString("nickName"),
+                        rs.getString("regionName"),
+                        rs.getString("uploadTime"),
+                        rs.getString("lastContent"),
+                        rs.getString("productImage")
+                ),
+                getChatRoomListParams, getChatRoomListParams);
+    }
 }
