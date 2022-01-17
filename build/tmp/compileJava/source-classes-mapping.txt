@@ -1,13 +1,19 @@
 com/example/demo/src/category/CategoryController.java
  com.example.demo.src.category.CategoryController
+com/example/demo/src/chat/model/PostChatRoom.java
+ com.example.demo.src.chat.model.PostChatRoom
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
 com/example/demo/src/product/ProductService.java
  com.example.demo.src.product.ProductService
+com/example/demo/src/lookup/LookUpController.java
+ com.example.demo.src.lookup.LookUpController
 com/example/demo/src/product/model/GetProduct.java
  com.example.demo.src.product.model.GetProduct
 com/example/demo/src/product/model/GetProductHidden.java
  com.example.demo.src.product.model.GetProductHidden
+com/example/demo/src/region/model/GetRegion.java
+ com.example.demo.src.region.model.GetRegion
 com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/src/gather/model/PostGatherReq.java
@@ -18,6 +24,8 @@ com/example/demo/src/product/model/PatchProductInterest.java
  com.example.demo.src.product.model.PatchProductInterest
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
+com/example/demo/src/chat/ChatController.java
+ com.example.demo.src.chat.ChatController
 com/example/demo/src/user/model/GetUserBlockRes.java
  com.example.demo.src.user.model.GetUserBlockRes
 com/example/demo/src/user/model/PostUserReportReq.java
@@ -30,10 +38,16 @@ com/example/demo/src/product/model/GetProductComplete.java
  com.example.demo.src.product.model.GetProductComplete
 com/example/demo/src/category/model/GetCategoryInterest.java
  com.example.demo.src.category.model.GetCategoryInterest
+com/example/demo/src/region/RegionService.java
+ com.example.demo.src.region.RegionService
+com/example/demo/src/lookup/LookUpService.java
+ com.example.demo.src.lookup.LookUpService
 com/example/demo/src/alertKeyword/AlertKeywordDao.java
  com.example.demo.src.alertKeyword.AlertKeywordDao
 com/example/demo/src/category/CategoryProvider.java
  com.example.demo.src.category.CategoryProvider
+com/example/demo/src/chat/ChatProvider.java
+ com.example.demo.src.chat.ChatProvider
 com/example/demo/src/product/model/GetProductList.java
  com.example.demo.src.product.model.GetProductList
 com/example/demo/src/alertKeyword/model/GetAlertRegionRes.java
@@ -48,6 +62,8 @@ com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
 com/example/demo/src/user/model/PostUserRes.java
  com.example.demo.src.user.model.PostUserRes
+com/example/demo/src/chat/ChatDao.java
+ com.example.demo.src.chat.ChatDao
 com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
 com/example/demo/src/user/model/PostProductReportReq.java
@@ -56,10 +72,14 @@ com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
 com/example/demo/src/alertKeyword/model/GetALLAlertProductRes.java
  com.example.demo.src.alertKeyword.model.GetALLAlertProductRes
+com/example/demo/src/chat/model/Contents.java
+ com.example.demo.src.chat.model.Contents
 com/example/demo/src/gather/model/GetGatherProductRes.java
  com.example.demo.src.gather.model.GetGatherProductRes
 com/example/demo/src/alertKeyword/model/GetAlertPrductRes.java
  com.example.demo.src.alertKeyword.model.GetAlertPrductRes
+com/example/demo/src/region/model/PostRegion.java
+ com.example.demo.src.region.model.PostRegion
 com/example/demo/src/gather/GatherController.java
  com.example.demo.src.gather.GatherController
 com/example/demo/src/product/ProductController.java
@@ -78,6 +98,8 @@ com/example/demo/src/product/model/GetProductPurchased.java
  com.example.demo.src.product.model.GetProductPurchased
 com/example/demo/src/user/model/PatchUserBlockCancellReq.java
  com.example.demo.src.user.model.PatchUserBlockCancellReq
+com/example/demo/src/chat/model/GetChatContent.java
+ com.example.demo.src.chat.model.GetChatContent
 com/example/demo/src/product/ProductProvider.java
  com.example.demo.src.product.ProductProvider
 com/example/demo/src/gather/model/PatchGatherReq.java
@@ -86,12 +108,18 @@ com/example/demo/src/user/model/PostUserReq.java
  com.example.demo.src.user.model.PostUserReq
 com/example/demo/src/user/model/GetHiddenUserRes.java
  com.example.demo.src.user.model.GetHiddenUserRes
+com/example/demo/src/chat/model/GetChatRoomList.java
+ com.example.demo.src.chat.model.GetChatRoomList
+com/example/demo/src/region/RegionProvider.java
+ com.example.demo.src.region.RegionProvider
 com/example/demo/src/product/model/GetProductListReq.java
  com.example.demo.src.product.model.GetProductListReq
 com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
 com/example/demo/src/user/UserDao.java
  com.example.demo.src.user.UserDao
+com/example/demo/src/chat/model/PostChatContent.java
+ com.example.demo.src.chat.model.PostChatContent
 com/example/demo/src/gather/GatherProvider.java
  com.example.demo.src.gather.GatherProvider
 com/example/demo/utils/AES128.java
@@ -110,12 +138,18 @@ com/example/demo/src/test/TestController.java
  com.example.demo.src.test.TestController
 com/example/demo/src/alertKeyword/model/PostAlertKeywordRes.java
  com.example.demo.src.alertKeyword.model.PostAlertKeywordRes
+com/example/demo/src/lookup/LookUpDao.java
+ com.example.demo.src.lookup.LookUpDao
 com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/product/model/PatchProductStatus.java
  com.example.demo.src.product.model.PatchProductStatus
+com/example/demo/src/region/RegionController.java
+ com.example.demo.src.region.RegionController
 com/example/demo/src/gather/GatherDao.java
  com.example.demo.src.gather.GatherDao
+com/example/demo/src/region/RegionDao.java
+ com.example.demo.src.region.RegionDao
 com/example/demo/src/user/UserController.java
  com.example.demo.src.user.UserController
 com/example/demo/src/user/model/PostHideUserReq.java
@@ -144,3 +178,5 @@ com/example/demo/src/user/model/PatchHideUserCancellReq.java
  com.example.demo.src.user.model.PatchHideUserCancellReq
 com/example/demo/src/alertKeyword/model/GetAlertkeywardRes.java
  com.example.demo.src.alertKeyword.model.GetAlertkeywardRes
+com/example/demo/src/chat/ChatService.java
+ com.example.demo.src.chat.ChatService
