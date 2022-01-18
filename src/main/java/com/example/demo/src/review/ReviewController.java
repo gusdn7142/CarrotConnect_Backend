@@ -1,6 +1,7 @@
 package com.example.demo.src.review;
 
 import com.example.demo.src.product.model.GetProductPurchased;
+import com.example.demo.src.product.model.PatchProductInterest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -60,9 +61,7 @@ public class ReviewController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            //같다면 변경
-            reviewService.createReview(senderIdx, receiverIdx, productIdx, postReview);
-            String result = "거래 후기 등록 성공";
+            String result = reviewService.createReview(senderIdx, receiverIdx, productIdx, postReview);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -91,6 +90,30 @@ public class ReviewController {
             List<GetReviewAboutUser> getReviewAboutUser = reviewProvider.getReviewAboutUser(receiverIdx);
             return new BaseResponse<>(getReviewAboutUser);
         } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 거래 후기 삭제 API
+     * [PATCH] /reviews/:userIdx/:reviewIdx
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}/{reviewIdx}")
+    public BaseResponse<String> patchReviewStatus(@PathVariable("userIdx") int userIdx, @PathVariable("reviewIdx") int reviewIdx){
+        try {
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            // userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            String result = reviewService.patchReviewStatus(userIdx, reviewIdx);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }

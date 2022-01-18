@@ -32,13 +32,34 @@ public class ReviewService {
         this.jwtService = jwtService;
     }
 
-    public void createReview(int senderIdx, int receiverIdx, int productIdx, PostReview postReview) throws BaseException {
+    public String createReview(int senderIdx, int receiverIdx, int productIdx, PostReview postReview) throws BaseException {
         try{
             int result = reviewDao.createReview(senderIdx, receiverIdx, productIdx, postReview);
+            String message = "reviewIdx: " + result;
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "실패";
+                return message;
             }
+            return message;
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public String patchReviewStatus(int userIdx, int reviewIdx) throws BaseException {
+        try{
+            int result = reviewDao.patchReviewStatus(userIdx, reviewIdx);
+            String message = "거래 후기 삭제 성공";
+
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+                message = "삭제에 실패했습니다.";
+                return message;
+            }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

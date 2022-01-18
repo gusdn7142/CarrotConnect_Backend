@@ -35,7 +35,8 @@ public class ReviewDao {
         }
 
         String mannerIdx = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(mannerIdx,int.class);
+        this.jdbcTemplate.queryForObject(mannerIdx,int.class);
+        return reviewIdx;
     }
 
     @Transactional
@@ -90,5 +91,16 @@ public class ReviewDao {
                                         rs2.getString("content")
                                 ), getReviewAboutParams)
                 ), getReviewAboutParams);
+    }
+
+    @Transactional
+    public int patchReviewStatus(int userIdx, int reviewIdx){
+        String patchMannerStatusQuery = "update MannerEvaliation set status = 0 where senderidx = ? and reviewIdx = ? ";
+        Object[] patchMannerStatusParams = new Object[]{userIdx, reviewIdx};
+        this.jdbcTemplate.update(patchMannerStatusQuery,patchMannerStatusParams);
+
+        String patchReviewStatusQuery = "update DealReview set status = 0 where senderidx = ? and reviewIdx = ? ";
+        Object[] patchReviewSatusQuery = new Object[]{userIdx, reviewIdx};
+        return this.jdbcTemplate.update(patchReviewStatusQuery,patchReviewSatusQuery);
     }
 }
