@@ -76,7 +76,7 @@ public class TAService {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네생활 게시글 수정 - modifyTownActivity()  */
-    public void modifyTownActivity(PatchTownActivityReq patchTownActivityReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+    public void modifyTownActivity(PatchTownActivityReq patchTownActivityReq) throws BaseException {
 
         try{
             //동네생활 게시글 주제 변경 (null이 아니면)
@@ -118,12 +118,12 @@ public class TAService {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네생활 게시글 삭제 - deleteTownActivity()  */
-    public void deleteTownActivity(PatchTownActivityReq patchTownActivityReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
+    public void deleteTownActivity(PatchTownActivityReq patchTownActivityReq) throws BaseException {
 
         try{
             int result = taDao.deleteTownActivity(patchTownActivityReq);
         } catch(Exception exception){
-            throw new BaseException(DATABASE_ERROR_DELETE_TOWN_ACTIVITY);   //"게시글 내용 변경시 오류가 발생하였습니다."
+            throw new BaseException(DATABASE_ERROR_DELETE_TOWN_ACTIVITY);   //"게시글 삭제시 오류가 발생하였습니다."
         }
 
     }
