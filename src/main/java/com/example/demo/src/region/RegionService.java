@@ -32,13 +32,17 @@ public class RegionService {
         this.jwtService = jwtService;
     }
 
-    public void createRegion(int userIdx, PostRegion postRegion) throws BaseException {
+    public String createRegion(int userIdx, PostRegion postRegion) throws BaseException {
         try{
             int result = regionDao.createRegion(userIdx, postRegion);
+            String message = "regionIdx: " + result;
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "내 동네 추가 실패";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

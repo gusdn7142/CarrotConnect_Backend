@@ -1,6 +1,5 @@
 package com.example.demo.src.region;
 
-import com.example.demo.src.category.model.PatchCategoryInterest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -58,9 +57,7 @@ public class RegionController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            System.out.println("here");
-            regionService.createRegion(userIdx, postRegion);
-            String result = "내 동네 추가 성공";
+            String result = regionService.createRegion(userIdx, postRegion);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
