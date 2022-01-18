@@ -28,4 +28,6 @@ public class GetProduct {
     private String lookupCount;
     private String productStatus;
     private List<String> images;
+    private int interestStatus;
+    private List<GetProductOnSale> productOnSales;
 }

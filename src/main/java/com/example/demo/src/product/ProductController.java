@@ -61,23 +61,29 @@ public class ProductController {
 
     /**
      * 상품 조회 API
-     * [GET] /products/:productIdx
+     * [GET] /products/:productIdx/:userIdx
      * @return BaseResponse<GetProduct>
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/product/:productIdx
-    public BaseResponse<List<GetProduct>> getProduct(@PathVariable("productIdx") int productIdx) {
+    @GetMapping("/{productIdx}/{userIdx}") // (GET) 127.0.0.1:9000/product/:productIdx/:userIdx
+    public BaseResponse<List<GetProduct>> getProduct(@PathVariable("productIdx") int productIdx, @PathVariable("userIdx") int userIdx) {
         try{
-
             /**
              * validation 처리해야될것
-             * 1. 인증코드여부
-             * 2. 존재하는 상품인지
+             * 1. 존재하는 상품인지
              */
 
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
             // Get Product
-            List<GetProduct> getProduct = productProvider.getProduct(productIdx);
+            List<GetProduct> getProduct = productProvider.getProduct(productIdx, userIdx);
             return new BaseResponse<>(getProduct);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
