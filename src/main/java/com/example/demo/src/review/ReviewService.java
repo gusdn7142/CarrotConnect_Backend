@@ -39,7 +39,7 @@ public class ReviewService {
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
-                message = "실패";
+                message = "거래 후기 등록 실패";
                 return message;
             }
             return message;

@@ -34,8 +34,6 @@ public class ReviewDao {
             this.jdbcTemplate.update(createMannerQuery, createMannerParams);
         }
 
-        String mannerIdx = "select last_insert_id()";
-        this.jdbcTemplate.queryForObject(mannerIdx,int.class);
         return reviewIdx;
     }
 
