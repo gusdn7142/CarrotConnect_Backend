@@ -1,5 +1,6 @@
 package com.example.demo.src.review;
 
+import com.example.demo.src.product.model.GetProductPurchased;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -64,6 +65,32 @@ public class ReviewController {
             String result = "거래 후기 등록 성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 거래 후기 조회 API
+     * [GET] /reviews/:userIdx/:receiverIdx
+     * @return BaseResponse<GetReviewAboutUser>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}/{receiverIdx}") // (GET) 127.0.0.1:9000/reviews/:userIdx/:receiverIdx
+    public BaseResponse<List<GetReviewAboutUser>> getReviewAboutUser(@PathVariable("userIdx") int userIdx, @PathVariable("receiverIdx") int receiverIdx) {
+        try{
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Review About User
+            List<GetReviewAboutUser> getReviewAboutUser = reviewProvider.getReviewAboutUser(receiverIdx);
+            return new BaseResponse<>(getReviewAboutUser);
+        } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
     }

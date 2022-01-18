@@ -26,4 +26,14 @@ public class ReviewProvider {
         this.reviewDao = reviewDao;
         this.jwtService = jwtService;
     }
+
+    public List<GetReviewAboutUser> getReviewAboutUser(int receiverIdx) throws BaseException{
+        try{
+            List<GetReviewAboutUser> getReviewAboutUser = reviewDao.getReviewAboutUser(receiverIdx);
+            return getReviewAboutUser;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
