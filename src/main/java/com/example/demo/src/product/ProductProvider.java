@@ -37,9 +37,9 @@ public class ProductProvider {
         }
     }
 
-    public List<GetProduct> getProduct(int productIdx) throws BaseException{
+    public List<GetProduct> getProduct(int productIdx, int userIdx) throws BaseException{
         try{
-            List<GetProduct> getProduct = productDao.getProduct(productIdx);
+            List<GetProduct> getProduct = productDao.getProduct(productIdx, userIdx);
             return getProduct;
         }
         catch (Exception exception) {

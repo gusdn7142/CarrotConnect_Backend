@@ -70,7 +70,7 @@ public class ProductDao {
                 getProductListParams);
     }
 
-    public List<GetProduct> getProduct(int productIdx){
+    public List<GetProduct> getProduct(int productIdx, int userIdx){
         String getProductQuery = "select u.userIdx as userIdx,\n" +
                 "       u.nickName as nickName,\n" +
                 "       u.image as userImage,\n" +
@@ -88,6 +88,7 @@ public class ProductDao {
                 "       p.content as content,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
                 "       p.priceOfferStatus as priceOfferStatus,\n" +
                 "       concat('채팅 ', chatCount) as chatCount ,\n" +
@@ -100,7 +101,14 @@ public class ProductDao {
                 "           when(p.saleStatus = 3) then '나눔완료'\n" +
                 "           when(p.saleStatus = 4) then '예약중'\n" +
                 "           when(p.saleStatus = 5) then '나눔예약중'\n" +
-                "           end as productStatus\n" +
+                "           end as productStatus,\n" +
+                "       exists(\n" +
+                "           select pi.userIdx\n" +
+                "           from ProductInterest pi, Product p\n" +
+                "           where pi.productIdx = p.productIdx\n" +
+                "             and pi.status = 1\n" +
+                "             and pi.userIdx = ?\n" +
+                "             and p.productIdx = ?) as interestStatus\n" +
                 "from User u, Category c ,Product p\n" +
                 "    left join(select productIdx, count(productIdx) as 'chatCount'\n" +
                 "        from ChatRoom\n" +
@@ -122,6 +130,24 @@ public class ProductDao {
                 "and p.status = 1\n" +
                 "and p.hideStatus = 0\n" +
                 "and p.productIdx = ? ";
+        String getProductOnSaleQuery = "select p.productIdx as productIdx,\n" +
+                "       pi.image as productImage,\n" +
+                "       p.title as title,\n" +
+                "       case\n" +
+                "           when(p.saleStatus = 2) then '나눔'\n" +
+                "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
+                "           else concat(format(p.price, 0), '원') end as price\n" +
+                "from Product p, ProductImage pi\n" +
+                "where p.productIdx = pi.productIdx\n" +
+                "and firstImage = 1\n" +
+                "and p.status = 1\n" +
+                "and p.hideStatus = 0\n" +
+                "and p.userIdx = ? ";
+
+        String getProductUserIdxQuery = "select userIdx from Product where productIdx = ?";
+        int getProductUserIdxParams = productIdx;
+        int productUserIdx = this.jdbcTemplate.queryForObject(getProductUserIdxQuery, (rs3, rowNum3) -> new Integer(rs3.getString("userIdx")), getProductUserIdxParams);
 
         int getProductParams = productIdx;
         return this.jdbcTemplate.query(getProductQuery,
@@ -142,11 +168,16 @@ public class ProductDao {
                         rs.getString("interestCount"),
                         rs.getString("lookupCount"),
                         rs.getString("productStatus"),
-                        this.jdbcTemplate.query(getProductImageQuery, (rs1, rowNum1) -> new String(rs1.getString("images")), getProductParams)
-                ), getProductParams);
+                        this.jdbcTemplate.query(getProductImageQuery, (rs1, rowNum1) -> new String(rs1.getString("images")), getProductParams),
+                        rs.getInt("interestStatus"),
+                        this.jdbcTemplate.query(getProductOnSaleQuery, (rs2, rowNum2) -> new GetProductOnSale(
+                                rs2.getInt("productIdx"),
+                                rs2.getString("productImage"),
+                                rs2.getString("title"),
+                                rs2.getString("price")
+                                ), productUserIdx)
+                ), userIdx, getProductParams, getProductParams);
     }
-
-
 
     public int patchProductStatus(int productIdx, int userIdx){
         String patchProductStatusQuery = "update Product set status = 0 where productIdx = ? and userIdx = ? ";
