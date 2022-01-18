@@ -4,6 +4,8 @@ com/example/demo/src/chat/model/PostChatRoom.java
  com.example.demo.src.chat.model.PostChatRoom
 com/example/demo/src/townActivity/model/GetTownActivityRes.java
  com.example.demo.src.townActivity.model.GetTownActivityRes
+com/example/demo/src/review/ReviewDao.java
+ com.example.demo.src.review.ReviewDao
 com/example/demo/src/gather/model/PostGatherReq.java
  com.example.demo.src.gather.model.PostGatherReq
 com/example/demo/src/category/model/PatchCategoryInterest.java
@@ -98,6 +100,8 @@ com/example/demo/src/region/RegionController.java
  com.example.demo.src.region.RegionController
 com/example/demo/src/region/RegionDao.java
  com.example.demo.src.region.RegionDao
+com/example/demo/src/review/model/GetUserReview.java
+ com.example.demo.src.review.model.GetUserReview
 com/example/demo/src/search/model/GetSearchToTownActivityRes.java
  com.example.demo.src.search.model.GetSearchToTownActivityRes
 com/example/demo/src/user/UserController.java
@@ -120,6 +124,8 @@ com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserProvider.java
  com.example.demo.src.user.UserProvider
+com/example/demo/src/review/ReviewService.java
+ com.example.demo.src.review.ReviewService
 com/example/demo/src/chat/ChatService.java
  com.example.demo.src.chat.ChatService
 com/example/demo/config/Constant.java
@@ -138,6 +144,8 @@ com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/src/townActivity/TADao.java
  com.example.demo.src.townActivity.TADao
+com/example/demo/src/review/model/GetUserManner.java
+ com.example.demo.src.review.model.GetUserManner
 com/example/demo/src/chat/ChatController.java
  com.example.demo.src.chat.ChatController
 com/example/demo/src/product/model/GetProductInterest.java
@@ -148,6 +156,8 @@ com/example/demo/src/townActivity/model/PostTownActivityReq.java
  com.example.demo.src.townActivity.model.PostTownActivityReq
 com/example/demo/src/alertKeyword/AlertKeywordController.java
  com.example.demo.src.alertKeyword.AlertKeywordController
+com/example/demo/src/review/ReviewController.java
+ com.example.demo.src.review.ReviewController
 com/example/demo/src/product/model/GetProductOnSale.java
  com.example.demo.src.product.model.GetProductOnSale
 com/example/demo/src/product/model/GetProductComplete.java
@@ -214,6 +224,12 @@ com/example/demo/src/search/SearchDao.java
  com.example.demo.src.search.SearchDao
 com/example/demo/src/gather/GatherDao.java
  com.example.demo.src.gather.GatherDao
+com/example/demo/src/review/model/GetReviewAboutUser.java
+ com.example.demo.src.review.model.GetReviewAboutUser
+com/example/demo/src/review/ReviewProvider.java
+ com.example.demo.src.review.ReviewProvider
+com/example/demo/src/review/model/PostReview.java
+ com.example.demo.src.review.model.PostReview
 com/example/demo/src/user/model/PostHideUserReq.java
  com.example.demo.src.user.model.PostHideUserReq
 com/example/demo/src/search/model/Search.java
