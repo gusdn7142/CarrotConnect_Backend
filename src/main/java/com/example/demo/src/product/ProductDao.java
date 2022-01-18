@@ -30,6 +30,7 @@ public class ProductDao {
                 "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
                 "       pi.image as image,\n" +
                 "       chatCount,\n" +
@@ -198,6 +199,7 @@ public class ProductDao {
                 "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
                 "       pi.image as image,\n" +
                 "       chatCount,\n" +
@@ -253,6 +255,7 @@ public class ProductDao {
                 "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
                 "       pi.image as image,\n" +
                 "       chatCount,\n" +
@@ -309,6 +312,7 @@ public class ProductDao {
                 "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
                 "       pi.image as image,\n" +
                 "       chatCount,\n" +
@@ -363,6 +367,7 @@ public class ProductDao {
                 "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
                 "       pi.image as image,\n" +
                 "       chatCount,\n" +
@@ -446,6 +451,7 @@ public class ProductDao {
                 "           else concat(timestampdiff(month , p.createAt, now()),'달', ' 전') end as uploadTime,\n" +
                 "       case when(p.saleStatus = 2) then '나눔'\n" +
                 "           when(p.saleStatus = 3) then '나눔'\n" +
+                "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
                 "       pi.image as image,\n" +
                 "       chatCount,\n" +
