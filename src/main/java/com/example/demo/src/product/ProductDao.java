@@ -146,6 +146,8 @@ public class ProductDao {
                 ), getProductParams);
     }
 
+
+
     public int patchProductStatus(int productIdx, int userIdx){
         String patchProductStatusQuery = "update Product set status = 0 where productIdx = ? and userIdx = ? ";
         Object[] patchProductStatusParams = new Object[]{productIdx, userIdx};

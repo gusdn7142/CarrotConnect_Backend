@@ -68,8 +68,11 @@ public enum BaseResponseStatus {
     POST_USERS_REPORT_NICKNAME(false,3008,"이미 신고한 사용자입니다."),
 
 
+
     POST_USERS_REPORT_PRODUCT(false,3008,"이미 신고한 상품 게시글 입니다."),
 
+    //TownActiviy 리소스
+    POST_TOWNACTIVITY_EXISTS(false,3001,"이미 작성하셨던 게시글 입니다."),
 
 //    PATCH_USERS_BLOCKS_CANCELL_NICKNAME(false,3008,"이미 차단 해제한 사용자입니다."), 지울 예정
 
@@ -102,6 +105,10 @@ public enum BaseResponseStatus {
     //Hidden 리소스
     POST_USERS_HIDDEN_NICKNAME(false,3008,"이미 미노출된 등록된 사용자입니다."),
 
+
+    //townActivity 리소스
+    POST_TOWN_ACTIVITY_EMPTY_TOPICNAME(false, 2015, "게시글 주제를 입력해주세요."),
+    POST_TOWN_ACTIVITY_EMPTY_CONTENT(false, 2015, "게시글 내용을 입력해주세요."),
 
 
     /**
@@ -146,6 +153,7 @@ public enum BaseResponseStatus {
 
 
 
+
 //    //[PATCH] /users/{userIdx}
 //    MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 //
@@ -186,11 +194,19 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_HIDDEN_USER(false, 4242, "미노출 사용자 추가에 실패했습니다. 닉네임을 확인해 주세요."),
     DATABASE_ERROR_HIDDEN_CHECK_USER(false, 4242, "미노출 사용자 추가 확인에 실패하였습니다."),
     DATABASE_ERROR_HIDDEN_CANCELL_USER(false, 4242, "미노출 사용자 해제에 실패했습니다. 닉네임을 확인해 주세요."),
-    DATABASE_ERROR_HIDDEN_USER_INFO(false, 4242, "미노출 사용자 조회에 실패하였습니다.");
+    DATABASE_ERROR_HIDDEN_USER_INFO(false, 4242, "미노출 사용자 조회에 실패하였습니다."),
 
 
+    //MytownActivity 리소스
+    DATABASE_ERROR_CREATE_TOWN_ACTIVITY(false, 4000, "동네 생활 게시글을 DB에 등록하지 못하였습니다."),
+    DATABASE_ERROR_CREATE_TOWN_ACTIVITY_IMAGE(false, 4000, "동네 생활 게시글 등록 과정에서 이미지를 DB에 등록하지 못하였습니다."),
+    DATABASE_ERROR_TOWN_ACTIVITY_INFO(false, 4242, "동네 생활 게시글을 불러오는데 실패하였습니다."),
+    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_IMAGE(false, 4002, "이미지 변경시 오류가 발생하였습니다."),
+    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_CONTENT(false, 4002, "게시글 내용 변경시 오류가 발생하였습니다."),
+    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_TOPICNAME(false, 4002, "게시글 주제 변경시 오류가 발생하였습니다."),
+    DATABASE_ERROR_DELETE_TOWN_ACTIVITY(false, 4002, "게시글 삭제시 오류가 발생하였습니다."),
 
-
+    DATABASE_ERROR_CHECK_TOWN_ACTIVITY(false, 4000, "게시글 중복 검사에 실패하였습니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요

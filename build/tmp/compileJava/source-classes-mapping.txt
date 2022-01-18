@@ -1,7 +1,12 @@
 com/example/demo/src/category/CategoryController.java
  com.example.demo.src.category.CategoryController
+<<<<<<< Updated upstream
 com/example/demo/src/chat/model/PostChatRoom.java
  com.example.demo.src.chat.model.PostChatRoom
+=======
+com/example/demo/src/townActivity/model/GetTownActivityRes.java
+ com.example.demo.src.townActivity.model.GetTownActivityRes
+>>>>>>> Stashed changes
 com/example/demo/config/Constant.java
  com.example.demo.config.Constant
 com/example/demo/src/product/ProductService.java
@@ -18,6 +23,8 @@ com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/src/gather/model/PostGatherReq.java
  com.example.demo.src.gather.model.PostGatherReq
+com/example/demo/src/townActivity/TADao.java
+ com.example.demo.src.townActivity.TADao
 com/example/demo/src/category/model/PatchCategoryInterest.java
  com.example.demo.src.category.model.PatchCategoryInterest
 com/example/demo/src/product/model/PatchProductInterest.java
@@ -32,16 +39,25 @@ com/example/demo/src/user/model/PostUserReportReq.java
  com.example.demo.src.user.model.PostUserReportReq
 com/example/demo/src/product/model/GetProductInterest.java
  com.example.demo.src.product.model.GetProductInterest
+com/example/demo/src/townActivity/model/GetTownActivitytoTopicRes.java
+ com.example.demo.src.townActivity.model.GetTownActivitytoTopicRes
+com/example/demo/src/townActivity/model/PostTownActivityReq.java
+ com.example.demo.src.townActivity.model.PostTownActivityReq
 com/example/demo/src/alertKeyword/AlertKeywordController.java
  com.example.demo.src.alertKeyword.AlertKeywordController
 com/example/demo/src/product/model/GetProductComplete.java
  com.example.demo.src.product.model.GetProductComplete
 com/example/demo/src/category/model/GetCategoryInterest.java
  com.example.demo.src.category.model.GetCategoryInterest
+<<<<<<< Updated upstream
 com/example/demo/src/region/RegionService.java
  com.example.demo.src.region.RegionService
 com/example/demo/src/lookup/LookUpService.java
  com.example.demo.src.lookup.LookUpService
+=======
+com/example/demo/src/townActivity/model/GetTownActivitytoIdxRes.java
+ com.example.demo.src.townActivity.model.GetTownActivitytoIdxRes
+>>>>>>> Stashed changes
 com/example/demo/src/alertKeyword/AlertKeywordDao.java
  com.example.demo.src.alertKeyword.AlertKeywordDao
 com/example/demo/src/category/CategoryProvider.java
@@ -108,18 +124,32 @@ com/example/demo/src/user/model/PostUserReq.java
  com.example.demo.src.user.model.PostUserReq
 com/example/demo/src/user/model/GetHiddenUserRes.java
  com.example.demo.src.user.model.GetHiddenUserRes
+<<<<<<< Updated upstream
 com/example/demo/src/chat/model/GetChatRoomList.java
  com.example.demo.src.chat.model.GetChatRoomList
 com/example/demo/src/region/RegionProvider.java
  com.example.demo.src.region.RegionProvider
+=======
+com/example/demo/src/townActivity/model/PatchTownActivityReq.java
+ com.example.demo.src.townActivity.model.PatchTownActivityReq
+com/example/demo/src/townActivity/TAProvider.java
+ com.example.demo.src.townActivity.TAProvider
+>>>>>>> Stashed changes
 com/example/demo/src/product/model/GetProductListReq.java
  com.example.demo.src.product.model.GetProductListReq
+com/example/demo/src/townActivity/TAController.java
+ com.example.demo.src.townActivity.TAController
 com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
 com/example/demo/src/user/UserDao.java
  com.example.demo.src.user.UserDao
+<<<<<<< Updated upstream
 com/example/demo/src/chat/model/PostChatContent.java
  com.example.demo.src.chat.model.PostChatContent
+=======
+com/example/demo/src/townActivity/model/GetTownActivityMeDetailRes.java
+ com.example.demo.src.townActivity.model.GetTownActivityMeDetailRes
+>>>>>>> Stashed changes
 com/example/demo/src/gather/GatherProvider.java
  com.example.demo.src.gather.GatherProvider
 com/example/demo/utils/AES128.java
@@ -128,6 +158,8 @@ com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
 com/example/demo/src/alertKeyword/AlertKeywordProvider.java
  com.example.demo.src.alertKeyword.AlertKeywordProvider
+com/example/demo/src/townActivity/model/GetTownActivityMeRes.java
+ com.example.demo.src.townActivity.model.GetTownActivityMeRes
 com/example/demo/src/WebSecurityConfig.java
  com.example.demo.src.WebSecurityConfig
 com/example/demo/src/alertKeyword/model/PatchAlertKeywordReq.java
@@ -152,6 +184,8 @@ com/example/demo/src/region/RegionDao.java
  com.example.demo.src.region.RegionDao
 com/example/demo/src/user/UserController.java
  com.example.demo.src.user.UserController
+com/example/demo/src/townActivity/TAService.java
+ com.example.demo.src.townActivity.TAService
 com/example/demo/src/user/model/PostHideUserReq.java
  com.example.demo.src.user.model.PostHideUserReq
 com/example/demo/src/gather/model/GetGatherUserRes.java
