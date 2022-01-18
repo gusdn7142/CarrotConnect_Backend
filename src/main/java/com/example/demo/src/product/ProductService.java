@@ -89,4 +89,21 @@ public class ProductService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public String patchProductSaleStatus(int userIdx, int productIdx, int saleStatus) throws BaseException {
+        try{
+            int result = productDao.patchProductSaleStatus(userIdx, productIdx, saleStatus);
+            String message = "상품 판매상태 변경 성공";
+
+            if(result == 0){
+                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
+                System.out.println("실패, 예외는 곧 추가 예정");
+                message = "변경에 실패했습니다.";
+                return message;
+            }
+            return message;
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

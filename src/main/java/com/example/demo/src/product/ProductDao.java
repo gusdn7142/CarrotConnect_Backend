@@ -499,5 +499,12 @@ public class ProductDao {
         Object[] patchProductInterestParams = new Object[]{interestIdx, userIdx};
         return this.jdbcTemplate.update(patchProductInterestQuery,patchProductInterestParams);
     }
+
+    public int patchProductSaleStatus(int userIdx, int productIdx, int saleStatus){
+        String patchProductSaleStatusQuery = "update Product set saleStatus = ? where userIdx = ? and productIdx = ? ";
+        Object[] patchProductSaleStatusParams = new Object[]{saleStatus, userIdx, productIdx};
+        return this.jdbcTemplate.update(patchProductSaleStatusQuery,patchProductSaleStatusParams);
+    }
+
 }
 
