@@ -3,6 +3,7 @@ package com.example.demo.src.lookup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -17,6 +18,7 @@ public class LookUpDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    @Transactional
     public int createLookUpProduct(int userIdx, int productIdx){
         String createLookUpProductQuery = "insert into ProductLookup (userIdx, productIdx) values (?, ?) ";
         Object[] createLookUpProductParams = new Object[]{userIdx, productIdx};

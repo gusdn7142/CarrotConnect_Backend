@@ -49,25 +49,33 @@ public class ProductService {
         }
     }
 
-    public void createProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
+    public String createProduct(int userIdx, PostProductReq postProductReq) throws BaseException {
         try{
             int result = productDao.createProduct(userIdx, postProductReq);
+            String message = "productIdx: " + result;
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "상품 등록 실패";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public void createInterestProduct(int userIdx, int productIdx) throws BaseException {
+    public String createInterestProduct(int userIdx, int productIdx) throws BaseException {
         try{
             int result = productDao.createInterestProduct(userIdx, productIdx);
+            String message = "interestIdx: " + result;
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "관심 목록 등록 실패";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

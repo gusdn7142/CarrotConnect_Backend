@@ -4,6 +4,7 @@ import com.example.demo.src.product.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -18,6 +19,7 @@ public class ProductDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    @Transactional
     public List<GetProductList> getProductList(String regionName){
         String getProductListQuery = "select p.productIdx as productIdx,\n" +
                 "       p.title as title,\n" +
@@ -71,6 +73,7 @@ public class ProductDao {
                 getProductListParams);
     }
 
+    @Transactional
     public List<GetProduct> getProduct(int productIdx, int userIdx){
         String getProductQuery = "select u.userIdx as userIdx,\n" +
                 "       u.nickName as nickName,\n" +
@@ -180,12 +183,14 @@ public class ProductDao {
                 ), userIdx, getProductParams, getProductParams);
     }
 
+    @Transactional
     public int patchProductStatus(int productIdx, int userIdx){
         String patchProductStatusQuery = "update Product set status = 0 where productIdx = ? and userIdx = ? ";
         Object[] patchProductStatusParams = new Object[]{productIdx, userIdx};
         return this.jdbcTemplate.update(patchProductStatusQuery,patchProductStatusParams);
     }
 
+    @Transactional
     public List<GetProductSale> getProductSale(int userIdx){
         String getProductSaleQuery = "select p.userIdx as userIdx,\n" +
                 "       p.productIdx as productIdx,\n" +
@@ -242,6 +247,7 @@ public class ProductDao {
                 getProductSaleParams);
     }
 
+    @Transactional
     public List<GetProductComplete> getProductComplete(int userIdx){
         String getProductCompleteQuery = "select p.userIdx as userIdx,\n" +
                 "       p.productIdx as productIdx,\n" +
@@ -298,6 +304,7 @@ public class ProductDao {
                 getProductCompleteParams);
     }
 
+    @Transactional
     public List<GetProductHidden> getProductHidden(int userIdx){
         String getProductHiddenQuery = "select p.userIdx as userIdx,\n" +
                 "       p.productIdx as productIdx,\n" +
@@ -355,6 +362,7 @@ public class ProductDao {
                 getProductHiddenParams);
     }
 
+    @Transactional
     public List<GetProductPurchased> getProductPurchased(int userIdx){
         String getProductPurchasedQuery = "select p.productIdx as productIdx,\n" +
                 "       p.title as title,\n" +
@@ -403,6 +411,7 @@ public class ProductDao {
                 getProductPurchasedParams);
     }
 
+    @Transactional
     public int createProduct(int userIdx, PostProductReq postProductReq){
 
         // Post 테이블에 데이터 삽입
@@ -429,6 +438,7 @@ public class ProductDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
+    @Transactional
     public int createInterestProduct(int userIdx, int productIdx){
         String createInterestProductQuery = "insert into ProductInterest (userIdx, productIdx) values (?, ?) ";
         Object[] createInterestParams = new Object[]{userIdx, productIdx};
@@ -438,6 +448,7 @@ public class ProductDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
+    @Transactional
     public List<GetProductInterest> getProductInterest(int userIdx){
         String getProductInterestQuery = "select ProductInterest.interestIdx as interestIdx,\n" +
                 "       p.productIdx as productIdx,\n" +
@@ -494,17 +505,18 @@ public class ProductDao {
                 getProductInterestParams);
     }
 
+    @Transactional
     public int patchProductInterest(int interestIdx, int userIdx){
         String patchProductInterestQuery = "update ProductInterest set status = 0 where interestIdx = ? and userIdx =? ";
         Object[] patchProductInterestParams = new Object[]{interestIdx, userIdx};
         return this.jdbcTemplate.update(patchProductInterestQuery,patchProductInterestParams);
     }
 
+    @Transactional
     public int patchProductSaleStatus(int userIdx, int productIdx, int saleStatus){
         String patchProductSaleStatusQuery = "update Product set saleStatus = ? where userIdx = ? and productIdx = ? ";
         Object[] patchProductSaleStatusParams = new Object[]{saleStatus, userIdx, productIdx};
         return this.jdbcTemplate.update(patchProductSaleStatusQuery,patchProductSaleStatusParams);
     }
-
 }
 

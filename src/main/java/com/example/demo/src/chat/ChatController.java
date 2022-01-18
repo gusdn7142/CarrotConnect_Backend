@@ -63,9 +63,7 @@ public class ChatController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            //같다면 생성
-            chatService.createChatRoom(buyerIdx, sellerIdx, productIdx, postChatRoom);
-            String result = "채팅방 생성 및 메세지 전송 성공";
+            String result = chatService.createChatRoom(buyerIdx, sellerIdx, productIdx, postChatRoom);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -99,9 +97,7 @@ public class ChatController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            //같다면 생성
-            chatService.createChatContent(chatRoomIdx, postChatContent);
-            String result = "채팅 메세지 전송 성공";
+            String result = chatService.createChatContent(chatRoomIdx, postChatContent);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -136,12 +132,12 @@ public class ChatController {
 
     /**
      * 특정 채팅방 내용 조회 API
-     * [GET] /chats/:userIdx/:chatRoomIdx/content
+     * [GET] /chats/:userIdx/:chatRoomIdx/room
      * @return BaseResponse<GetChatContent>
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("/{userIdx}/{chatRoomIdx}/room") // (GET) 127.0.0.1:9000/chats/:userIdx/:chatRoomIdx/content
+    @GetMapping("/{userIdx}/{chatRoomIdx}/room") // (GET) 127.0.0.1:9000/chats/:userIdx/:chatRoomIdx/room
     public BaseResponse<List<GetChatContent>> getChatContent(@PathVariable("userIdx") int userIdx, @PathVariable("chatRoomIdx") int chatRoomIdx) {
         try{
             /**
@@ -157,7 +153,7 @@ public class ChatController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            // Get ChatRoom List
+            // Get ChatRoom
             List<GetChatContent> getChatContent = chatProvider.getChatContent(userIdx, chatRoomIdx);
             return new BaseResponse<>(getChatContent);
         } catch(BaseException exception){
