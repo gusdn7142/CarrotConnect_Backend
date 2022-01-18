@@ -250,9 +250,7 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            //같다면 변경
-            productService.createProduct(userIdx, postProductReq);
-            String result = "상품 등록 성공";
+            String result = productService.createProduct(userIdx, postProductReq);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -283,9 +281,7 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            //같다면 변경
-            productService.createInterestProduct(userIdx, productIdx);
-            String result = "관심 목록 등록 성공";
+            String result = productService.createInterestProduct(userIdx, productIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
