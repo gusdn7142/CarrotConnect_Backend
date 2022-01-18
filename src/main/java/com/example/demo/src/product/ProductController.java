@@ -342,4 +342,28 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 상품 판매 상태 변경 API
+     * [PATCH] /products/:userIdx/:productIdx/:saleStatus
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}/{productIdx}/{saleStatus}")
+    public BaseResponse<String> patchProductSaleStatus(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx, @PathVariable("saleStatus") int saleStatus){
+        try {
+            // 헤더 (인증코드)에서 userIdx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            // userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            String result = productService.patchProductSaleStatus(userIdx, productIdx, saleStatus);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

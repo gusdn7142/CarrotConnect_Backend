@@ -148,6 +148,8 @@ com/example/demo/src/townActivity/model/PostTownActivityReq.java
  com.example.demo.src.townActivity.model.PostTownActivityReq
 com/example/demo/src/alertKeyword/AlertKeywordController.java
  com.example.demo.src.alertKeyword.AlertKeywordController
+com/example/demo/src/product/model/GetProductOnSale.java
+ com.example.demo.src.product.model.GetProductOnSale
 com/example/demo/src/product/model/GetProductComplete.java
  com.example.demo.src.product.model.GetProductComplete
 com/example/demo/src/category/model/GetCategoryInterest.java
