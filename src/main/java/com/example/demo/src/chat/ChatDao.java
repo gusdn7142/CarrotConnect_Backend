@@ -4,6 +4,7 @@ import com.example.demo.src.chat.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -18,32 +19,28 @@ public class ChatDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    @Transactional
     public int createChatRoom(int buyerIdx, int sellerIdx, int productIdx, PostChatRoom postChatRoom){
 
         // 채팅방 생성
         String createChatRoomQuery = "insert into ChatRoom (buyer, seller, productIdx)values (?, ?, ?) ";
         Object[] createChatRoomParams = new Object[]{buyerIdx, sellerIdx, productIdx};
-
-        // 쿼리 실행
         this.jdbcTemplate.update(createChatRoomQuery, createChatRoomParams);
 
         // chatRoomIdx 값 반환
         String lastInsertIdQuery = "select last_insert_id()";
-
-        // String을 int로 변환
         int chatRoomIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
 
         // 채팅 메세지 보내기
-        String createChatContentQuery = "insert into ChatContent(content, chatRoomIdx, productIdx, senderIdx, receiverIdx)values (?, ?, ?, ?, ?)";
+        String createChatContentQuery = "insert into ChatContent(content, chatRoomIdx, productIdx, senderIdx, receiverIdx) values (?, ?, ?, ?, ?)";
         Object[] createChatContentParams = new Object[]{postChatRoom.getContent(), chatRoomIdx, productIdx, buyerIdx, sellerIdx};
-
-        // 쿼리문 실행
         this.jdbcTemplate.update(createChatContentQuery, createChatContentParams);
 
         // contentIdx 값 반환
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+        return chatRoomIdx;
     }
 
+    @Transactional
     public int createChatContent(int chatRoomIdx, PostChatContent postChatContent){
         String createCatchContentQuery = "insert into ChatContent(content, chatRoomIdx, productIdx, senderIdx, receiverIdx)values (?, ?, ?, ?, ?) ";
         Object[] createCatchContentParams = new Object[]{postChatContent.getContent(), chatRoomIdx, postChatContent.getProductIdx(), postChatContent.getSenderIdx(), postChatContent.getReceiverIdx()};
@@ -53,6 +50,7 @@ public class ChatDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
+    @Transactional
     public List<GetChatRoomList> getChatRoomList(int userIdx){
         String getChatRoomListQuery = "select cr.chatRoomIdx as chatRoomIdx,\n" +
                 "       cr.buyer as buyerIdx,\n" +
@@ -98,6 +96,7 @@ public class ChatDao {
                 getChatRoomListParams, getChatRoomListParams);
     }
 
+    @Transactional
     public List<GetChatContent> getChatContent(int userIdx, int chatRoomIdx){
         String getChatContentQuery = "select cr.chatRoomIdx as chatRoomIdx,\n" +
                 "       u.userIdx as opponentIdx,\n" +

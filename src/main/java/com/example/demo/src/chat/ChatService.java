@@ -27,25 +27,33 @@ public class ChatService {
         this.jwtService = jwtService;
     }
 
-    public void createChatRoom(int buyerIdx, int sellerIdx, int productIdx, PostChatRoom postChatRoom) throws BaseException {
+    public String createChatRoom(int buyerIdx, int sellerIdx, int productIdx, PostChatRoom postChatRoom) throws BaseException {
         try{
             int result = chatDao.createChatRoom(buyerIdx, sellerIdx, productIdx, postChatRoom);
+            String message = "chatRoomIdx: " + result;
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "채팅방 생성 실패";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public void createChatContent(int chatRoomIdx, PostChatContent postChatContent) throws BaseException {
+    public String createChatContent(int chatRoomIdx, PostChatContent postChatContent) throws BaseException {
         try{
             int result = chatDao.createChatContent(chatRoomIdx, postChatContent);
+            String message = "chatContentIdx: " + result;
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "채팅 메세지 보내기 실패";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
