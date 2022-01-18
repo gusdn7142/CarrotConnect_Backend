@@ -110,6 +110,7 @@ public class ChatDao {
                 "           when(p.saleStatus = 3) then '나눔'\n" +
                 "           when(p.saleStatus = 5) then '나눔'\n" +
                 "           else concat(format(p.price, 0), '원') end as price,\n" +
+                "       p.priceOfferStatus as priceOfferStatus,\n" +
                 "       pi.image as productImage,\n" +
                 "       case\n" +
                 "           when (p.saleStatus = 0) then '거래완료'\n" +
@@ -144,6 +145,7 @@ public class ChatDao {
                         rs.getString("profileImage"),
                         rs.getString("title"),
                         rs.getString("price"),
+                        rs.getInt("priceOfferStatus"),
                         rs.getString("productImage"),
                         rs.getString("productStatus"),
                         rs.getString("startDate"),

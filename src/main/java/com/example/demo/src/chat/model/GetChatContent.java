@@ -18,6 +18,7 @@ public class GetChatContent {
     private String profileImage;
     private String title;
     private String price;
+    private int priceOfferStatus;
     private String productImage;
     private String productStatus;
     private String startDate;
