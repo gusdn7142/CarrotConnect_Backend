@@ -111,6 +111,10 @@ public enum BaseResponseStatus {
     POST_TOWN_ACTIVITY_EMPTY_CONTENT(false, 2015, "게시글 내용을 입력해주세요."),
 
 
+    //Search 리소스
+    POST_SEARCHS_CHECK(false,3008,"이미 등록한 검색어입니다."),
+
+
     /**
      * 4000 : Database, Server 오류
      */
@@ -206,8 +210,21 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_TOPICNAME(false, 4002, "게시글 주제 변경시 오류가 발생하였습니다."),
     DATABASE_ERROR_DELETE_TOWN_ACTIVITY(false, 4002, "게시글 삭제시 오류가 발생하였습니다."),
 
-    DATABASE_ERROR_CHECK_TOWN_ACTIVITY(false, 4000, "게시글 중복 검사에 실패하였습니다.");
+    DATABASE_ERROR_CHECK_TOWN_ACTIVITY(false, 4000, "게시글 중복 검사에 실패하였습니다."),
 
+    //search 리소스
+
+    DATABASE_ERROR_CREATE_SEARCH(false, 4242, "검색어 등록에 실패하였습니다."),
+    DATABASE_ERROR_CHECK_SEARCH(false, 4002, "검색어 중복 등록 검사에 실패하였습니다."),
+    DATABASE_ERROR_GET_RECENT_SEARCH(false, 4242, "최근 검색어 조회에 실패하였습니다."),
+    DATABASE_ERROR_DELETE_RESENT_SEARCH(false, 4242, "최근 검색어 삭제에 실패하였습니다."),
+    DATABASE_ERROR_DELETE_ALL_RESENT_SEARCH(false, 4242, "최근 검색어 전체 삭제에 실패하였습니다."),
+    DATABASE_ERROR_GET_SEARCH_PRODUCT(false, 4242, "검색에 맞는 중고거래 글을 불러오지 못하였습니다."),
+    DATABASE_ERROR_GET_SEARCH_TOWN_ACTIVITY(false, 4242, "검색에 맞는 동네생활 글을 불러오지 못하였습니다."),
+    DATABASE_ERROR_GET_SEARCH_USER(false, 4242, "검색에 맞는 사용자들을 불러오지 못하였습니다."),
+    DATABASE_ERROR_GET_RELATION_SEARCH(false, 4242, "연관 검색어 조회에 실패하였습니다."),
+
+    DATABASE_DELETE_DELETE_DELETE(false, 4242, "삭졔 예정");
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
 
