@@ -4,6 +4,7 @@ import com.example.demo.src.category.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -17,6 +18,7 @@ public class CategoryDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    @Transactional
     public List<GetCategoryInterest> getCategoryInterest(int userIdx){
         String getCategoryInterestQuery = "select interestCategoryIdx as interestIdx,\n" +
                 "       c.categoryIdx as categoryIdx,\n" +
@@ -37,6 +39,7 @@ public class CategoryDao {
                 getCategoryInterestParams);
     }
 
+    @Transactional
     public int createInterestCategory(int userIdx, int categoryIdx){
         String createInterestCategoryQuery = "insert into InterestCategory (userIdx, categoryIdx) values (?, ?) ";
         Object[] createInterestCategoryParams = new Object[]{userIdx, categoryIdx};
@@ -46,6 +49,7 @@ public class CategoryDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
+    @Transactional
     public int patchCategoryInterest(int idx, int userIdx){
         String patchCategoryInterestQuery = "update InterestCategory set status = 0 where interestCategoryIdx = ? and userIdx = ?";
         Object[] patchCategoryInterestParams = new Object[]{idx, userIdx};

@@ -36,7 +36,7 @@ public class CategoryController {
     /**
      * 관심 카테고리 조회 API
      * [GET] /interst-categorys/:userIdx
-     * @return BaseResponse<GetProduct>
+     * @return BaseResponse<GetCategoryInterest>
      */
     // Path-variable
     @ResponseBody
@@ -83,9 +83,7 @@ public class CategoryController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            //같다면 변경
-            categoryService.createInterestCategory(userIdx, categoryIdx);
-            String result = "관심 카테고리 등록 성공";
+            String result = categoryService.createInterestCategory(userIdx, categoryIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
