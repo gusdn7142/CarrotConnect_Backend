@@ -30,13 +30,17 @@ public class LookUpService {
 
     }
 
-    public void createLookUpProduct(int userIdx, int productIdx) throws BaseException {
+    public String createLookUpProduct(int userIdx, int productIdx) throws BaseException {
         try{
             int result = lookUpDao.createLookUpProduct(userIdx, productIdx);
+            String message = "lookupIdx: " + result;
             if(result == 0){
                 //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
                 System.out.println("실패, 예외는 곧 추가 예정");
+                message = "조회한 상품 등록 실패";
+                return message;
             }
+            return message;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

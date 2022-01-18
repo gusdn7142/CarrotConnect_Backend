@@ -52,9 +52,7 @@ public class LookUpController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            //같다면 변경
-            lookUpService.createLookUpProduct(userIdx, productIdx);
-            String result = "조회한 상품 등록 성공";
+            String result = lookUpService.createLookUpProduct(userIdx, productIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
