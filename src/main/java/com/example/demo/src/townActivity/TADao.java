@@ -64,10 +64,17 @@ public class TADao {
         String createTownImageQuery = "insert into TownActivityImage (image, firstImage, townActivityIdx)\n" +
                 "values (?, ?, ?)";
 
-        Object[] createTownImageParams = new Object[]{postTownActivityReq.getImage(), postTownActivityReq.getFirstImage(), townActivityIdx     };
 
-        //쿼리문 수행 (동네생활 게시글 생성)
-        this.jdbcTemplate.update(createTownImageQuery, createTownImageParams);
+        Object[] createTownImageParams = null;
+        for (int i = 0; i < postTownActivityReq.getImageList().size(); i++ ) {
+            //파라미터 초기화
+            createTownImageParams = new Object[]{postTownActivityReq.getImageList().get(i), postTownActivityReq.getFirstImageList().get(i), townActivityIdx};
+
+            //쿼리문 수행 (동네생활 게시글 생성)
+            this.jdbcTemplate.update(createTownImageQuery, createTownImageParams);
+        }
+
+
 
         //동네생활 게시글의 이미지 Idx 값을 반환
         String lastInserIdQuery = "select last_insert_id()";
@@ -274,45 +281,46 @@ public class TADao {
     /* 특정 동네생활 게시글 조회 - getTownActivitytoIdx() */
     public GetTownActivitytoIdxRes getTownActivitytoIdx(int userIdx, int townActivityIdx){
 
-        //쿼리문 생성
+        //쿼리문 생성 (이미지 일단 제외)
         String getTownActivitytoIdxQuery = "select t.townActivityIdx as townActivityIdx,\n" +
                 "       t.topicName as topicName,\n" +
-                "       timg.image as image,\n" +
                 "       t.content as content,\n" +
                 "       u.nickName as nickName,\n" +
                 "       t.regionName as regionName,\n" +
                 "       r.authCount as authCount,\n" +
                 "       case when timestampdiff(second , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
+                "            then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
+                "            when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
+                "            when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
+                "            when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
+                "            then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
+                "            when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
+                "            then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
+                "            else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
+                "            end as createAt,\n" +
+                "            t.commentCount as commentCount,\n" +
+                "            t.sympathyCount as sympathyCount\n" +
                 "\n" +
-                "           when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
-                "\n" +
-                "           when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
-                "           then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
-                "\n" +
-                "           when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
-                "           then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
-                "\n" +
-                "           when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
-                "           then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
-                "\n" +
-                "           else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
-                "       end as createAt,\n" +
-                "       t.commentCount as commentCount,\n" +
-                "       t.sympathyCount as sympathyCount\n" +
-                "\n" +
-                "from TownActivity t left join (select townActivityIdx, image from TownActivityImage where firstImage = 1 and status= 1 ) timg\n" +
-                "    on t.townActivityIdx = timg.townActivityIdx\n" +
-                "join User u\n" +
-                "    on t.userIdx = u.userIdx\n" +
-                "join Region r\n" +
-                "    on u.userIdx = r.userIdx\n" +
-                "\n" +
+                "from TownActivity t\n" +
+                "    join User u\n" +
+                "        on t.userIdx = u.userIdx\n" +
+                "    join Region r\n" +
+                "        on u.userIdx = r.userIdx\n" +
                 "\n" +
                 "where t.townActivityIdx = ?\n" +
                 "and r.mainStatus = 1\n" +
-                "and r.status = 1\n"+
+                "and r.status = 1\n" +
+                "and t.status = 1";
+
+
+        //쿼리문 생성 (이미지만 배열로 따로 출력)
+        String getTownActivitytoImageQuery ="select ifnull(timg.townActivityImageIdx,'') as townActivityImageIdx,\n" +
+                "       ifnull(timg.image,'') as image\n" +
+                "from TownActivity t left join (select townActivityIdx, townActivityImageIdx, image from TownActivityImage where status= 1 ) timg\n" +
+                "        on t.townActivityIdx = timg.townActivityIdx\n" +
+                "where t.townActivityIdx = ?\n" +
                 "and t.status = 1";
 
 
@@ -324,15 +332,21 @@ public class TADao {
                 (rs, rowNum) -> new GetTownActivitytoIdxRes(
                         rs.getInt("townActivityIdx"),             //각 칼럼은 DB와 매칭이 되어야 한다.
                         rs.getString("topicName"),
-                        rs.getString("image"),
                         rs.getString("content"),
                         rs.getString("nickName"),
                         rs.getString("regionName"),
                         rs.getInt("authCount"),
                         rs.getString("createAt"),
                         rs.getInt("commentCount"),
-                        rs.getInt("sympathyCount")),
+                        rs.getInt("sympathyCount"),
+                        this.jdbcTemplate.query(getTownActivitytoImageQuery, (rs1, rowNum1) -> new GetTownActivitytoImageRes(
+                                rs1.getInt("townActivityImageIdx"),
+                                rs1.getString("image")), getTownActivitytoIdxParams)
+        ),
                 getTownActivitytoIdxParams);
+
+
+
     }
 
 
@@ -451,14 +465,27 @@ public class TADao {
 
     /* 동네생활 게시글 이미지 변경 - modifyImage()  */
     public int modifyImage(PatchTownActivityReq patchTownActivityReq){
+
         //쿼리문 생성
-        String modifyImageQuery = "update TownActivityImage set image = ?, firstImage = ? where townActivityIdx = ? and status = 1";
+        String modifyImageQuery = "update TownActivityImage set image = ?, firstImage = ? where townActivityImageIdx = ?  and status = 1";
+//        String modifyImageQuery = "update TownActivityImage set image = ?, firstImage = ? where townActivityIdx = ? and status = 1";
 
-        //닉네임과, idx를 새로운 객체에 저장
-        Object[] modifyImageParams = new Object[]{patchTownActivityReq.getImage(), patchTownActivityReq.getFirstImage(), patchTownActivityReq.getTownActivityIdx()};
+//        //닉네임과, idx를 새로운 객체에 저장
+//        Object[] modifyImageParams = new Object[]{patchTownActivityReq.getImage(), patchTownActivityReq.getFirstImage(), patchTownActivityReq.getTownActivityIdx()};
 
-        //닉네임 변경 쿼리문 수행 (0,1로 반환됨)
-        return this.jdbcTemplate.update(modifyImageQuery,modifyImageParams);
+
+        Object[] modifyImageParams = null;
+        int result = 0;
+        for (int i = 0; i < patchTownActivityReq.getImageList().size(); i++ ) {
+            //파라미터 초기화
+            modifyImageParams = new Object[]{patchTownActivityReq.getImageList().get(i), patchTownActivityReq.getFirstImageList().get(i), patchTownActivityReq.getTownActivityImageIdx().get(i)};
+
+            //쿼리문 수행 (동네생활 게시글 생성)
+            result = this.jdbcTemplate.update(modifyImageQuery, modifyImageParams);
+        }
+        return result;
+//        //닉네임 변경 쿼리문 수행 (0,1로 반환됨)
+//        return this.jdbcTemplate.update(modifyImageQuery,modifyImageParams);
 
 
     }
@@ -469,12 +496,22 @@ public class TADao {
         //쿼리문 생성
         String modifyContentQuery = "update TownActivity set content = ? where userIdx = ? and townActivityIdx = ? and status = 1";
 
+
+
+
         //쿼리 파라미터 생성
         Object[] modifyContentParams = new Object[]{patchTownActivityReq.getContent(), patchTownActivityReq.getUserIdx(), patchTownActivityReq.getTownActivityIdx()};
+
+
+
+
+
 
         //게시글 내용 변경 쿼리문 수행 (0,1로 반환됨)
         return this.jdbcTemplate.update(modifyContentQuery,modifyContentParams);
     }
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네생활 게시글 삭제 - deleteTownActivity()  */

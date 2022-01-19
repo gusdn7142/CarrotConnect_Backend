@@ -104,9 +104,8 @@ public class TAController {
             postTownActivityReq.setUserIdx(userIdx);
             int townActivityIdx = taService.createTownPost(postTownActivityReq);
 
-
             //동네생활 게시글의 이미지 따로 등록
-            if(postTownActivityReq.getImage() != null) {
+            if(postTownActivityReq.getImageList().size() != 0) {
                 taService.createTownImage(postTownActivityReq, townActivityIdx);
             }
 
@@ -454,7 +453,7 @@ public class TAController {
 
 
             //객체에 넣음
-            PatchTownActivityReq patchTownActivityReq = new PatchTownActivityReq(null,null,0,null,userIdx,townActivityIdx);
+            PatchTownActivityReq patchTownActivityReq = new PatchTownActivityReq(null,null,0,null,userIdx,townActivityIdx,null,null,null);
 
             //동네생활 나의 게시글 수정
             taService.deleteTownActivity(patchTownActivityReq);

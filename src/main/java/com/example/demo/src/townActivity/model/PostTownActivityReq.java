@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,10 +22,11 @@ public class PostTownActivityReq {
     private String placeAddress;  //선택
     private int userIdx;
 
-    private String image;   //이미지
-    private int firstImage;  //첫번째 이미지 여부
+    //private String image;   //이미지
+    private List<String> imageList;   //이미지
+    private List<Integer> firstImageList;  //첫번째 이미지 여부
 
-    //private JSONObject imageList;
+
 
 
 }

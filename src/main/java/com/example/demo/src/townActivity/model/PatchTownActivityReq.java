@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,7 +28,9 @@ public class PatchTownActivityReq {
     private int userIdx;
     private int townActivityIdx;
 
-
+    private List<Integer> townActivityImageIdx;   //이미지 리스트 인덱스
+    private List<String> imageList;   //이미지 리스트
+    private List<Integer> firstImageList;  //첫번째 이미지 여부
 
 
 }

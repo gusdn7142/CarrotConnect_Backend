@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,5 +28,7 @@ public class GetTownActivityRes {
     private String createAt;
     private int commentCount;
     private int sympathyCount;
+
+    //private List<String> imageList;
 }
 
