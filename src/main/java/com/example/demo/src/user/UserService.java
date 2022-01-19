@@ -1,18 +1,28 @@
 package com.example.demo.src.user;
 
-
-
 import com.example.demo.config.BaseException;
-
+import com.example.demo.config.secret.Secret;
 
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import static com.example.demo.config.BaseResponseStatus.*;
+
+//문자 알림에 적용
+//import java.util.HashMap;
+//import java.util.Random;
+//import org.json.simple.JSONObject;
+//import net.nurigo.java_sdk.api.Message;
+//import net.nurigo.java_sdk.exceptions.CoolsmsException;
+
 
 // Service Create, Update, Delete 의 로직 처리
 @Service
@@ -42,20 +52,58 @@ public class UserService {
             throw new BaseException(POST_USERS_EXISTS_PHONENUMBER); //"이미 가입된 전화번호 입니다."
         }
 
+        //인증 코드 생성 (4자리 랜덤 숫자)
+        Random rand  = new Random();
+        String randomSum= "";
+        for(int i=0; i<4; i++) {
+            String ran = Integer.toString(rand.nextInt(10));
+            randomSum+=ran;
+        }
+        int authCode = Integer.parseInt(randomSum);
+
+
+        //인증코드 SMS 문자 알림 구현 - 시작
+//        try {
+//            String api_key = Secret.SMS_ALERT_API_KEY;  //본인의 API KEY
+//            String api_secret = Secret.SMS_ALERT_API_SECRET;  //본인의 API SECRET
+//            Message coolsms = new Message(api_key, api_secret);
+//
+//
+//            // 4 params(to, from, type, text) are mandatory. must be filled
+//            HashMap<String, String> params = new HashMap<String, String>();
+//            params.put("to", postUserReq.getPhoneNumber());    // 수신전화번호
+//            params.put("from", Secret.SMS_PHONE_NUMBER);    // "발송할 번호 입력" ,  발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+//            params.put("type", "SMS");
+//            params.put("text", "당근마켓 휴대폰인증 메시지 : 인증번호는" + "[" + authCode + "]" + "입니다.");
+//            params.put("app_version", "test app 1.2"); // application name and version
+//
+//            JSONObject obj = (JSONObject) coolsms.send(params);
+//            System.out.println(obj.toString());  //오류가 있나 확인
+//
+//            if(obj.toString().contains("error_list")){
+//                throw new BaseException(POST_USERS_FAIL_ALERT_SMS);  //사용자에게 인증코드 알림 문자를 보내는데 실패하였습니다.
+//            }
+//
+//        } catch (CoolsmsException e) {  //문자 알림 실패시
+//            throw new BaseException(POST_USERS_FAIL_ALERT_SMS);  //사용자에게 인증코드 알림 문자를 보내는데 실패하였습니다.
+//        }
+        //인증코드 SMS 문자 알림 구현 - 끝
 
         //유저 등록
         try{
             //유저 테이블에서 유저 등록
-            PostUserRes postUserRes = userDao.createUser(postUserReq);
+            PostUserRes postUserRes = userDao.createUser(postUserReq, authCode);
             //return new PostUserRes(userIdx);
-
             //유저 idx, 인증코드 반환
             return postUserRes;
 
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR_CREATE_USER);  //유저 생성 실패 에러
         }
+
+
     }
+
 
 
 
@@ -94,30 +142,56 @@ public class UserService {
 
 
 
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 회원가입 인증 - userJoinCheck() */
     public PostUserRes JoinAuth(PatchJoinAuthReq patchJoinAuthReq) throws BaseException {
 
 
-        //폰번호에 해당하는 유저가 존재하는지 확인
+        //폰번호에 해당하는 유저가 존재하는지 확인 (회원가입 여부 확인)
         if (userProvider.JoinCheck(patchJoinAuthReq.getPhoneNumber()) == 0) {    //가입되지 않은 유저입니다.
             System.out.println("회원가입이 되지 않은 유저입니다.");
             throw new BaseException(FAILED_TO_JOIN_CHECK);
         }
 
+        //인증 코드 생성 (4자리 랜덤 숫자)
+        Random rand  = new Random();
+        String randomSum= "";
+        for(int i=0; i<4; i++) {
+            String ran = Integer.toString(rand.nextInt(10));
+            randomSum+=ran;
+        }
+        int authCode = Integer.parseInt(randomSum);
 
-        //authCode 생성 후 userIdx와 함께 반환
+
+        //인증코드 SMS 문자 알림 구현 - 시작
+//        try {
+//            String api_key = Secret.SMS_ALERT_API_KEY;  //본인의 API KEY
+//            String api_secret = Secret.SMS_ALERT_API_SECRET;  //본인의 API SECRET
+//            Message coolsms = new Message(api_key, api_secret);
+//
+//            // 4 params(to, from, type, text) are mandatory. must be filled
+//            HashMap<String, String> params = new HashMap<String, String>();
+//            params.put("to", patchJoinAuthReq.getPhoneNumber());    // 수신전화번호
+//            params.put("from", Secret.SMS_PHONE_NUMBER);    // "발송할 번호 입력" ,  발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+//            params.put("type", "SMS");
+//            params.put("text", "당근마켓 휴대폰인증 메시지 : 인증번호는 " + "[" + authCode + "]" + "입니다.");
+//            params.put("app_version", "test app 1.2"); // application name and version
+//
+//            JSONObject obj = (JSONObject) coolsms.send(params);
+//            System.out.println(obj.toString()); //오류가 있나 확인
+//
+//            if(obj.toString().contains("error_list")){
+//                throw new BaseException(POST_USERS_FAIL_ALERT_SMS);  //사용자에게 인증코드 알림 문자를 보내는데 실패하였습니다.
+//            }
+//
+//        } catch (CoolsmsException e) {  //문자 알림 실패시
+//            throw new BaseException(POST_USERS_FAIL_ALERT_SMS);  //사용자에게 인증코드 알림 문자를 보내는데 실패하였습니다.
+//        }
+        //인증코드 SMS 문자 알림 구현 - 끝
+
+
+        //authCode DB에 저장 후 userIdx와 함께 반환
         try{
-            //인증 코드 생성 (1000번 ~ 9999번 사이)
-            int min = 1000;
-            int max = 9999;
-            int authCode = (int) ((Math.random() * (max - min)) + min);
-            System.out.println("인증 코드는" + authCode + "번 입니다.");
-
-
             //인증코드 변경
             int result = userDao.modifyAuthCode(authCode, patchJoinAuthReq.getPhoneNumber());
             if(result == 0){
@@ -126,9 +200,8 @@ public class UserService {
 
             //유저 idx 값 조회 (phoneNumber 활용)
             User user = userProvider.getUserIdx(patchJoinAuthReq.getPhoneNumber());
-
-            System.out.println(user.getMannerTemp());
-            System.out.println(user.getTradeRate());
+            //System.out.println(user.getMannerTemp());
+            //System.out.println(user.getTradeRate());
 
 
             //유저 idx, 인증코드 반환

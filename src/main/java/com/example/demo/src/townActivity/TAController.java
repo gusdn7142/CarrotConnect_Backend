@@ -34,7 +34,7 @@ import org.json.JSONArray;
 
 
 @RestController
-@RequestMapping("town-activitiys")
+@RequestMapping("town-activities")
 public class TAController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
