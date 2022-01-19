@@ -153,7 +153,7 @@
     - 프로필 수정 API
       =>이슈 : 닉네임의 중복 여부를 체크하는 Validation 처리가 없음, 이미지를 DB에 저장시 URL에 http가 들어갈시 간혹 문제가 발생
       =>해결 : 닉네임 중복 여부를 체크하는 함수 checkNickName() 함수를 추가하여 해결 완료
-      =>미해결 : 이미지의 형식에 따라 DB에 저장이 안되는 문제는 추후 추가 테스트 필요, URL이 아닌 이미지 파일명으로 저장 필요.
+      =>미해결 : 이미지의 형식에 따라 DB에 저장이 안되는 문제는 추후 추가 테스트 필요, URL이 아닌 이미지 파일명으로 저장 필요. (1월 19일에 해결 완료)
     - 키워드 알림 상품 조회 API  
       =>이슈 : 키워드별로 알림 상품을 불러올때 최신순보다 상품순으로 불러와지는 문제 발생
       =>해결 : 현재 ERD 설계상으로는 키워드 별 배열로 불러올 수 밖에 없기 때문에 키워드 별 상품의 최신순으로 불러오는것으로 협의 완료
@@ -194,3 +194,34 @@
       =>로컬에서 API 테스트 완료
       =>prod 서버에서 API 테스트 완료
     - 명세서에 반영 완료
+    
+    
+ ## 2021-01-19 진행상황     
+#### 1. SMS 문자 알림 코드 구현 완료
+    - coolsms 서비스 사용
+      =>API Key와 API Secret 발급 
+      =>발신번호 등록
+      =>build.gradle에 의존성 추가 : compile group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+      =>intellij에 라이브러리(jar) 추가 : javaSDK-2.2.jar, json-simple-1.1.1.jar
+    - 회원가입 API와 회원가입 인증 API에 코드 적용 완료
+      =>Secret.java에 API Key와 API Secret, 발신번호 저장
+      =>UserService.java에서 createUser() 함수와 userJoinCheck() 함수에 구현
+      =>일단은 구현한 코드 주석처리 후 마지막 과제 제출일에 실제 적용 예정
+
+#### 2. 동네생활 게시글 등록·수정, 특정 동네생활 게시글 조회 API 업데이트 
+    - 이미지 다중 등록·조회·수정 가능하도록 코드 구현 
+    - List 클래스 활용
+
+#### 2. 더미데이터 구축
+    - DB에 저장할 이미지를 EC2에서 불러와 활용할 수 있도록 서버 구축
+    - User 테이블의 사용자 default image를 EC2에 저정한 당근마켓 마스코트 이미지(https://carrot-market.site/image/user/default_image.jpg)로 변경
+    - 모든 API를 테스트하며 계속 쌓아나가는 중.
+
+#### 3. 지금까지 구현한 API에 트랜잭션 적용 완료
+    - 모든 Service 클래스의 함수에 @Transactional 어노테이션 적용
+    
+#### 4. BaseResponseStatus.java에서 응답코드 번호 최신화
+    - 서버 개발자(예레나)와 응답코드 부여 범위를 나눔
+    - 구현한 API에 응답코드 번호 최신화하여 반영
+    
+
