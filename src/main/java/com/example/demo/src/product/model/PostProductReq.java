@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 // 상품 등록 model
 @Getter
 @Setter
@@ -18,4 +20,8 @@ public class PostProductReq {
     private String regionName;
     private String image;
     private int firstImageCheck;
+    private List<String> images;
+
+    public PostProductReq(){
+    }
 }

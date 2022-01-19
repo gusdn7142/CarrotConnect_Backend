@@ -424,25 +424,27 @@ public class ProductDao {
         // Post 테이블에 데이터 삽입
         String createProductQuery = "insert into Product (title, price, priceOfferStatus, content, saleStatus, categoryIdx, regionName, userIdx) values (?, ?, ?, ?, ?, ?, ?, ?) ";
         Object[] createProductParams = new Object[]{postProductReq.getTitle(), postProductReq.getPrice(),postProductReq.getPriceOfferStatus() ,postProductReq.getContent(), postProductReq.getSaleStatus(), postProductReq.getCategoryIdx(), postProductReq.getRegionName(), userIdx};
-
-        // 쿼리 실행
         this.jdbcTemplate.update(createProductQuery, createProductParams);
 
         // productIdx 값 반환
         String lastInsertIdQuery = "select last_insert_id()";
-
-        // String을 int로 변환
         int productIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
 
         // ProductImage table에 이미지 삽입
         String createProductImageQuery = "insert into ProductImage(productIdx, image, firstImage) values (?, ?, ?)";
         Object[] createProductImageParams = new Object[]{productIdx, postProductReq.getImage(), postProductReq.getFirstImageCheck()};
-
-        // 쿼리문 실행
         this.jdbcTemplate.update(createProductImageQuery, createProductImageParams);
 
-        // productIdx 값 반환
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+        if(postProductReq.getImages() == null){
+            return productIdx;
+        }
+
+        for (int i = 0; i < postProductReq.getImages().size(); i++ ){
+            String createImagesQuery = "insert into ProductImage(productIdx, image) values (?, ?) ";
+            Object[] createImagesParams = new Object[]{productIdx, postProductReq.getImages().get(i)};
+            this.jdbcTemplate.update(createImagesQuery, createImagesParams);
+        }
+        return productIdx;
     }
 
     @Transactional
