@@ -23,23 +23,11 @@ public class UserDao {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 유저 등록 -  createUser() */
-    public PostUserRes createUser(PostUserReq postUserReq){  //UserServcie.java에서 postUserReq 객체를 받아옴
-
-//        SYSTEM_ID 임의로 생성 : 유저의 이메일중 아이디 앞 뒤 부분에 추가값
-//        String user_id= postUserReq.getEmail().substring(0, postUserReq.getEmail().indexOf("@"));
-//        postUserReq.setSystemId("YOUTUBE" + user_id + "1A3B5"); //시스템_ID 생성
-
+    public PostUserRes createUser(PostUserReq postUserReq, int authCode){  //UserServcie.java에서 postUserReq 객체를 받아옴
 
         //기본 닉네임 생성 (핸드폰 뒷번호 4자리만 붙인다.)
         String default_nickName = "당근 유저" + postUserReq.getPhoneNumber().substring(postUserReq.getPhoneNumber().length()-8, postUserReq.getPhoneNumber().length());
         //System.out.println(default_nickName);
-
-
-        //인증 코드 생성 (1000번 ~ 9999번 사이)
-        int min = 1000;
-        int max = 9999;
-        int authCode = (int) ((Math.random() * (max - min)) + min);
-        //System.out.println("인증 코드는" + authCode + "번 입니다.");
 
 
         //쿼리문 생성
