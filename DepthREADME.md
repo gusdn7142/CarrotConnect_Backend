@@ -212,15 +212,15 @@
     - 이미지 다중 등록·조회·수정 가능하도록 코드 구현 
     - List 클래스 활용
 
-#### 2. 더미데이터 구축
+#### 3. 더미데이터 구축
     - DB에 저장할 이미지를 EC2에서 불러와 활용할 수 있도록 서버 구축
     - User 테이블의 사용자 default image를 EC2에 저정한 당근마켓 마스코트 이미지(https://carrot-market.site/image/user/default_image.jpg)로 변경
     - 모든 API를 테스트하며 계속 쌓아나가는 중.
 
-#### 3. 지금까지 구현한 API에 트랜잭션 적용 완료
+#### 4. 지금까지 구현한 API에 트랜잭션 적용 완료
     - 모든 Service 클래스의 함수에 @Transactional 어노테이션 적용
     
-#### 4. BaseResponseStatus.java에서 응답코드 번호 최신화
+#### 5. BaseResponseStatus.java에서 응답코드 번호 최신화
     - 서버 개발자(예레나)와 응답코드 부여 범위를 나눔
     - 구현한 API에 응답코드 번호 최신화하여 반영
     
