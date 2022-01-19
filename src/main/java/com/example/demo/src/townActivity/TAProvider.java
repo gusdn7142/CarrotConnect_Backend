@@ -87,9 +87,7 @@ public class TAProvider {
 
         try {
             GetTownActivitytoIdxRes getTownActivitytoIdxRes = taDao.getTownActivitytoIdx(userIdx, townActivityIdx);
-//            if(getTownActivityRes.isEmpty()){
-//                System.out.println("빈 객체입니다.");
-//            }
+
             return getTownActivitytoIdxRes;
         } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
             throw new BaseException(DATABASE_ERROR_TOWN_ACTIVITY_INFO);

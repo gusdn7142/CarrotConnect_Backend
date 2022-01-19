@@ -216,6 +216,8 @@ com/example/demo/src/alertKeyword/model/PatchAlertKeywordReq.java
  com.example.demo.src.alertKeyword.model.PatchAlertKeywordReq
 com/example/demo/src/alertKeyword/model/PostAlertKeywordRes.java
  com.example.demo.src.alertKeyword.model.PostAlertKeywordRes
+com/example/demo/src/townActivity/model/GetTownActivitytoImageRes.java
+ com.example.demo.src.townActivity.model.GetTownActivitytoImageRes
 com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/product/model/PatchProductStatus.java
