@@ -232,7 +232,7 @@ public class ProductController {
     // Body
     @ResponseBody
     @PostMapping("/{userIdx}")
-    public BaseResponse<String> createProduct(@PathVariable("userIdx") int userIdx, @RequestBody PostProductReq postProductReq) {
+    public BaseResponse<Integer> createProduct(@PathVariable("userIdx") int userIdx, @RequestBody PostProductReq postProductReq) {
         try {
             /**
              * validation 처리해야될것
@@ -250,7 +250,7 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            String result = productService.createProduct(userIdx, postProductReq);
+            int result = productService.createProduct(userIdx, postProductReq);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -265,7 +265,7 @@ public class ProductController {
     // Path-variable
     @ResponseBody
     @PostMapping("/{userIdx}/{productIdx}/interest")
-    public BaseResponse<String> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
+    public BaseResponse<Integer> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
         try {
             /**
              * validation 처리해야될것
@@ -281,7 +281,7 @@ public class ProductController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            String result = productService.createInterestProduct(userIdx, productIdx);
+            int result = productService.createInterestProduct(userIdx, productIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

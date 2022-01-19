@@ -49,8 +49,10 @@ public class ProductDao {
                 "   left join(select productIdx, count(productIdx) as 'chatCount'\n" +
                 "       from ChatRoom\n" +
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
-                "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
+                "   left join(\n" +
+                "       select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
+                "       where status = 1\n" +
                 "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
                 "where p.status = 1\n" +
                 "and pi.firstImage = 1\n" +
@@ -119,6 +121,7 @@ public class ProductDao {
                 "        group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "    left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "        from ProductInterest\n" +
+                "       where status = 1\n" +
                 "        group by productIdx) as y on p.productIdx = y.productIdx\n" +
                 "    left join(select productIdx, count(productIdx) as 'lookupCount'\n" +
                 "        from ProductLookup\n" +
@@ -223,6 +226,7 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
+                "       where status = 1\n" +
                 "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
                 "where p.productIdx = pi.productIdx\n" +
                 "and p.status = 1\n" +
@@ -280,6 +284,7 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
+                "       where status = 1\n" +
                 "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
                 "where p.productIdx = pi.productIdx\n" +
                 "and p.status = 1\n" +
@@ -338,6 +343,7 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
+                "       where status = 1\n" +
                 "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi\n" +
                 "where p.status = 1\n" +
                 "and p.productIdx = pi.productIdx\n" +
@@ -387,6 +393,7 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
+                "       where status = 1\n" +
                 "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi, PurchaseHistory ph\n" +
                 "where p.productIdx = pi.productIdx\n" +
                 "and p.productIdx = ph.productIdx\n" +
@@ -481,12 +488,14 @@ public class ProductDao {
                 "       group by productIdx) as x on p.productIdx = x.productIdx\n" +
                 "   left join(select productIdx, count(productIdx) as 'interestCount'\n" +
                 "       from ProductInterest\n" +
+                "       where status = 1\n" +
                 "       group by productIdx) as y on p.productIdx = y.productIdx, ProductImage pi, ProductInterest\n" +
                 "where p.productIdx = ProductInterest.productIdx\n" +
                 "and p.productIdx = pi.productIdx\n" +
                 "and p.status = 1\n" +
                 "and pi.firstImage = 1\n" +
                 "and p.hideStatus = 0\n" +
+                "and ProductInterest.status = 1\n" +
                 "and ProductInterest.userIdx = ? ";
         int getProductInterestParams = userIdx;
         return this.jdbcTemplate.query(getProductInterestQuery,
