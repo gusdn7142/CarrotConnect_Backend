@@ -12,11 +12,10 @@ public enum BaseResponseStatus {
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+
     /*
      * 2000 : Request 오류  (validation)
      */
-
     //user 리소스
     POST_USERS_EMPTY_PHONENUMBER(false, 2000, "전화번호를 입력해주세요."),
     POST_USERS_INVALID_PHONENUMBER(false, 2001, "전화번호 형식을 확인해주세요."),
@@ -29,14 +28,57 @@ public enum BaseResponseStatus {
     INVALID_JWT(false, 2011, "jWT가 변조되었거나 만료시간이 지났습니다. 다시 확인해 주세요."),
     INVALID_USER_JWT(false,2012,"권한이 없는 유저의 접근입니다."),
 
+    //product 리소스
+    POST_PRODUCTS_EMPTY_TITLE(false, 2020, "제목을 입력해주세요."),
+    POST_PRODUCTS_INVALID_TITLE(false, 2021, "제목의 형식, 길이를 확인해주세요."),
+    POST_PRODUCTS_EMPTY_PRICE(false, 2022, "상품의 가격을 입력해주세요."),
+    POST_PRODUCTS_INVALID_PRICE(false, 2023, "상품의 가격 형식, 길이를 확인해주세요."),
+    POST_PRODUCTS_EMPTY_OFFER(false, 2024, "상품의 가격 제안 여부를 입력해주세요."),
+    POST_PRODUCTS_INVALID_OFFER(false, 2025, "상품의 가격 제안 여부 형식을 확인해주세요. (0 또는 1)"),
+    POST_PRODUCTS_EMPTY_SALE_STATUS(false, 2026, "상품의 판매 상태를 입력해주세요."),
+    POST_PRODUCTS_INVALID_SALE_STATUS(false, 2027, "상품의 판매 상태 형식을 확인해주세요. (상품 등록의 경우 1: 거래중, 2: 나눔중 둘 중 하나만 가능)"),
+    POST_PRODUCTS_EMPTY_CATEGORY(false, 2028, "카테고리 인덱스를 입력해주세요."),
+    POST_PRODUCTS_INVALID_CATEGORY(false, 2029, "카테고리 형식, 범위를 확인해주세요. (1~17)"),
+    POST_PRODUCTS_EMPTY_REGION(false, 2030, "지역 이름을 입력해주세요."),
+    POST_PRODUCTS_INVALID_REGION(false, 2031, "지역 이름의 형식, 길이를 확인해주세요."),
+    POST_PRODUCTS_EMPTY_IMAGE(false, 2032, "상품 사진을 등록해주세요."),
+    POST_PRODUCTS_INVALID_IMAGE(false, 2033, "상품 사진의 형식을 확인해주세요."),
+    POST_PRODUCTS_EMPTY_FIRST(false, 2034, "첫 번째 사진 여부를 입력해주세요."),
+    POST_PRODUCTS_INVALID_FIRST(false, 2035, "첫 번째 사진 여부의 형식을 입력해주세요. 값은 1만 들어올 수 있습니다."),
+    PATCH_PRODUCTS_INVALID_SALE_STATUS(false, 2036, "상품의 판매 상태 형식을 확인해주세요. (0~5)"),
+
+    //region 리소스
+    POST_REGIONS_EMPTY_NAME(false, 2037, "지역 이름을 입력해주세요."),
+    POST_REGIONS_INVALID_NAME(false, 2038, "지역 이름 형식을 확인해주세요."),
+    POST_REGIONS_EMPTY_LATITUDE_LONGITUDE(false, 2039, "위도와 경도를 입력해주세요."),
+    POST_REGIONS_INVALID_LATITUDE_LONGITUDE(false, 2040, "위도와 경도의 형식을 확인해주세요."),
+    POST_REGIONS_EMPTY_ALERT(false, 2041, "키워드 알림 여부를 입력해주세요."),
+    POST_REGIONS_INVALID_ALERT(false, 2042, "키워드 알림 여부의 형식을 확인해주세요. (0 또는 1)"),
+
+    //chat 리소스
+    POST_CHATS_EMPTY_MESSAGE(false, 2070, "보낼 메세지를 입력해주세요."),
+    POST_CHATS_INVALID_MESSAGE(false, 2071, "메세지의 형식을 확인해주세요."),
+
+    //review 리소스
+    POST_REVIEWS_EMPTY(false, 2110, "후기를 입력해주세요."),
+    POST_REVIEWS_INVALID(false, 2111, "후기의 형식을 확인해주세요."),
+    POST_REVIEWS_EMPTY_PREFERENCE(false, 2112, "거래 선호도를 입력해주세요."),
+    POST_REVIEWS_INVALID_PREFERENCE(false, 2113, "거래 선호도의 형식을 확인해주세요. (0~2)"),
+    POST_REVIEWS_EMPTY_MANNER(false, 2114, "매너 타입을 입력해주세요."),
+    POST_REVIEWS_INVALID_MANNER(false, 2115, "매너 타입 형식을 확인해주세요. (1~8)"),
+
+    //post 리소스
+    POST_SYMPATHIES_INVALID(false, 2150, "공감 인덱스 형식을 확인해주세요 (1~7)"),
+    POST_COMMENTS_EMPTY(false, 2151, "댓글 내용을 입력해주세요."),
+    POST_COMMENTS_INVALID(false, 2152, "댓글 형식을 확인해주세요."),
+    POST_COMMENTS_INVALID_IMAGE(false, 2153, "이미지 형식을 확인해주세요."),
+    POST_COMMENTS_INVALID_REGION_NAME(false, 2154, "장소의 이름 형식을 확인해주세요."),
+    POST_COMMENTS_INVALID_ADDRESS(false, 2155, "장소의 주소 형식을 확인해주세요."),
 
     //keyword 리소스
     POST_KEYWORDS_EMPTY_KEYWORD(false, 2050, "키워드를 입력해주세요.(예:자전거)"),
     GET_KEYWORDS_EMPTY_KEYWORD(false, 2051, "설정한 지역과 알림키워드에 해당하는 상품이 없습니다."),
 
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * 3000 : Response 오류 (validation)
@@ -58,6 +100,61 @@ public enum BaseResponseStatus {
     POST_USERS_REPORT_PRODUCT(false,3010,"이미 신고한 상품 게시글 입니다."),
     POST_USERS_HIDDEN_NICKNAME(false,3011,"이미 미노출된 등록된 사용자입니다."),
 
+    //product 리소스
+    POST_PRODUCTS_FAIL(false, 3020, "상품 등록에 실패했습니다."),
+    GET_PRODUCTS_LIST_FAIL(false, 3021, "전체 상품 조회에 실패했습니다."),
+    GET_PRODUCTS_FAIL(false, 3022, "상품 조회에 실패했습니다."),
+    PATCH_PRODUCTS_FAIL(false, 3023, "상품 삭제에 실패했습니다."),
+    GET_PRODUCTS_FAIL_SALE(false, 3024, "판매 중인 상품이 없습니다."),
+    GET_PRODUCTS_FAIL_COMPLETE(false, 3025, "거래 완료된 상품이 없습니다."),
+    GET_PRODUCTS_FAIL_HIDED(false, 3026, "숨겨진 상품이 없습니다."),
+    GET_PRODUCTS_FAIL_PURCHASED(false, 3027, "구매 내역이 없습니다."),
+    PATCH_PRODUCTS_FAIL_SALE_STATUS(false, 3028, "판매 상태 변경에 실패햇습니다."),
+    POST_PRODUCTS_FAIL_INTEREST(false, 3029, "관심 목록 등록에 실패했습니다."),
+    POST_PRODUCTS_EXISTS_INTEREST(false, 3030, "이미 관심 목록에 등록된 상품입니다."),
+    GET_PRODUCTS_FAIL_INTEREST(false, 3031, "관심 상품이 없습니다."),
+    PATCH_PRODUCTS_FAIL_INTEREST(false, 3032, "관심 목록 취소에 실패했습니다."),
+
+    // category 리소스
+    POST_CATEGORIES_FAIL(false, 3033, "관심 카테고리 등록에 실패했습니다."),
+    GET_CATEGORIES_FAIL(false, 3034, "관심 카테고리가 존재하지 않습니다."),
+    PATCH_CATEGORIES_FAIL(false, 3035, "관심 카테고리 취소에 실패했습니다."),
+
+    // region 리소스
+    POST_REGIONS_EXIST(false, 3036, "이미 설정된 동네가 두 곳이 있습니다. 기존 동네를 삭제하고 설정을 진행해주세요."),
+    POST_REGIONS_FAIL(false, 3037, "내 동네 설정에 실패했습니다."),
+    GET_REGIONS_FAIL(false, 3038, "내 동네 조회에 실패했습니다."),
+    PATCH_REGIONS_FAIL(false, 3039, "내 동네 삭제에 실패했습니다."),
+    PATCH_REGIONS_FAIL_MIN(false, 3040, "이 동네를 삭제한다면 설정한 동네가 없습니다. 동네 삭제를 하려면 다른 동네를 추가해주세요."),
+    PATCH_REGIONS_FAIL_AUTH(false, 3041, "내 동네 인증에 실패했습니다."),
+    PATCH_REGIONS_FAIL_NOW(false, 3042, "현재 설정한 동네가 아닙니다. 동네를 현재 동네로 설정하고 동네 인증을 진행해주세요."),
+    PATCH_REGIONS_EXITS_NOW(false, 3043, "이미 설정된 지역입니다."),
+    PATCH_REGIONS_FAIL_SET_NOW(false, 3044, "현재 동네 설정에 실패했습니다."),
+
+    //lookup 리소스
+    POST_LOOK_UPS_FAIL(false, 3045, "조회에 실패했습니다."),
+
+    //chat 리소스
+    POST_CHATS_EXITS(false, 3070, "이미 존재하는 채팅방입니다."),
+    POST_CHATS_FAIL(false, 3071, "채팅방 생성에 실패했습니다."),
+    POST_CHATS_FAIL_MESSAGE(false, 3072, "메세지 전송에 실패했습니다."),
+    GET_CHATS_FAIL(false, 3073, "채팅 목록이 비어있습니다."),
+    GET_CHATS_FAIL_LIST(false, 3074, "채팅 목록 조회에 실패했습니다."),
+
+    //review 리소스
+    POST_REVIEWS_FAIL(false, 3110, "거래후기 등록에 실패했습니다."),
+    GET_REVIEWS_FAIL(false, 3111, "거래후기가 존재하지 않습니다."),
+    PATCH_REVIEWS_FAIL(false, 3112, "거래후기 취소에 실패했습니다"),
+
+    //post 리소스
+    POST_SYMPATHIES_EXITS(false, 3150, "이미 공감한 게시글입니다."),
+    POST_SYMPATHIES_FAIL(false, 3151, "공감에 실패했습니다."),
+    GET_SYMPATHIES_FAIL(false, 3152, "공감이 존재하지 않습니다."),
+    PATCH_SYMPATHIES_FAIL(false, 3153, "공감 취소에 실패했습니다."),
+    POST_COMMENTS_FAIL(false, 3154, "댓글 작성에 실패했습니다."),
+    GET_COMMENTS_FAIL(false, 3155, "댓글이 존재하지 않습니다."),
+    PATCH_COMMENTS_FAIL(false, 3156, "댓글이 삭제에 실패했습니다."),
+
     //Keyword 리소스
     POST_KEYWORDS_EXISTS_KEYWORD(false,3050,"이미 추가된 키워드에요"),
     PATCH_KEYWORDS_ACTIVE_REGION(false,3051,"이미 알림 동네가 활성화된 상태입니다."),
@@ -74,8 +171,6 @@ public enum BaseResponseStatus {
     //Search 리소스
     POST_SEARCHS_CHECK(false,3170,"이미 등록한 검색어입니다."),
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * 4000 : Database, Server 오류
@@ -97,7 +192,6 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_MODIFY_FAIL_USER_NICKNAME(false, 4010, "사용자 닉네임 변경시 오류가 발생하였습니다."),
     DATABASE_ERROR_MODIFY_FAIL_USER_IMAGE(false, 4011, "사용자 이미지 변경시 오류가 발생하였습니다. 이미지 값을 재확인 해주세요."),
     DATABASE_ERROR_USER_INFO(false, 4012, "프로필 조회에 실패하였습니다."),
-
 
     DATABASE_ERROR_DELETE_CHECK_USER(false, 4013, "회원탈퇴 여부 확인에 실패하였습니다."),
     DATABASE_ERROR_DELETE_USER(false, 4014, "회원 탈퇴(유저 비활성화)에 실패하였습니다."),
@@ -122,8 +216,37 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4028, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4029, "비밀번호 복호화에 실패하였습니다."),
 
+    //product 리소스
+    DATABASE_ERROR_NOT_EXIST_REGION(false, 4030, "데이터베이스에 존재하지 않는 지역입니다."),
+    DATABASE_ERROR_NOT_EXIST_PRODUCT(false, 4031, "존재하지 않는 상품입니다."),
+    DATABASE_ERROR_NOT_ACCESS_PRODUCT(false, 4032, "(접근불가) 상품을 올린 사용자가 아닙니다. 사용자를 확인해주세요."),
+    DATABASE_ERROR_NOT_EXIST_INTEREST(false, 4033, "존재하지 않는 관심 목록 입니다."),
+    DATABASE_ERROR_NOT_ACCESS_INTEREST(false, 4034, "(접근불가) 관심 목록에 해당하는 사용자가 아닙니다. 사용자를 확인해주세요."),
 
+    //category 리소스
+    DATABASE_ERROR_NOT_EXIST_CATEGORY(false, 4035, "존재하지 않는 카테고리 인덱스입니다."),
+    DATABASE_ERROR_NOT_ACCESS_CATEGORY(false, 4036, "(접근불가) 관심 카테고리에 해당하는 사용자가 아닙니다. 사용자를 확인해주세요."),
 
+    //region 리소스
+    DATABASE_ERROR_NOT_EXIST_REGION_ID(false, 4037, "존재하지 않는 지역 인덱스입니다."),
+    DATABASE_ERROR_NOT_ACCESS_REGION(false, 4038, "(접근불가) 지역을 설정한 사용자가 아닙니다. 사용자를 확인해주세요."),
+
+    //chat 리소스
+    DATABASE_ERROR_NOT_SAME(false, 4030, "(접근불가) 채팅방에 해당하는 사용자가 아닙니다."),
+    DATABASE_ERRORS_NOT_EXITS_CHAT(false, 0, "존재하지 않는 채팅방입니다."),
+    DATABASE_ERRORS_NOT_EXITS_USER(false, 0, "존재하지 않는 사용자입니다."),
+    DATABASE_ERROR_NOT_ACCESS_USER(false, 4030, "접근할 수 없는 사용자 입니다. 사용자를 확인해주세요."),
+
+    //review 리소스
+    DATABASE_ERROR_NOT_ACCESS_REVIEW(false, 4030, "거래에 참여하지 않은 사용자가 존재합니다. 사용자를 확인해주세요."),
+    DATABASE_ERROR_NOT_EXITS_REVIEW(false, 4030, "존재하지 않는 거래후기 입니다."),
+    DATABASE_ERROR_NOT_ACCESS_REVIEW_USER(false, 4030, "(접근불가) 후기를 남긴 사용자가 아닙니다. 사용자를 확인해주세요."),
+
+    //post 리소스
+    DATABASE_ERROR_NOT_EXITS_POST(false, 4030, "존재하지 않는 게시글입니다."),
+    DATABASE_ERROR_NOT_EXITS_SYMPATHIES(false, 4030, "사용자가 공감한 내역이 없습니다."),
+    DATABASE_ERROR_NOT_EXITS_COMMENT(false, 4030, "존재하지 않는 댓글입니다."),
+    DATABASE_ERROR_NOT_ACCESS_COMMENT(false, 4030, "(접근불가) 댓글을 남긴 사용자가 아닙니다. 사용자를 확인해주세요."),
 
     //keyword 리소스
     DATABASE_ERROR_CREATE_KEYWORD(false, 4080, "키워드를 DB에 등록하지 못하였습니다."),
@@ -139,7 +262,6 @@ public enum BaseResponseStatus {
 
     DATABASE_ERROR_GET_ALERT_PRODUCT(false, 4088, "키워드 알림 상품 조회에 실패하였습니다."),
 
-
     //gather 리소스
     DATABASE_ERROR_CREATE_GATHER(false, 4120, "모아보기할 사용자를 DB에 등록하지 못하였습니다."),
     DATABASE_ERROR_CHECK_GATHER(false, 4121, "모아보기한 사용자 중복 검사에 실패하였습니다."),
@@ -147,8 +269,6 @@ public enum BaseResponseStatus {
 
     DATABASE_ERROR_GET_GATHER_USER(false, 4123, "모아보기한 사용자 조회에 실패하였습니다."),
     DATABASE_ERROR_GET_GATHER_PRODUCT(false, 4124, "모아보기한 상품 조회에 실패하였습니다."),
-
-
 
     //MytownActivity 리소스
     DATABASE_ERROR_CREATE_TOWN_ACTIVITY(false, 4180, "동네 생활 게시글을 DB에 등록하지 못하였습니다."),
@@ -159,7 +279,6 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_TOPICNAME(false, 4185, "게시글 주제 변경시 오류가 발생하였습니다."),
     DATABASE_ERROR_DELETE_TOWN_ACTIVITY(false, 4186, "게시글 삭제시 오류가 발생하였습니다."),
     DATABASE_ERROR_CHECK_TOWN_ACTIVITY(false, 4187, "게시글 중복 검사에 실패하였습니다."),
-
 
     //search 리소스
     DATABASE_ERROR_CREATE_SEARCH(false, 4200, "검색어 등록에 실패하였습니다."),
@@ -173,19 +292,8 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_GET_RELATION_SEARCH(false, 4208, "연관 검색어 조회에 실패하였습니다.");
 
 
-
-
-
-
-
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
-
-
-
-
-
-
 
 
     private final boolean isSuccess;
