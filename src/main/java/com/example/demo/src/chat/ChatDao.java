@@ -157,4 +157,44 @@ public class ChatDao {
                                         ), getContentsParams)
                 ), getChatContentParams, getChatContentParams, getContentsParams);
     }
+
+    @Transactional
+    public int checkProduct(int productIdx){
+        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? and status = 1) as exits ";
+        int checkProductParams = productIdx;
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, checkProductParams);
+    }
+
+    @Transactional
+    public int checkUser(int userIdx){
+        String checkProductQuery = "select exists (select userIdx from Product where userIdx = ? and status = 1) as exits ";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx);
+    }
+
+    @Transactional
+    public int checkSeller(int userIdx, int productIdx){
+        String checkProductQuery = "select exists (select userIdx from Product where userIdx= ? and productIdx = ? and status = 1) as exist";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx, productIdx);
+    }
+
+    @Transactional
+    public int checkRoom(int userIdx, int productIdx){
+        String checkProductQuery = "select exists(select buyer from ChatRoom where buyer = ? and productIdx = ? and status = 1) as exist";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx, productIdx);
+    }
+
+    @Transactional
+    public int checkChatRoom(int chatRoomIdx){
+        String checkProductQuery = "select exists(select chatRoomIdx from ChatContent where chatRoomIdx = ? and status = 1) as exist ";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, chatRoomIdx);
+    }
+
+    @Transactional
+    public int checkParticipation(int chatRoomIdx, int senderIdx, int receiverIdx ){
+        String checkProductQuery = "select exists(select chatRoomIdx from ChatRoom\n" +
+                "where (buyer = ? and seller = ?) or (buyer = ? and seller = ?)\n" +
+                "and chatRoomIdx = ?\n" +
+                "and status = 1) as exist";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, senderIdx, receiverIdx, receiverIdx, senderIdx, chatRoomIdx);
+    }
 }
