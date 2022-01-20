@@ -88,8 +88,6 @@ public class UserDao {
     /* iuseridx와 인증코드 일치 여부 확인(로그인 과정) - checkAuthCode() */
     public int checkAuthCode(PostLoginReq postLoginReq){
         String checkAuthCodeQuery = "select exists(select userIdx from User where userIdx = ? AND authCode = ?)";   //존재하지 않는 유저,   인증코드 재확인
-        System.out.println(postLoginReq.getUserIdx());
-        System.out.println(postLoginReq.getAuthCode());
 
         //userIdx와 authCode를 새로운 객체에 저장
         Object[] checkAuthCodeParams = new Object[]{postLoginReq.getUserIdx(), postLoginReq.getAuthCode()};

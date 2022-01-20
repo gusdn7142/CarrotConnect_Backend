@@ -13,9 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 // Service Create, Update, Delete 의 로직 처리
@@ -40,6 +38,7 @@ public class SearchService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 검색어 등록 - createSearch()  */
+    @Transactional
     public void createSearch(PostSearchReq postSearchReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //검색어 중복 등록 검사
@@ -60,6 +59,7 @@ public class SearchService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 최근 검색어 삭제 - deleteResentSearch()  */
+    @Transactional
     public void deleteResentSearch(PatchResentSearchReq patchResentSearchReq) throws BaseException {
 
         try{
@@ -73,6 +73,7 @@ public class SearchService {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 최근 검색어 전체 삭제 - deleteResentSearch()  */
+    @Transactional
     public void deleteAllResentSearch(int userIdx) throws BaseException {
 
         try{

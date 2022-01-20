@@ -14,8 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 // Service Create, Update, Delete 의 로직 처리
@@ -38,6 +37,7 @@ public class GatherService {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     /* 모아보기 추가 -  createGather() */
+    @Transactional
     public PostGatherRes createGather(PostGatherReq postGatherReq) throws BaseException {
 
         //모아보기한 사용자 중복 검사
@@ -65,13 +65,14 @@ public class GatherService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 모아보기 취소 - deleteGather()  */
+    @Transactional
     public void deleteGather(PatchGatherReq patchGatherReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         try{
             //모아보기 취소
             int result = gatherDao.deleteGather(patchGatherReq);
         } catch(Exception exception){
-            throw new BaseException(DATABASE_ERROR_DELETE_KEYWORD);   //'모아보기 취소에 실패하였습니다.'
+            throw new BaseException(DATABASE_ERROR_DELETE_GATHER);   //'모아보기 취소에 실패하였습니다.'
         }
 
     }

@@ -52,7 +52,7 @@ public class AlertKeywordController {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 33. 알림키워드 등록 API
+     * 41. 알림키워드 등록 API
      * [POST] /alert-keywords/:userIdx
      * @return BaseResponse<PostKeywordReq>   => keywordIdx 값 리턴
      */
@@ -109,7 +109,7 @@ public class AlertKeywordController {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 34. 알림 키워드 삭제 API
+     * 42. 알림 키워드 삭제 API
      * [PATCH] /alert-keywords/:userIdx/status
      * @return BaseResponse<String>
      */
@@ -139,8 +139,6 @@ public class AlertKeywordController {
             /*접근 제한 구현 끝 */
 
 
-
-
             //알림 키워드 삭제
             patchAlertKeywordReq.setUserIdx(userIdx);
             alertKeywordService.deleteKeyword(patchAlertKeywordReq);  //userService.java로 patchUserReq객체 값 전송
@@ -159,7 +157,7 @@ public class AlertKeywordController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 36. 등록한 알림 키워드 조회 API
+     * 43. 알림 키워드 조회 API
      * [GET] /alert-keywords/:userIdx
      * @return BaseResponse<GetAlertkeywardRes>
      */
@@ -208,7 +206,7 @@ public class AlertKeywordController {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 36. 알림 설정한 동네 조회 API
+     * 44. 알림 설정한 동네 조회 API
      * [GET] /alert-keywords/:userIdx/regions
      * @return BaseResponse<GetAlertRegionRes>
      */
@@ -256,7 +254,7 @@ public class AlertKeywordController {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 35. 알림 설정한 동네 변경 API
+     * 45. 알림 설정한 동네 변경 API
      * [PATCH] /alert-keywords/:userIdx/status
      * @return BaseResponse<String>
      */
@@ -315,7 +313,7 @@ public class AlertKeywordController {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 36. 키워드 알림 상품 조회 API
+     * 46. 키워드 알림 상품 조회 API
      * [GET] /alert-keywords/:userIdx/products
      * @return BaseResponse<GetUserRes>
      */
