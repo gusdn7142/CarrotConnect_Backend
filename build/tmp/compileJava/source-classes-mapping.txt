@@ -6,6 +6,8 @@ com/example/demo/src/townActivity/model/GetTownActivityRes.java
  com.example.demo.src.townActivity.model.GetTownActivityRes
 com/example/demo/src/review/ReviewDao.java
  com.example.demo.src.review.ReviewDao
+com/example/demo/src/comment/model/GetComment.java
+ com.example.demo.src.comment.model.GetComment
 com/example/demo/src/gather/model/PostGatherReq.java
  com.example.demo.src.gather.model.PostGatherReq
 com/example/demo/src/category/model/PatchCategoryInterest.java
@@ -40,6 +42,8 @@ com/example/demo/src/chat/ChatDao.java
  com.example.demo.src.chat.ChatDao
 com/example/demo/src/user/model/PostProductReportReq.java
  com.example.demo.src.user.model.PostProductReportReq
+com/example/demo/src/comment/model/PostComment.java
+ com.example.demo.src.comment.model.PostComment
 com/example/demo/src/alertKeyword/model/GetALLAlertProductRes.java
  com.example.demo.src.alertKeyword.model.GetALLAlertProductRes
 com/example/demo/src/chat/model/Contents.java
@@ -48,6 +52,8 @@ com/example/demo/src/gather/model/GetGatherProductRes.java
  com.example.demo.src.gather.model.GetGatherProductRes
 com/example/demo/src/alertKeyword/model/GetAlertPrductRes.java
  com.example.demo.src.alertKeyword.model.GetAlertPrductRes
+com/example/demo/src/sympathy/SympathyDao.java
+ com.example.demo.src.sympathy.SympathyDao
 com/example/demo/src/gather/GatherController.java
  com.example.demo.src.gather.GatherController
 com/example/demo/src/product/ProductController.java
@@ -80,6 +86,8 @@ com/example/demo/src/search/SearchProvider.java
  com.example.demo.src.search.SearchProvider
 com/example/demo/src/search/model/GetSearchToProductRes.java
  com.example.demo.src.search.model.GetSearchToProductRes
+com/example/demo/src/sympathy/SympathyService.java
+ com.example.demo.src.sympathy.SympathyService
 com/example/demo/src/user/UserDao.java
  com.example.demo.src.user.UserDao
 com/example/demo/src/chat/model/PostChatContent.java
@@ -90,6 +98,8 @@ com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
 com/example/demo/src/townActivity/model/GetTownActivityMeRes.java
  com.example.demo.src.townActivity.model.GetTownActivityMeRes
+com/example/demo/src/sympathy/SympathyProvider.java
+ com.example.demo.src.sympathy.SympathyProvider
 com/example/demo/src/user/model/PostUserBlockReq.java
  com.example.demo.src.user.model.PostUserBlockReq
 com/example/demo/src/test/TestController.java
@@ -102,6 +112,8 @@ com/example/demo/src/region/RegionDao.java
  com.example.demo.src.region.RegionDao
 com/example/demo/src/review/model/GetUserReview.java
  com.example.demo.src.review.model.GetUserReview
+com/example/demo/src/sympathy/model/SympathyList.java
+ com.example.demo.src.sympathy.model.SympathyList
 com/example/demo/src/search/model/GetSearchToTownActivityRes.java
  com.example.demo.src.search.model.GetSearchToTownActivityRes
 com/example/demo/src/user/UserController.java
@@ -140,10 +152,16 @@ com/example/demo/src/product/model/GetProductHidden.java
  com.example.demo.src.product.model.GetProductHidden
 com/example/demo/src/region/model/GetRegion.java
  com.example.demo.src.region.model.GetRegion
+com/example/demo/src/comment/CommentService.java
+ com.example.demo.src.comment.CommentService
 com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
+com/example/demo/src/sympathy/model/GetSympathy.java
+ com.example.demo.src.sympathy.model.GetSympathy
 com/example/demo/src/townActivity/TADao.java
  com.example.demo.src.townActivity.TADao
+com/example/demo/src/comment/CommentProvider.java
+ com.example.demo.src.comment.CommentProvider
 com/example/demo/src/review/model/GetUserManner.java
  com.example.demo.src.review.model.GetUserManner
 com/example/demo/src/chat/ChatController.java
@@ -178,6 +196,8 @@ com/example/demo/src/product/model/GetProductSale.java
  com.example.demo.src.product.model.GetProductSale
 com/example/demo/config/secret/Secret.java
  com.example.demo.config.secret.Secret
+com/example/demo/src/comment/CommentController.java
+ com.example.demo.src.comment.CommentController
 com/example/demo/config/BaseResponse.java
  com.example.demo.config.BaseResponse
 com/example/demo/src/user/UserService.java
@@ -190,6 +210,8 @@ com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
 com/example/demo/src/product/model/GetProductPurchased.java
  com.example.demo.src.product.model.GetProductPurchased
+com/example/demo/src/sympathy/SympathyController.java
+ com.example.demo.src.sympathy.SympathyController
 com/example/demo/src/gather/model/PatchGatherReq.java
  com.example.demo.src.gather.model.PatchGatherReq
 com/example/demo/src/user/model/PostUserReq.java
@@ -222,6 +244,8 @@ com/example/demo/src/user/model/PostLoginReq.java
  com.example.demo.src.user.model.PostLoginReq
 com/example/demo/src/product/model/PatchProductStatus.java
  com.example.demo.src.product.model.PatchProductStatus
+com/example/demo/src/comment/CommentDao.java
+ com.example.demo.src.comment.CommentDao
 com/example/demo/src/search/SearchDao.java
  com.example.demo.src.search.SearchDao
 com/example/demo/src/gather/GatherDao.java

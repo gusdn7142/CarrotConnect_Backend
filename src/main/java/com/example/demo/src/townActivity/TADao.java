@@ -526,6 +526,20 @@ public class TADao {
         return this.jdbcTemplate.update(deleteTownActivityQuery,deleteTownActivityParams);
     }
 
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 동네생활 게시글의 이미지 삭제 - deleteTownActivitytoImage()  */
+    public int deleteTownActivitytoImage(PatchTownActivityReq patchTownActivityReq){
+        //쿼리문 생성
+        String deleteTownActivityQuery = "update TownActivityImage set status = 0 where townActivityIdx IN (select townActivityIdx from TownActivity where userIdx = ? and townActivityIdx = ?)";
+
+        //쿼리 파라미터 생성
+        Object[] deleteTownActivityParams = new Object[]{patchTownActivityReq.getUserIdx(), patchTownActivityReq.getTownActivityIdx()};
+
+        //게시글 이미지 삭제 쿼리문 수행 (0,1로 반환됨)
+        return this.jdbcTemplate.update(deleteTownActivityQuery,deleteTownActivityParams);
+    }
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 게시글 중복 검사 - checkTownPost()  */

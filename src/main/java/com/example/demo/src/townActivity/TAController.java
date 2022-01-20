@@ -60,7 +60,7 @@ public class TAController {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 57. 동네생활 게시글 등록 API
+     * 58. 동네생활 게시글 등록 API
      * [POST] /town-activitiys/:userIdx
      * @return BaseResponse<String>
      */
@@ -124,7 +124,7 @@ public class TAController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 58. 동네생활 게시글 조회 (전체, 지역) API
+     * 59. 동네생활 게시글 조회 (전체, 지역) API
      * [GET] /town-activitiys/:userIdx/all?regionName=
      * @return BaseResponse<GetTownActivityRes>
      */
@@ -180,7 +180,7 @@ public class TAController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 59. 주제별 동네생활 게시글 조회  API
+     * 60. 주제별 동네생활 게시글 조회  API
      * [GET] /town-activitiys/:userIdx/all?&topicName=
      * @return BaseResponse<GetTownActivitytoTopicRes>
      */
@@ -227,7 +227,7 @@ public class TAController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 60. 특정 동네생활 게시글 조회  API
+     * 61. 특정 동네생활 게시글 조회  API
      * [GET] /town-activitiys/:userIdx/:townActivityIdx
      * @return BaseResponse<GetTownActivitytoTopicRes>
      */
@@ -279,7 +279,7 @@ public class TAController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 61. 동네생활 나의 게시글 조회  API
+     * 62. 동네생활 나의 게시글 조회  API
      * [GET] /town-activitiys/:userIdx/
      * @return BaseResponse<GetTownActivityMeRes>
      */
@@ -324,56 +324,10 @@ public class TAController {
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    /**
-//     * 61. 동네생활 나의 게시글 세부 조회  API
-//     * [GET] /town-activitiys/:userIdx/:townActivityIdx
-//     * @return BaseResponse<GetTownActivityMeRes>
-//     */
-//
-//    /* GET 방식 */
-//    @ResponseBody
-//    @GetMapping("/{userIdx}/detail/{townActivityIdx}")
-//    public BaseResponse<GetTownActivityMeDetailRes> getTownActivityMeDetail (@PathVariable("userIdx") int userIdx, @PathVariable("townActivityIdx") int townActivityIdx) {
-//
-//        try {
-//            /* 접근 제한 구현 */
-//            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-//            //String jwt = userProvider.getUserToken(userIdx);
-//            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-//
-//            //클라이언트에서 받아온 토큰에서 Idx 추출
-//            int userIdxByJwt = jwtService.getUserIdx();
-//
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userIdx != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//
-//            //로그아웃된 유저 인지 확인
-//            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-//            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-//            /*접근 제한 구현 끝 */
-//
-//
-//
-//            /* 동네생활 나의 게시글 세부 조회 - getTownActivityMeDetail() */
-//            GetTownActivityMeDetailRes getTownActivityMeDetailRes  = taProvider.getTownActivityMeDetail(userIdx, townActivityIdx);
-//
-//
-//
-//            return new BaseResponse<>(getTownActivityMeDetailRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
-//    }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 62. 동네생활 게시글 수정 API
+     * 63. 동네생활 게시글 수정 API
      * [PATCH] /town-activitiys/:userIdx/:townActivityIdx
      * @return BaseResponse<String>
      */
@@ -403,7 +357,7 @@ public class TAController {
             /*접근 제한 구현 끝 */
 
 
-            //체에 넣음
+            //객체에 넣음
             patchTownActivityReq.setUserIdx(userIdx);
             patchTownActivityReq.setTownActivityIdx(townActivityIdx);
 
@@ -423,7 +377,7 @@ public class TAController {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 63. 동네생활 게시글 삭제 API
+     * 64. 동네생활 게시글 삭제 API
      * [PATCH] /town-activitiys/:userIdx/status/:townActivityIdx
      * @return BaseResponse<String>
      */
@@ -455,10 +409,11 @@ public class TAController {
             //객체에 넣음
             PatchTownActivityReq patchTownActivityReq = new PatchTownActivityReq(null,null,0,null,userIdx,townActivityIdx,null,null,null);
 
-            //동네생활 나의 게시글 수정
+            //동네생활 나의 게시글 삭제
             taService.deleteTownActivity(patchTownActivityReq);
 
-
+            //동네생활 나의 게시글의 이미지 삭제
+            taService.deleteTownActivitytoImage(patchTownActivityReq);
 
             String result = "게시글 삭제가 완료되었습니다.";   //정보 변경 성공시 메시지 지정
             return new BaseResponse<>(result);
@@ -467,136 +422,6 @@ public class TAController {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    /**
-//     * 57. 테스트 API
-//     */
-//    // Body
-//    @ResponseBody
-//    @PostMapping("/test")
-//    public int test(@RequestBody (required = false) PostTownActivityReq PostTownActivityReq) {
-//
-//
-//
-////        try {
-//
-//        System.out.println("json 형태 출력" + PostTownActivityReq.getImageList());
-//        System.out.println("json 형태 출력" + PostTownActivityReq.getImageList().getClass().getName());
-//
-//        ArrayList<String> imageKeyList = new ArrayList<>();
-//        ArrayList<String> imageValueList = new ArrayList<>();
-//
-//
-//            //JSONObject imageObject = new JSONObject(imageString);
-//            Iterator i = PostTownActivityReq.getImageList().keys();  //이미지 키를 받아와 저장
-//
-//
-//            while(i.hasNext()){
-//                String b = i.next().toString();
-//                imageKeyList.add(b);
-//
-//                System.out.println(b);
-//            }
-
-
-
-
-//        String data = PostTownActivityReq.getImageList().toString();  // JSONObject를 String 에 담기
-//        System.out.print(data);
-//
-//        JSONObject json = new JSONObject(PostTownActivityReq);
-//        JSONObject jObj = json.optJSONObject("imageList");
-//        System.out.println("찐 출력" + jObj);
-
-
-
-
-
-
-
-
-
-
-//        Iterator m = PostTownActivityReq.getImageList().keys();  //이미지 키를 받아와 저장
-//
-//        while(m.hasNext()){
-//            String b = m.next().toString();
-//            imageKeyList.add(b);
-//
-//            System.out.println( "이게 찐이다" + b);
-//        }
-
-
-
-
-
-
-
-////        String imageList =
-////                    "{" +
-////                            "\"image\""+":{" +
-////                            "\"image1\":\"default image1\"," +
-////                            "\"image2\":\"default image2\"," +
-////                            "\"image3\":\"default image3\"," +
-////                            "\"image4\":\"default image4\"" +
-////                            "}" +
-////                    "}";
-//
-//
-//
-//            //json 객체 생성
-//              JSONObject jsonObject = new JSONObject(PostTownActivityReq.getImageList());
-//              System.out.println("json 객체 출력" + jsonObject);
-//
-//
-//            //image key 값 가져옴
-//               String imageString = jsonObject.getString("image");
-//
-//            //image value 한개값 추출출
-//            JSONObject imageObject = new JSONObject(imageString);
-//            Iterator i = imageObject.keys();  //이미지 키를 받아와 저장
-//
-
-
-//            while(i.hasNext()){
-//                String b = i.next().toString();
-//                imageKeyList.add(b);
-//
-//                System.out.println(b);
-//            }
-//
-//
-//
-//            for(int j = 0; j<imageKeyList.size();j++)
-//            {
-//                imageValueList.add(imageObject.getString(imageKeyList.get(j)));
-//                System.out.println((j+1) + "번쨰 이미지->" +imageKeyList.get(j));
-//                System.out.println((j+1)+"번째 이미지->"+imageValueList.get(j));
-//            }
-//
-//
-//
-
-//        }
-//        catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-
-
-//
-//        return 1;
-//    }
 
 
 

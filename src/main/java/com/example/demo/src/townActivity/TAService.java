@@ -92,21 +92,12 @@ public class TAService {
         }
 
         try{
-//            //동네생활 게시글 이미지 변경 (null이 아니면)
-//            if(patchTownActivityReq.getImage() != null){
-//                //이미지 변경
-//                int result = taDao.modifyImage(patchTownActivityReq);
-//            }
-
-//            System.out.println("이미지 크기" + patchTownActivityReq.getImageList().);
 
             //동네생활 게시글 이미지 변경 (null이 아니면)
             if(patchTownActivityReq.getImageList() != null){
                 //이미지 변경
                 int result = taDao.modifyImage(patchTownActivityReq);
             }
-
-
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_IMAGE);   //"이미지 변경시 오류가 발생하였습니다."
         }
@@ -139,6 +130,20 @@ public class TAService {
             int result = taDao.deleteTownActivity(patchTownActivityReq);
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR_DELETE_TOWN_ACTIVITY);   //"게시글 삭제시 오류가 발생하였습니다."
+        }
+
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* 동네생활 게시글의 이미지 삭제 - deleteTownActivitytoImage()  */
+    @Transactional
+    public void deleteTownActivitytoImage(PatchTownActivityReq patchTownActivityReq) throws BaseException {
+
+        try{
+            int result = taDao.deleteTownActivitytoImage(patchTownActivityReq);
+            System.out.println("삭제 완료" + result);
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR_DELETE_TOWN_ACTIVITY_IMAGE);   //"게시글 이미지 삭제시 오류가 발생하였습니다."
         }
 
     }
