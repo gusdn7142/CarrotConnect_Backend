@@ -29,6 +29,9 @@ public class CommentProvider {
 
     public List<GetComment> getComment(int postIdx) throws BaseException{
         try{
+            int checkPost = commentDao.checkPost(postIdx);
+            if(checkPost == 0){throw new BaseException(DATABASE_ERROR_NOT_EXITS_POST);}
+
             List<GetComment> getComment = commentDao.getComment(postIdx);
             return getComment;
         }
