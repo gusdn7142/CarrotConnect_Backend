@@ -123,6 +123,6 @@ public class ReviewDao {
     @Transactional
     public int checkAccess(int userIdx, int reviewIdx){
         String checkReviewQuery = "select exists(select reviewIdx from DealReview where reviewIdx = ? and senderIdx = ? and status = 1) as exist ";
-        return this.jdbcTemplate.queryForObject(checkReviewQuery, int.class, userIdx, reviewIdx);
+        return this.jdbcTemplate.queryForObject(checkReviewQuery, int.class, reviewIdx, userIdx);
     }
 }

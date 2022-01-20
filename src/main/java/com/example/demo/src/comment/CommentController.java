@@ -51,9 +51,9 @@ public class CommentController {
         try {
             if(postComment.getComment() == null){return new BaseResponse<>(POST_COMMENTS_EMPTY);}
             if(postComment.getComment().length() < 1 || postComment.getComment().length() > 100){return new BaseResponse<>(POST_COMMENTS_INVALID);}
-            if(postComment.getImage().length() < 1 || postComment.getImage().length() > 100){return new BaseResponse<>(POST_COMMENTS_INVALID_IMAGE);}
-            if(postComment.getPlaceName().length() < 1 || postComment.getPlaceName().length() > 50){return new BaseResponse<>(POST_COMMENTS_INVALID_REGION_NAME);}
-            if(postComment.getPlaceAddress().length() < 1 || postComment.getPlaceAddress().length() > 50){return new BaseResponse<>(POST_COMMENTS_INVALID_ADDRESS);}
+//            if(postComment.getImage().length() <= 1 || postComment.getImage().length() > 100){return new BaseResponse<>(POST_COMMENTS_INVALID_IMAGE);}
+//            if(postComment.getPlaceName().length() <= 1 || postComment.getPlaceName().length() > 50){return new BaseResponse<>(POST_COMMENTS_INVALID_REGION_NAME);}
+//            if(postComment.getPlaceAddress().length() <= 1 || postComment.getPlaceAddress().length() > 50){return new BaseResponse<>(POST_COMMENTS_INVALID_ADDRESS);}
 
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
