@@ -36,15 +36,12 @@ public class TAProvider {
     /* 전체 동네생활 게시글 조회 - getTownActivity() */
     public List<GetTownActivityRes> getTownActivity(int userIdx) throws BaseException {
 
-//        try {
+        try {
             List<GetTownActivityRes> getTownActivityRes = taDao.getTownActivity(userIdx);
-//            if(getTownActivityRes.isEmpty()){
-//                System.out.println("빈 객체입니다.");
-//            }
             return getTownActivityRes;
-//        } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
-//            throw new BaseException(DATABASE_ERROR_TOWN_ACTIVITY_INFO);
-//        }
+        } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
+            throw new BaseException(DATABASE_ERROR_TOWN_ACTIVITY_INFO);
+        }
     }
 
 
@@ -55,9 +52,6 @@ public class TAProvider {
 
         try {
             List<GetTownActivityRes> getTownActivityRes = taDao.getTownActivitytoRegion(userIdx, regionName);
-//            if(getTownActivityRes.isEmpty()){
-//                System.out.println("빈 객체입니다.");
-//            }
             return getTownActivityRes;
         } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
             throw new BaseException(DATABASE_ERROR_TOWN_ACTIVITY_INFO);
@@ -71,9 +65,7 @@ public class TAProvider {
 
         try {
             List<GetTownActivitytoTopicRes> getTownActivitytoTopicRes = taDao.getTownActivitytoTopic(userIdx, topicName);
-//            if(getTownActivityRes.isEmpty()){
-//                System.out.println("빈 객체입니다.");
-//            }
+
             return getTownActivitytoTopicRes;
         } catch (Exception exception) {    //에러가 있다면 (의미적 validation 처리)
             throw new BaseException(DATABASE_ERROR_TOWN_ACTIVITY_INFO);

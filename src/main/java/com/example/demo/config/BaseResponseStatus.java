@@ -282,6 +282,7 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_CONTENT(false, 4184, "게시글 내용 변경시 오류가 발생하였습니다."),
     DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_TOPICNAME(false, 4185, "게시글 주제 변경시 오류가 발생하였습니다."),
     DATABASE_ERROR_DELETE_TOWN_ACTIVITY(false, 4186, "게시글 삭제시 오류가 발생하였습니다."),
+    DATABASE_ERROR_DELETE_TOWN_ACTIVITY_IMAGE(false, 4188, "게시글 이미지 삭제시 오류가 발생하였습니다."),
     DATABASE_ERROR_CHECK_TOWN_ACTIVITY(false, 4187, "게시글 중복 검사에 실패하였습니다."),
 
     //search 리소스

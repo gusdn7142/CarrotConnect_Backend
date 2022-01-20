@@ -50,7 +50,7 @@ public class SearchController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 72. 검색어 등록 API
+     * 71. 검색어 등록 API
      * [Post] /searchs/:userIdx
      * @return BaseResponse<String>
      */
@@ -96,7 +96,7 @@ public class SearchController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 73. 최근 검색어 조회 API
+     * 72. 최근 검색어 조회 API
      * [GET] /searchs/:userIdx/recent
      * @return BaseResponse<GetResentSearchRes>
      */
@@ -142,7 +142,7 @@ public class SearchController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 74. 최근 검색어 삭제 API
+     * 73. 최근 검색어 삭제 API
      * [Patch] /searchs/:userIdx/recent-status
      * @return BaseResponse<String>
      */
@@ -187,7 +187,7 @@ public class SearchController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 75. 최근 검색어 전체 삭제 API
+     * 74. 최근 검색어 전체 삭제 API
      * [Patch] /searchs/:userIdx/all-recent-status
      * @return BaseResponse<String>
      */
@@ -228,7 +228,7 @@ public class SearchController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 76. 연관 검색어 조회 API
+     * 75. 연관 검색어 조회 API
      * [GET] /searchs/:userIdx/relation?searchWord=
      * @return BaseResponse<GetResentSearchRes>
      */
@@ -273,7 +273,7 @@ public class SearchController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 77. 검색에 따른 중고거래 글 조회 API
+     * 76. 검색에 따른 중고거래 글 조회 API
      * [GET] /searchs/:userIdx/products?searchWord=
      * @return BaseResponse<GetSearchToProductRes>
      */
@@ -321,7 +321,7 @@ public class SearchController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 78. 검색에 따른 동네생활 글 조회 API
+     * 77. 검색에 따른 동네생활 글 조회 API
      * [GET] /searchs/:userIdx/town-activitys?searchWord=
      * @return BaseResponse<GetSearchToTownActivityRes>
      */
