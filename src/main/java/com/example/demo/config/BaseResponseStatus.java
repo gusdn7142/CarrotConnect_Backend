@@ -190,17 +190,17 @@ public enum BaseResponseStatus {
 
     DATABASE_ERROR_FAIL_LOGOUT(false, 4009, "로그아웃에 처리에 실패 하였습니다."),
     DATABASE_ERROR_MODIFY_FAIL_USER_NICKNAME(false, 4010, "사용자 닉네임 변경시 오류가 발생하였습니다."),
-    DATABASE_ERROR_MODIFY_FAIL_USER_IMAGE(false, 4011, "사용자 이미지 변경시 오류가 발생하였습니다. 이미지 값을 재확인 해주세요."),
+    DATABASE_ERROR_MODIFY_FAIL_USER_IMAGE(false, 4011, "사용자 이미지 변경시 오류가 발생하였습니다."),
     DATABASE_ERROR_USER_INFO(false, 4012, "프로필 조회에 실패하였습니다."),
 
     DATABASE_ERROR_DELETE_CHECK_USER(false, 4013, "회원탈퇴 여부 확인에 실패하였습니다."),
     DATABASE_ERROR_DELETE_USER(false, 4014, "회원 탈퇴(유저 비활성화)에 실패하였습니다."),
     DATABASE_ERROR_DELETE_USER_REGION(false, 4015, "회원 탈퇴(동네 비활성화)에 실패하였습니다."),
 
-    DATABASE_ERROR_BLOCK_USER(false, 4016, "사용자 차단에 실패했습니다. 닉네임을 확인해 주세요."),
+    DATABASE_ERROR_BLOCK_CHECK_USER(false, 4016, "사용자 차단 여부 확인에 실패하였습니다."),
     DATABASE_ERROR_BLOCK_CANCELL_USER(false, 4017, "사용자 차단 해제에 실패했습니다. 닉네임을 확인해 주세요."),
 
-    DATABASE_ERROR_BLOCK_CHECK_USER(false, 4018, "사용자 차단 여부 확인에 실패하였습니다."),
+    DATABASE_ERROR_BLOCK_USER(false, 4018, "사용자 차단에 실패했습니다. 닉네임을 확인해 주세요."),
     DATABASE_ERROR_BLOCK_USER_INFO(false, 4019, "차단한 사용자 프로필 조회에 실패하였습니다."),
 
     DATABASE_ERROR_REPORT_USER(false, 4020, "사용자 신고에 실패했습니다."),
@@ -267,9 +267,11 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_GET_ALERT_PRODUCT(false, 4088, "키워드 알림 상품 조회에 실패하였습니다."),
 
     //gather 리소스
-    DATABASE_ERROR_CREATE_GATHER(false, 4120, "모아보기할 사용자를 DB에 등록하지 못하였습니다."),
-    DATABASE_ERROR_CHECK_GATHER(false, 4121, "모아보기한 사용자 중복 검사에 실패하였습니다."),
+    DATABASE_ERROR_CHECK_GATHER(false, 4120, "모아보기한 사용자 중복 검사에 실패하였습니다."),
+    DATABASE_ERROR_CREATE_GATHER(false, 4121, "모아보기할 사용자를 DB에 등록하지 못하였습니다."),
     DATABASE_ERROR_DELETE_GATHER(false, 4122, "모아보기 취소에 실패하였습니다."),
+
+
 
     DATABASE_ERROR_GET_GATHER_USER(false, 4123, "모아보기한 사용자 조회에 실패하였습니다."),
     DATABASE_ERROR_GET_GATHER_PRODUCT(false, 4124, "모아보기한 상품 조회에 실패하였습니다."),
@@ -278,16 +280,16 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_CREATE_TOWN_ACTIVITY(false, 4180, "동네 생활 게시글을 DB에 등록하지 못하였습니다."),
     DATABASE_ERROR_CREATE_TOWN_ACTIVITY_IMAGE(false, 4181, "동네 생활 게시글 등록 과정에서 이미지를 DB에 등록하지 못하였습니다."),
     DATABASE_ERROR_TOWN_ACTIVITY_INFO(false, 4182, "동네 생활 게시글을 불러오는데 실패하였습니다."),
-    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_IMAGE(false, 4183, "이미지 변경시 오류가 발생하였습니다."),
-    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_CONTENT(false, 4184, "게시글 내용 변경시 오류가 발생하였습니다."),
-    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_TOPICNAME(false, 4185, "게시글 주제 변경시 오류가 발생하였습니다."),
+    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_TOPICNAME(false, 4183, "게시글 주제 변경시 오류가 발생하였습니다."),
+    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_IMAGE(false, 4184, "이미지 변경시 오류가 발생하였습니다."),
+    DATABASE_ERROR_MODIFY_TOWN_ACTIVITY_CONTENT(false, 4185, "게시글 내용 변경시 오류가 발생하였습니다."),
     DATABASE_ERROR_DELETE_TOWN_ACTIVITY(false, 4186, "게시글 삭제시 오류가 발생하였습니다."),
     DATABASE_ERROR_DELETE_TOWN_ACTIVITY_IMAGE(false, 4188, "게시글 이미지 삭제시 오류가 발생하였습니다."),
     DATABASE_ERROR_CHECK_TOWN_ACTIVITY(false, 4187, "게시글 중복 검사에 실패하였습니다."),
 
     //search 리소스
-    DATABASE_ERROR_CREATE_SEARCH(false, 4200, "검색어 등록에 실패하였습니다."),
-    DATABASE_ERROR_CHECK_SEARCH(false, 4201, "검색어 중복 등록 검사에 실패하였습니다."),
+    DATABASE_ERROR_CHECK_SEARCH(false, 4200, "검색어 중복 등록 검사에 실패하였습니다."),
+    DATABASE_ERROR_CREATE_SEARCH(false, 4201, "검색어 등록에 실패하였습니다."),
     DATABASE_ERROR_GET_RECENT_SEARCH(false, 4202, "최근 검색어 조회에 실패하였습니다."),
     DATABASE_ERROR_DELETE_RESENT_SEARCH(false, 4203, "최근 검색어 삭제에 실패하였습니다."),
     DATABASE_ERROR_DELETE_ALL_RESENT_SEARCH(false, 4204, "최근 검색어 전체 삭제에 실패하였습니다."),
