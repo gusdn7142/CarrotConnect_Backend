@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class GetAlertPrductRes {
+    private int productIdx;
     private String image;
     private String keyword;
     private String regionName;
