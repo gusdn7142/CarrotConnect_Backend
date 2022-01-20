@@ -58,19 +58,19 @@ public class CategoryDao {
 
     @Transactional
     public int checkCategoryExist(int userIdx, int categoryIdx){
-        String checkProductQuery = "select exists (select interestCategoryIdx from InterestCategory where userIdx= ? and categoryIdx = ? ) as exits";
+        String checkProductQuery = "select exists (select interestCategoryIdx from InterestCategory where userIdx= ? and categoryIdx = ? and status = 1 ) as exist";
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx, categoryIdx);
     }
 
     @Transactional
     public int checkInterestExist(int idx){
-        String checkProductQuery = "select exists (select interestCategoryIdx from InterestCategory where interestCategoryIdx = ? ) as exits;\n";
+        String checkProductQuery = "select exists (select interestCategoryIdx from InterestCategory where interestCategoryIdx = ? and status = 1) as exist ";
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, idx);
     }
 
     @Transactional
     public int checkCategoryAccessUser(int idx, int userIdx){
-        String checkProductQuery = "select exists (select interestCategoryIdx from InterestCategory where userIdx= ? and interestCategoryIdx = ? ) as exits;\n";
+        String checkProductQuery = "select exists (select interestCategoryIdx from InterestCategory where userIdx= ? and interestCategoryIdx = ? and status = 1) as exist";
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx, idx);
     }
 }

@@ -64,6 +64,7 @@ public class ProductController {
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
             List<GetProductList> getProductList = productProvider.getProductList(regionName);
+            if(getProductList.size() == 0) {return new BaseResponse<>(GET_PRODUCTS_LIST_FAIL);}
             return new BaseResponse<>(getProductList);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -88,6 +89,7 @@ public class ProductController {
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
             List<GetProduct> getProduct = productProvider.getProduct(productIdx, userIdx);
+            if(getProduct.size() == 0){return new BaseResponse<>(GET_PRODUCTS_FAIL);}
             return new BaseResponse<>(getProduct);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

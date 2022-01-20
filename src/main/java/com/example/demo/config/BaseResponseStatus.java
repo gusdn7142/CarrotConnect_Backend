@@ -65,12 +65,12 @@ public enum BaseResponseStatus {
     POST_REVIEWS_EMPTY(false, 2110, "후기를 입력해주세요."),
     POST_REVIEWS_INVALID(false, 2111, "후기의 형식을 확인해주세요."),
     POST_REVIEWS_EMPTY_PREFERENCE(false, 2112, "거래 선호도를 입력해주세요."),
-    POST_REVIEWS_INVALID_PREFERENCE(false, 2113, "거래 선호도의 형식을 확인해주세요. (0~2)"),
+    POST_REVIEWS_INVALID_PREFERENCE(false, 2113, "거래 선호도의 형식을 확인해주세요. (1~3)"),
     POST_REVIEWS_EMPTY_MANNER(false, 2114, "매너 타입을 입력해주세요."),
     POST_REVIEWS_INVALID_MANNER(false, 2115, "매너 타입 형식을 확인해주세요. (1~8)"),
 
     //post 리소스
-    POST_SYMPATHIES_INVALID(false, 2150, "공감 인덱스 형식을 확인해주세요 (1~7)"),
+    POST_SYMPATHIES_INVALID(false, 2150, "공감 인덱스 형식을 확인해주세요. (1~7)"),
     POST_COMMENTS_EMPTY(false, 2151, "댓글 내용을 입력해주세요."),
     POST_COMMENTS_INVALID(false, 2152, "댓글 형식을 확인해주세요."),
     POST_COMMENTS_INVALID_IMAGE(false, 2153, "이미지 형식을 확인해주세요."),
@@ -111,7 +111,7 @@ public enum BaseResponseStatus {
     GET_PRODUCTS_FAIL_COMPLETE(true, 3025, "거래완료된 상품이 없습니다."),
     GET_PRODUCTS_FAIL_HIDED(true, 3026, "숨겨진 상품이 없습니다."),
     GET_PRODUCTS_FAIL_PURCHASED(true, 3027, "구매내역이 없습니다."),
-    PATCH_PRODUCTS_FAIL_SALE_STATUS(false, 3028, "판매상태 변경에 실패햇습니다."),
+    PATCH_PRODUCTS_FAIL_SALE_STATUS(false, 3028, "판매상태 변경에 실패했습니다."),
     POST_PRODUCTS_FAIL_INTEREST(false, 3029, "관심목록 등록에 실패했습니다."),
     POST_PRODUCTS_EXISTS_INTEREST(false, 3030, "이미 관심목록에 등록된 상품입니다."),
     GET_PRODUCTS_FAIL_INTEREST(true, 3031, "관심상품이 없습니다."),
@@ -145,7 +145,7 @@ public enum BaseResponseStatus {
 
     //review 리소스
     POST_REVIEWS_FAIL(false, 3110, "거래후기 등록에 실패했습니다."),
-    GET_REVIEWS_FAIL(false, 3111, "거래후기가 존재하지 않습니다."),
+    GET_REVIEWS_FAIL(true, 3111, "거래후기가 존재하지 않습니다."),
     PATCH_REVIEWS_FAIL(false, 3112, "거래후기 취소에 실패했습니다"),
 
     //post 리소스
@@ -155,7 +155,7 @@ public enum BaseResponseStatus {
     PATCH_SYMPATHIES_FAIL(false, 3153, "공감 취소에 실패했습니다."),
     POST_COMMENTS_FAIL(false, 3154, "댓글 작성에 실패했습니다."),
     GET_COMMENTS_FAIL(true, 3155, "댓글이 존재하지 않습니다."),
-    PATCH_COMMENTS_FAIL(false, 3156, "댓글이 삭제에 실패했습니다."),
+    PATCH_COMMENTS_FAIL(false, 3156, "댓글 삭제에 실패했습니다."),
 
     //Keyword 리소스
     POST_KEYWORDS_EXISTS_KEYWORD(false,3050,"이미 추가된 키워드에요"),

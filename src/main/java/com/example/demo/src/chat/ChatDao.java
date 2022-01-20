@@ -160,14 +160,14 @@ public class ChatDao {
 
     @Transactional
     public int checkProduct(int productIdx){
-        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? and status = 1) as exits ";
+        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? and status = 1) as exist ";
         int checkProductParams = productIdx;
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, checkProductParams);
     }
 
     @Transactional
     public int checkUser(int userIdx){
-        String checkProductQuery = "select exists (select userIdx from Product where userIdx = ? and status = 1) as exits ";
+        String checkProductQuery = "select exists (select userIdx from Product where userIdx = ? and status = 1) as exist ";
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx);
     }
 
@@ -203,7 +203,7 @@ public class ChatDao {
         String checkProductQuery = "select exists(select chatRoomIdx from ChatRoom\n" +
                 "where chatRoomIdx = ?\n" +
                 "and (buyer = ? or seller = ?)\n" +
-                "and status = 1) as existist";
+                "and status = 1) as exist";
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, chatRoomIdx, userIdx, userIdx);
     }
 }

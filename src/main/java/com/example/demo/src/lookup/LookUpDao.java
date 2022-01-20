@@ -29,7 +29,7 @@ public class LookUpDao {
 
     @Transactional
     public int checkProduct(int productIdx){
-        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? ) as exits ";
+        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? and status = 1 ) as exist ";
         int checkProductParams = productIdx;
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, checkProductParams);
     }

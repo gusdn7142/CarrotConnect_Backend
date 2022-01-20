@@ -79,25 +79,25 @@ public class RegionDao {
 
     @Transactional
     public int checkRegion(int userIdx, String regionName){
-        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionName = ? and status = 1) as exits ";
+        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionName = ? and status = 1) as exist ";
         return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, userIdx, regionName);
     }
 
     @Transactional
     public int checkRegionIdx(int regionIdx){
-        String checkRegionQuery = "select exists (select regionIdx from Region where regionIdx = ? and status = 1) as exits ";
+        String checkRegionQuery = "select exists (select regionIdx from Region where regionIdx = ? and status = 1) as exist ";
         return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, regionIdx);
     }
 
     @Transactional
     public int checkRegionAccess(int regionIdx, int userIdx){
-        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionIdx = ? and status = 1) as exits ";
+        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionIdx = ? and status = 1) as exist ";
         return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, userIdx, regionIdx);
     }
 
     @Transactional
     public int checkRegionNow(int regionIdx, int userIdx){
-        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionIdx = ? and status = 1 and nowStatus = 1) as exits ";
+        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionIdx = ? and status = 1 and nowStatus = 1) as exist ";
         return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, userIdx, regionIdx);
     }
 }

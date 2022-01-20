@@ -77,39 +77,39 @@ public class ProductDao {
 
     @Transactional
     public int checkRegion(String regionName){
-        String checkRegionQuery = "select exists (select regionName from Region where regionName = ? ) as exits ";
+        String checkRegionQuery = "select exists (select regionName from Region where regionName = ? and status = 1) as exist ";
         String checkRegionParams = regionName;
         return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, checkRegionParams);
     }
 
     @Transactional
     public int checkProduct(int productIdx){
-        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? ) as exits ";
+        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? and status = 1) as exist ";
         int checkProductParams = productIdx;
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, checkProductParams);
     }
 
     @Transactional
     public int checkProductAccessUser(int productIdx, int userIdx){
-        String checkProductQuery = "select exists (select productIdx from Product where userIdx = ? and productIdx = ? ) as exits ";
+        String checkProductQuery = "select exists (select productIdx from Product where userIdx = ? and productIdx = ? and status = 1 ) as exist ";
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx, productIdx);
     }
 
     @Transactional
     public int checkProductInterest(int productIdx, int userIdx){
-        String checkProductInterestQuery = "select exists (select userIdx from ProductInterest where userIdx = ? and productIdx = ? ) as exits";
+        String checkProductInterestQuery = "select exists (select userIdx from ProductInterest where userIdx = ? and productIdx = ? and status = 1 ) as exist";
         return this.jdbcTemplate.queryForObject(checkProductInterestQuery, int.class, userIdx, productIdx);
     }
 
     @Transactional
     public int checkProductInterestIdx(int interestIdx){
-        String checkProductInterestIdxQuery = "select exists (select productIdx from Product where productIdx = ? ) as exits ";
+        String checkProductInterestIdxQuery = "select exists (select interestIdx from ProductInterest where interestIdx = ? and status = 1 ) as exist ";
         return this.jdbcTemplate.queryForObject(checkProductInterestIdxQuery, int.class, interestIdx);
     }
 
     @Transactional
     public int checkProductInterestAccess(int interestIdx, int userIdx){
-        String checkProductInterestQuery = "select exists (select userIdx from ProductInterest where userIdx = ? and interestIdx = ? ) as exits";
+        String checkProductInterestQuery = "select exists (select userIdx from ProductInterest where userIdx = ? and interestIdx = ? and status = 1) as exist";
         return this.jdbcTemplate.queryForObject(checkProductInterestQuery, int.class, userIdx, interestIdx);
     }
 
@@ -563,7 +563,7 @@ public class ProductDao {
 
     @Transactional
     public int patchProductSaleStatus(int userIdx, int productIdx, int saleStatus){
-        String patchProductSaleStatusQuery = "update Product set saleStatus = ? where userIdx = ? and productIdx = ? ";
+        String patchProductSaleStatusQuery = "update Product set saleStatus = ? where userIdx = ? and productIdx = ? and status = 1";
         Object[] patchProductSaleStatusParams = new Object[]{saleStatus, userIdx, productIdx};
         return this.jdbcTemplate.update(patchProductSaleStatusQuery,patchProductSaleStatusParams);
     }

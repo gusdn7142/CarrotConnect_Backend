@@ -90,7 +90,7 @@ public class SympathyDao {
 
     @Transactional
     public int checkSympathy(int postIdx, int userIdx){
-        String checkSympathyQuery = "select exists(select sympathyIdx from TownActivitySympathy where postIdx = ? and userIdx = ? and status = 1) as exist;\n ";
+        String checkSympathyQuery = "select exists(select sympathyIdx from TownActivitySympathy where postIdx = ? and userIdx = ? and status = 1) as exist ";
         return this.jdbcTemplate.queryForObject(checkSympathyQuery, int.class, postIdx, userIdx);
     }
 }
