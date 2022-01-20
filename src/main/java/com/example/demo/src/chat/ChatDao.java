@@ -197,4 +197,13 @@ public class ChatDao {
                 "and status = 1) as exist";
         return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, senderIdx, receiverIdx, receiverIdx, senderIdx, chatRoomIdx);
     }
+
+    @Transactional
+    public int checkChatRommUser(int chatRoomIdx, int userIdx){
+        String checkProductQuery = "select exists(select chatRoomIdx from ChatRoom\n" +
+                "where chatRoomIdx = ?\n" +
+                "and (buyer = ? or seller = ?)\n" +
+                "and status = 1) as existist";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, chatRoomIdx, userIdx, userIdx);
+    }
 }
