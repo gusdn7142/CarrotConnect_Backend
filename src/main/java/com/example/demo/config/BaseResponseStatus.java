@@ -58,6 +58,8 @@ public enum BaseResponseStatus {
     //chat 리소스
     POST_CHATS_EMPTY_MESSAGE(false, 2070, "보낼 메세지를 입력해주세요."),
     POST_CHATS_INVALID_MESSAGE(false, 2071, "메세지의 형식을 확인해주세요."),
+    POST_CHATS_SAME_USER(false, 2072, "받는 사람을 확인해주세요."),
+    POST_CHATS_CHECK_USER(false, 2073, "사용자를 입력해주세요"),
 
     //review 리소스
     POST_REVIEWS_EMPTY(false, 2110, "후기를 입력해주세요."),
@@ -233,21 +235,21 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_NOT_ACCESS_REGION(false, 4038, "(접근불가) 지역을 설정한 사용자가 아닙니다. 사용자를 확인해주세요."),
 
     //chat 리소스
-    DATABASE_ERROR_NOT_SAME(false, 4030, "(접근불가) 채팅방에 해당하는 사용자가 아닙니다."),
-    DATABASE_ERRORS_NOT_EXITS_CHAT(false, 0, "존재하지 않는 채팅방입니다."),
-    DATABASE_ERRORS_NOT_EXITS_USER(false, 0, "존재하지 않는 사용자입니다."),
-    DATABASE_ERROR_NOT_ACCESS_USER(false, 4030, "접근할 수 없는 사용자 입니다. 사용자를 확인해주세요."),
+    DATABASE_ERROR_NOT_SAME(false, 4100, "(접근불가) 채팅방에 해당하는 사용자가 아닙니다."),
+    DATABASE_ERRORS_NOT_EXITS_CHAT(false, 4101, "존재하지 않는 채팅방입니다."),
+    DATABASE_ERRORS_NOT_EXITS_USER(false, 4102, "존재하지 않는 사용자입니다."),
+    DATABASE_ERROR_NOT_ACCESS_USER(false, 4103, "접근할 수 없는 사용자 입니다. 사용자를 확인해주세요."),
 
     //review 리소스
-    DATABASE_ERROR_NOT_ACCESS_REVIEW(false, 4030, "거래에 참여하지 않은 사용자가 존재합니다. 사용자를 확인해주세요."),
-    DATABASE_ERROR_NOT_EXITS_REVIEW(false, 4030, "존재하지 않는 거래후기 입니다."),
-    DATABASE_ERROR_NOT_ACCESS_REVIEW_USER(false, 4030, "(접근불가) 후기를 남긴 사용자가 아닙니다. 사용자를 확인해주세요."),
+    DATABASE_ERROR_NOT_ACCESS_REVIEW(false, 4140, "거래에 참여하지 않은 사용자가 존재합니다. 사용자를 확인해주세요."),
+    DATABASE_ERROR_NOT_EXITS_REVIEW(false, 4141, "존재하지 않는 거래후기 입니다."),
+    DATABASE_ERROR_NOT_ACCESS_REVIEW_USER(false, 4142, "(접근불가) 후기를 남긴 사용자가 아닙니다. 사용자를 확인해주세요."),
 
     //post 리소스
-    DATABASE_ERROR_NOT_EXITS_POST(false, 4030, "존재하지 않는 게시글입니다."),
-    DATABASE_ERROR_NOT_EXITS_SYMPATHIES(false, 4030, "사용자가 공감한 내역이 없습니다."),
-    DATABASE_ERROR_NOT_EXITS_COMMENT(false, 4030, "존재하지 않는 댓글입니다."),
-    DATABASE_ERROR_NOT_ACCESS_COMMENT(false, 4030, "(접근불가) 댓글을 남긴 사용자가 아닙니다. 사용자를 확인해주세요."),
+    DATABASE_ERROR_NOT_EXITS_POST(false, 4180, "존재하지 않는 게시글입니다."),
+    DATABASE_ERROR_NOT_EXITS_SYMPATHIES(false, 4181, "사용자가 공감한 내역이 없습니다."),
+    DATABASE_ERROR_NOT_EXITS_COMMENT(false, 4182, "존재하지 않는 댓글입니다."),
+    DATABASE_ERROR_NOT_ACCESS_COMMENT(false, 4183, "(접근불가) 댓글을 남긴 사용자가 아닙니다. 사용자를 확인해주세요."),
 
     DATABASE_ERROR_USER_LOGOUT(false, 4030, "로그아웃 상태 확인에 실패하였습니다."),
 
