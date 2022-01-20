@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PostRegion {
     private String regionName;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private double latitude;
+    private double longitude;
     private int keywordAlertStatus;
 
     public PostRegion(){

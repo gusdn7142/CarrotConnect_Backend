@@ -123,7 +123,7 @@ public enum BaseResponseStatus {
     // region 리소스
     POST_REGIONS_EXIST(false, 3036, "이미 설정된 동네가 두 곳이 있습니다. 기존 동네를 삭제하고 설정을 진행해주세요."),
     POST_REGIONS_FAIL(false, 3037, "내 동네 설정에 실패했습니다."),
-    GET_REGIONS_FAIL(false, 3038, "내 동네 조회에 실패했습니다."),
+    GET_REGIONS_FAIL(false, 3038, "내 동네 조회에 실패했습니다. 설정된 동네가 없습니다."),
     PATCH_REGIONS_FAIL(false, 3039, "내 동네 삭제에 실패했습니다."),
     PATCH_REGIONS_FAIL_MIN(false, 3040, "이 동네를 삭제한다면 설정한 동네가 없습니다. 동네 삭제를 하려면 다른 동네를 추가해주세요."),
     PATCH_REGIONS_FAIL_AUTH(false, 3041, "내 동네 인증에 실패했습니다."),

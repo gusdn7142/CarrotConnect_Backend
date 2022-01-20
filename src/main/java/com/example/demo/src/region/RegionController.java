@@ -1,5 +1,6 @@
 package com.example.demo.src.region;
 
+import com.example.demo.src.user.UserProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -8,11 +9,13 @@ import com.example.demo.src.region.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexPhoneNumber;
 
 @RestController
 @RequestMapping("/regions")
@@ -26,38 +29,39 @@ public class RegionController {
     private final RegionService regionService;
     @Autowired
     private final JwtService jwtService;
+    @Autowired
+    private final UserProvider userProvider;
 
-    public RegionController(RegionProvider regionProvider, RegionService regionService, JwtService jwtService){
+    public RegionController(RegionProvider regionProvider, RegionService regionService, JwtService jwtService, UserProvider userProvider){
         this.regionProvider = regionProvider;
         this.regionService = regionService;
         this.jwtService = jwtService;
+        this.userProvider = userProvider;
     }
 
     /**
      * 내 동네 추가 API
      * [POST] /regions/:userIdx
-     * @return BaseResponse<String>
+     * @return BaseResponse<Integer>
      */
     // Path-variable
     @ResponseBody
     @PostMapping("/{userIdx}")
-    public BaseResponse<String> createRegion(@PathVariable("userIdx") int userIdx, @RequestBody PostRegion postRegion) {
+    public BaseResponse<Integer> createRegion(@PathVariable("userIdx") int userIdx, @RequestBody PostRegion postRegion) {
         try {
-            /**
-             * validation 처리해야될것
-             * 1. 존재하는 사용자인지
-             * 2. 올바른 값들이 들어오는지
-             */
+            if(postRegion.getRegionName() == null){return new BaseResponse<>(POST_REGIONS_EMPTY_NAME);}
+            if(postRegion.getRegionName().length() <= 3 || postRegion.getRegionName().length() > 15){return new BaseResponse<>(POST_REGIONS_INVALID_NAME);}
+            if(postRegion.getLongitude() == 0 || postRegion.getLatitude() == 0){return new BaseResponse<>(POST_REGIONS_EMPTY_LATITUDE_LONGITUDE);}
+            if(postRegion.getLongitude() < -180 || postRegion.getLongitude() > 180 || postRegion.getLatitude() < -90 || postRegion.getLatitude() > 90){return new BaseResponse<>(POST_REGIONS_INVALID_LATITUDE_LONGITUDE);}
+            if(postRegion.getKeywordAlertStatus() < 0 || postRegion.getKeywordAlertStatus() > 1) {return new BaseResponse<>(POST_REGIONS_INVALID_ALERT);}
 
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = regionService.createRegion(userIdx, postRegion);
+            int result = regionService.createRegion(userIdx, postRegion);
+            if(result == 0){return new BaseResponse<>(POST_REGIONS_FAIL);}
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -74,16 +78,13 @@ public class RegionController {
     @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/regions/:userIdx
     public BaseResponse<List<GetRegion>> getRegion(@PathVariable("userIdx") int userIdx) {
         try{
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            // Get Category Interest
             List<GetRegion> getRegion = regionProvider.getRegion(userIdx);
+            if(getRegion.size() == 0){return new BaseResponse<>(GET_REGIONS_FAIL);}
             return new BaseResponse<>(getRegion);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -99,15 +100,13 @@ public class RegionController {
     @PatchMapping("/{idx}/{userIdx}/status")
     public BaseResponse<String> patchRegionStatus(@PathVariable("idx") int idx, @PathVariable("userIdx") int userIdx){
         try {
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            // userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = regionService.patchRegionStatus(idx, userIdx);
+            regionService.patchRegionStatus(idx, userIdx);
+            String result = "성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -123,15 +122,13 @@ public class RegionController {
     @PatchMapping("/{idx}/{userIdx}/auth-status")
     public BaseResponse<String> patchRegionAuth(@PathVariable("idx") int idx, @PathVariable("userIdx") int userIdx){
         try {
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            // userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = regionService.patchRegionAuth(idx, userIdx);
+            regionService.patchRegionAuth(idx, userIdx);
+            String result = "성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -147,15 +144,13 @@ public class RegionController {
     @PatchMapping("/{idx}/{userIdx}/now-status")
     public BaseResponse<String> patchRegionNow(@PathVariable("idx") int idx, @PathVariable("userIdx") int userIdx){
         try {
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            // userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = regionService.patchRegionNow(idx, userIdx);
+            regionService.patchRegionNow(idx, userIdx);
+            String result = "성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
