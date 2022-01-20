@@ -208,37 +208,33 @@ public class AlertKeywordDao {
 //        }
 
         //쿼리문 생성
-        String getAlertProductsQuery = "select img.image as image,\n" +
-                "       CONCAT('[', ?, ' 키워드 알림]') as keyword,\n" +
+        String getAlertProductsQuery = "select p.productIdx as productIdx,\n" +
+                "       pimg.image as image,\n" +
+                "       CONCAT('[', ? , ' 키워드 알림]') as keyword,\n" +
                 "       p.regionName as regionName,\n" +
                 "       p.title as title,\n" +
-                "\n" +
                 "       case when timestampdiff(second , p.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, p.createAt, current_timestamp),'초 전')\n" +
+                "            then concat(timestampdiff(second, p.createAt, current_timestamp),'초 전')\n" +
                 "\n" +
-                "           when timestampdiff(minute , p.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(minute, p.createAt, current_timestamp),'분 전')\n" +
+                "            when timestampdiff(minute , p.createAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, p.createAt, current_timestamp),'분 전')\n" +
                 "\n" +
-                "           when timestampdiff(hour , p.createAt, current_timestamp) <24\n" +
-                "           then concat(timestampdiff(hour, p.createAt, current_timestamp),'시간 전')\n" +
+                "            when timestampdiff(hour , p.createAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, p.createAt, current_timestamp),'시간 전')\n" +
                 "\n" +
-                "           when timestampdiff(day , p.createAt, current_timestamp) < 30\n" +
-                "           then concat(timestampdiff(day, p.createAt, current_timestamp),'일 전')\n" +
+                "            when timestampdiff(day , p.createAt, current_timestamp) < 30\n" +
+                "            then concat(timestampdiff(day, p.createAt, current_timestamp),'일 전')\n" +
                 "\n" +
-                "           when timestampdiff(month , p.createAt, current_timestamp) < 12\n" +
-                "           then concat(timestampdiff(month, p.createAt, current_timestamp),'개월 전')\n" +
+                "            when timestampdiff(month , p.createAt, current_timestamp) < 12\n" +
+                "             then concat(timestampdiff(month, p.createAt, current_timestamp),'개월 전')\n" +
+                "             else concat(timestampdiff(year , p.createAt, current_timestamp), '년 전')\n" +
+                "             end as createAt\n" +
                 "\n" +
-                "           else concat(timestampdiff(year , p.createAt, current_timestamp), '년 전')\n" +
-                "       end as createAt\n" +
+                "from (select productIdx, regionName, createAt, title from Product where title LIKE CONCAT('%', ? , '%') and status = 1 )p\n" +
+                "    left join (select productIdx, imageIdx, image from ProductImage where firstImage = 1 and status = 1 ) pimg\n" +
+                "    on p.productIdx = pimg.productIdx\n" +
                 "\n" +
-                "from Product p, ProductImage img\n" +
-                "\n" +
-                "where p.productIdx = img.productIdx\n" +
-                "and p.title LIKE CONCAT('%', ? , '%')\n" +
-                "and p.regionName IN (select regionName from Region where userIdx=? and keywordAlertStatus = 1 and status = 1)\n" +
-                "and p.status = 1\n" +
-                "and img.firstImage = 1\n" +
-                "and img.status = 1\n" +
+                "where p.regionName IN (select regionName from Region where userIdx=? and keywordAlertStatus = 1 and status = 1)\n" +
                 "order by p.createAt DESC";
 
 
@@ -257,6 +253,7 @@ public class AlertKeywordDao {
             //쿼리문 실행
             getAlertPrductRes = this.jdbcTemplate.query(getAlertProductsQuery,
                     (rs, rowNum) -> new GetAlertPrductRes(
+                            rs.getInt("productIdx"),
                             rs.getString("image"),
                             rs.getString("keyword"),
                             rs.getString("regionName"),

@@ -29,6 +29,5 @@ public class GetTownActivityRes {
     private int commentCount;
     private int sympathyCount;
 
-    //private List<String> imageList;
 }
 
