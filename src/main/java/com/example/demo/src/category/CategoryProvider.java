@@ -36,5 +36,4 @@ public class CategoryProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
 }
