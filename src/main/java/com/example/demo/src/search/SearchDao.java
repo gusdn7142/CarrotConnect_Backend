@@ -197,28 +197,31 @@ public class SearchDao {
                 "       timg.image,\n" +
                 "       t.topicName as topicName,\n" +
                 "       t.regionName as regionName,\n" +
-                " case when timestampdiff(second , t.createAt, current_timestamp) <60\n" +
-                "      then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
-                "      when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
-                "      then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
-                "      when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
-                "      then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
-                "      when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
-                "      then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
-                "      when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
-                "      then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
-                "      else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
-                "      end as createAt,\n" +
-                "       t.content as content,\n" +
-                "       t.sympathyCount as sympathyCount,\n" +
-                "       t.commentCount as commentCount\n" +
+                "       case when timestampdiff(second , t.createAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
+                "            when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
+                "            when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
+                "            when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
+                "            then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
+                "            when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
+                "            then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
+                "            else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
+                "            end as createAt,\n" +
+                "            t.content as content,\n" +
+                "       ifnull(tc.commentCount,0) as commentCount ,\n" +
+                "       ifnull(ts.sympathyCount,0) as sympathyCount\n" +
                 "\n" +
                 "from TownActivity t\n" +
-                "left join (select townActivityIdx, firstImage, image from TownActivityImage where firstImage = 1 and status = 1) timg\n" +
-                "    on t.townActivityIdx = timg.townActivityIdx\n" +
+                "     left join (select townActivityIdx, firstImage, image from TownActivityImage where firstImage = 1 and status = 1) timg\n" +
+                "          on t.townActivityIdx = timg.townActivityIdx\n" +
+                "     left join (select postIdx, count(postIdx) as 'commentCount' from TownActivityComment group by postIdx) tc\n" +
+                "          on t.townActivityIdx = tc.postIdx\n" +
+                "     left join (select postIdx, count(postIdx) as 'sympathyCount' from TownActivitySympathy group by postIdx) ts\n" +
+                "          on t.townActivityIdx = ts.postIdx\n" +
                 "\n" +
-                "where\n" +
-                " t.content LIKE CONCAT('%', ? , '%')\n" +
+                "where t.content LIKE CONCAT('%', ? , '%')\n" +
                 "and t.regionName = (select regionName from Region where userIdx=? and mainStatus = 1 and status = 1)\n" +
                 "and t.status = 1";
 
