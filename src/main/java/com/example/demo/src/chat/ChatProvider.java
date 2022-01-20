@@ -42,7 +42,7 @@ public class ChatProvider {
             int checkRoom = chatDao.checkChatRoom(chatRoomIdx);
             if(checkRoom == 0){throw new BaseException(DATABASE_ERRORS_NOT_EXITS_CHAT);}
 
-            int checkUser = chatDao.checkChatRommUser(chatRoomIdx, userIdx);
+            int checkUser = chatDao.checkChatRoomUser(chatRoomIdx, userIdx);
             if(checkUser == 0){throw new BaseException(DATABASE_ERROR_NOT_SAME);}
 
             List<GetChatContent> getChatContent = chatDao.getChatContent(userIdx, chatRoomIdx);

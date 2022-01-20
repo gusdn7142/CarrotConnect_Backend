@@ -199,7 +199,7 @@ public class ChatDao {
     }
 
     @Transactional
-    public int checkChatRommUser(int chatRoomIdx, int userIdx){
+    public int checkChatRoomUser(int chatRoomIdx, int userIdx){
         String checkProductQuery = "select exists(select chatRoomIdx from ChatRoom\n" +
                 "where chatRoomIdx = ?\n" +
                 "and (buyer = ? or seller = ?)\n" +

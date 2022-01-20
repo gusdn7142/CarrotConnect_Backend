@@ -29,6 +29,9 @@ public class ReviewProvider {
 
     public List<GetReviewAboutUser> getReviewAboutUser(int receiverIdx) throws BaseException{
         try{
+            int checkUser = reviewDao.checkUser(receiverIdx);
+            if(checkUser == 0){throw new BaseException(DATABASE_ERRORS_NOT_EXITS_USER);}
+
             List<GetReviewAboutUser> getReviewAboutUser = reviewDao.getReviewAboutUser(receiverIdx);
             return getReviewAboutUser;
         }
