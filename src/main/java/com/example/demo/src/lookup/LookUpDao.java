@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.util.List;
 
 @Repository
 public class LookUpDao {
@@ -26,5 +25,12 @@ public class LookUpDao {
 
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
+
+    @Transactional
+    public int checkProduct(int productIdx){
+        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? ) as exits ";
+        int checkProductParams = productIdx;
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, checkProductParams);
     }
 }
