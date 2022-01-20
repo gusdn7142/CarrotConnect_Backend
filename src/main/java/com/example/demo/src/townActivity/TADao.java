@@ -100,32 +100,30 @@ public class TADao {
                 "       u.nickName as nickName,\n" +
                 "       t.regionName as regionName,\n" +
                 "       case when timestampdiff(second , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
-                "\n" +
-                "           when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
-                "\n" +
-                "           when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
-                "           then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
-                "\n" +
-                "           when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
-                "           then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
-                "\n" +
-                "           when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
-                "           then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
-                "\n" +
-                "           else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
-                "       end as createAt,\n" +
-                "       t.commentCount as commentCount,\n" +
-                "       t.sympathyCount as sympathyCount\n" +
+                "            then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
+                "            when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
+                "            when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
+                "            when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
+                "            then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
+                "            when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
+                "            then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
+                "            else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
+                "            end as createAt,\n" +
+                "            ifnull(tc.commentCount,0) as commentCount ,\n" +
+                "            ifnull(ts.sympathyCount,0) as sympathyCount\n" +
                 "\n" +
                 "from TownActivity t left join (select townActivityIdx, image from TownActivityImage where firstImage = 1 and status= 1 ) timg\n" +
-                "    on t.townActivityIdx = timg.townActivityIdx\n" +
-                "join User u\n" +
-                "    on t.userIdx = u.userIdx\n" +
-                "\n" +
-                "join (select regionName from Region where userIdx = ? and mainStatus = 1 and status = 1) r\n" +
-                "    on t.regionName = r.regionName\n" +
+                "          on t.townActivityIdx = timg.townActivityIdx\n" +
+                "     join User u\n" +
+                "          on t.userIdx = u.userIdx\n" +
+                "     join (select regionName from Region where userIdx = ? and mainStatus = 1 and status = 1) r\n" +
+                "          on t.regionName = r.regionName\n" +
+                "     left join (select postIdx, count(postIdx) as 'commentCount' from TownActivityComment group by postIdx) tc\n" +
+                "          on t.townActivityIdx = tc.postIdx\n" +
+                "     left join (select postIdx, count(postIdx) as 'sympathyCount' from TownActivitySympathy group by postIdx) ts\n" +
+                "          on t.townActivityIdx = ts.postIdx\n" +
                 "\n" +
                 "where t.status = 1\n" +
                 "order by t.createAt desc";
@@ -164,32 +162,29 @@ public class TADao {
                 "       u.nickName as nickName,\n" +
                 "       t.regionName as regionName,\n" +
                 "       case when timestampdiff(second , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
-                "\n" +
-                "           when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
-                "\n" +
-                "           when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
-                "           then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
-                "\n" +
-                "           when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
-                "           then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
-                "\n" +
-                "           when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
-                "           then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
-                "\n" +
-                "           else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
-                "       end as createAt,\n" +
-                "       t.commentCount as commentCount,\n" +
-                "       t.sympathyCount as sympathyCount\n" +
-                "\n" +
+                "            then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
+                "            when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
+                "            when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
+                "            when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
+                "            then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
+                "            when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
+                "            then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
+                "            else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
+                "            end as createAt,\n" +
+                "            ifnull(tc.commentCount,0) as commentCount ,\n" +
+                "            ifnull(ts.sympathyCount,0) as sympathyCount\n" +
                 "from TownActivity t left join (select townActivityIdx, image from TownActivityImage where firstImage = 1 and status= 1 ) timg\n" +
-                "    on t.townActivityIdx = timg.townActivityIdx\n" +
-                "join User u\n" +
-                "    on t.userIdx = u.userIdx\n" +
-                "\n" +
-                "join (select regionName from Region where userIdx = ? and regionName = ? and status = 1) r\n" +
-                "    on t.regionName = r.regionName\n" +
+                "         on t.townActivityIdx = timg.townActivityIdx\n" +
+                "     join User u\n" +
+                "         on t.userIdx = u.userIdx\n" +
+                "     join (select regionName from Region where userIdx = ? and regionName = ? and status = 1) r\n" +
+                "         on t.regionName = r.regionName\n" +
+                "     left join (select postIdx, count(postIdx) as 'commentCount' from TownActivityComment group by postIdx) tc\n" +
+                "          on t.townActivityIdx = tc.postIdx\n" +
+                "     left join (select postIdx, count(postIdx) as 'sympathyCount' from TownActivitySympathy group by postIdx) ts\n" +
+                "          on t.townActivityIdx = ts.postIdx\n" +
                 "\n" +
                 "where t.status = 1\n" +
                 "order by t.createAt desc";
@@ -227,32 +222,29 @@ public class TADao {
                 "       u.nickName as nickName,\n" +
                 "       t.regionName as regionName,\n" +
                 "       case when timestampdiff(second , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
-                "\n" +
-                "           when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
-                "           then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
-                "\n" +
-                "           when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
-                "           then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
-                "\n" +
-                "           when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
-                "           then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
-                "\n" +
-                "           when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
-                "           then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
-                "\n" +
-                "           else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
-                "       end as createAt,\n" +
-                "       t.commentCount as commentCount,\n" +
-                "       t.sympathyCount as sympathyCount\n" +
-                "\n" +
+                "            then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
+                "            when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
+                "            then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
+                "            when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
+                "            then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
+                "            when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
+                "            then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
+                "            when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
+                "            then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
+                "            else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
+                "            end as createAt,\n" +
+                "            ifnull(tc.commentCount,0) as commentCount ,\n" +
+                "            ifnull(ts.sympathyCount,0) as sympathyCount\n" +
                 "from TownActivity t left join (select townActivityIdx, image from TownActivityImage where firstImage = 1 and status= 1 ) timg\n" +
-                "    on t.townActivityIdx = timg.townActivityIdx\n" +
-                "join User u\n" +
-                "    on t.userIdx = u.userIdx\n" +
-                "\n" +
-                "join (select regionName from Region where userIdx = ? and mainStatus = 1 and status = 1) r\n" +
-                "    on t.regionName = r.regionName\n" +
+                "        on t.townActivityIdx = timg.townActivityIdx\n" +
+                "     join User u\n" +
+                "        on t.userIdx = u.userIdx\n" +
+                "     join (select regionName from Region where userIdx = ? and mainStatus = 1 and status = 1) r\n" +
+                "        on t.regionName = r.regionName\n" +
+                "     left join (select postIdx, count(postIdx) as 'commentCount' from TownActivityComment group by postIdx) tc\n" +
+                "          on t.townActivityIdx = tc.postIdx\n" +
+                "     left join (select postIdx, count(postIdx) as 'sympathyCount' from TownActivitySympathy group by postIdx) ts\n" +
+                "          on t.townActivityIdx = ts.postIdx\n" +
                 "\n" +
                 "where t.status = 1 and t.topicName = ?\n" +
                 "order by t.createAt desc";
@@ -300,14 +292,18 @@ public class TADao {
                 "            then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
                 "            else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
                 "            end as createAt,\n" +
-                "            t.commentCount as commentCount,\n" +
-                "            t.sympathyCount as sympathyCount\n" +
+                "       ifnull(tc.commentCount,0) as commentCount ,\n" +
+                "       ifnull(ts.sympathyCount,0) as sympathyCount\n" +
                 "\n" +
                 "from TownActivity t\n" +
-                "    join User u\n" +
-                "        on t.userIdx = u.userIdx\n" +
-                "    join Region r\n" +
-                "        on u.userIdx = r.userIdx\n" +
+                "     join User u\n" +
+                "          on t.userIdx = u.userIdx\n" +
+                "     join Region r\n" +
+                "          on u.userIdx = r.userIdx\n" +
+                "     left join (select postIdx, count(postIdx) as 'commentCount' from TownActivityComment group by postIdx) tc\n" +
+                "          on t.townActivityIdx = tc.postIdx\n" +
+                "     left join (select postIdx, count(postIdx) as 'sympathyCount' from TownActivitySympathy group by postIdx) ts\n" +
+                "          on t.townActivityIdx = ts.postIdx\n" +
                 "\n" +
                 "where t.townActivityIdx = ?\n" +
                 "and r.mainStatus = 1\n" +
@@ -354,15 +350,17 @@ public class TADao {
 
 
  /////////////////////////////////////////////////////////////////////////////////////////////////////
-    /* 동네생활 나의 게시글 조회 - getTownActivityMe() */
+    /* 동네생활 나의 게시글 목록 조회 - getTownActivityMe() */
     public List<GetTownActivityMeRes> getTownActivityMe(int userIdx){
 
         //쿼리문 생성
-        String getTownActivityMeQuery = "select townActivityIdx,\n" +
-                "       topicName,\n" +
-                "       content,\n" +
-                "       commentCount\n" +
-                "from TownActivity\n" +
+        String getTownActivityMeQuery = "select t.townActivityIdx,\n" +
+                "       t.topicName,\n" +
+                "       t.content,+\n" +
+                "       ifnull(tc.commentCount,0) as commentCount\n" +
+                "\n" +
+                "from TownActivity t left join (select postIdx, count(postIdx) as 'commentCount' from TownActivityComment group by postIdx) tc\n" +
+                "          on t.townActivityIdx = tc.postIdx\n" +
                 "where userIdx = ? and status = 1";
 
         //userIdx를 객체에 저장.
@@ -379,73 +377,6 @@ public class TADao {
     }
 
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//    /* 동네생활 나의 게시글 세부 조회 - getTownActivityMeDetail() */
-//    public GetTownActivityMeDetailRes getTownActivityMeDetail(int userIdx, int townActivityIdx){
-//
-//        //쿼리문 생성
-//        String getTownActivityMeDetailQuery = "select t.townActivityIdx as townActivityIdx,\n" +
-//                "       t.topicName as topicName,\n" +
-//                "       u.nickName as nickName ,\n" +
-//                "       r.regionName as regionName,\n" +
-//                "       r.authCount as authCount,\n" +
-//                "       case when timestampdiff(second , t.createAt, current_timestamp) <60\n" +
-//                "           then concat(timestampdiff(second, t.createAt, current_timestamp),'초 전')\n" +
-//                "\n" +
-//                "           when timestampdiff(minute , t.createAt, current_timestamp) <60\n" +
-//                "           then concat(timestampdiff(minute, t.createAt, current_timestamp),'분 전')\n" +
-//                "\n" +
-//                "           when timestampdiff(hour , t.createAt, current_timestamp) <24\n" +
-//                "           then concat(timestampdiff(hour, t.createAt, current_timestamp),'시간 전')\n" +
-//                "\n" +
-//                "           when timestampdiff(day , t.createAt, current_timestamp) < 30\n" +
-//                "           then concat(timestampdiff(day, t.createAt, current_timestamp),'일 전')\n" +
-//                "\n" +
-//                "           when timestampdiff(month , t.createAt, current_timestamp) < 12\n" +
-//                "           then concat(timestampdiff(month, t.createAt, current_timestamp),'개월 전')\n" +
-//                "\n" +
-//                "           else concat(timestampdiff(year , t.createAt, current_timestamp), '년 전')\n" +
-//                "       end as createAt,\n" +
-//                "       t.content as content,\n" +
-//                "       timg.image as image,\n" +
-//                "       t.sympathyCount as sympathyCount,\n" +
-//                "       t.commentCount as commentCount\n" +
-//                "from TownActivity t left join (select townActivityIdx, image from TownActivityImage where firstImage = 1 and status= 1 ) timg\n" +
-//                "    on t.townActivityIdx = timg.townActivityIdx\n" +
-//                "join User u\n" +
-//                "    on t.userIdx = u.userIdx\n" +
-//                "join Region r\n" +
-//                "    on u.userIdx = r.userIdx\n" +
-//                "\n" +
-//                "\n" +
-//                "where t.userIdx = ?\n" +
-//                "and t.townActivityIdx = ?\n" +
-//                "and r.mainStatus = 1\n" +
-//                "and r.status = 1\n" +
-//                "and u.status = 1\n" +
-//                "and t.status = 1";
-//
-//        //쿼리 파라미터 생성
-//        Object[] getTownActivityMeDetailParams = new Object[]{userIdx, townActivityIdx};
-//
-//
-//        //쿼리문 실행
-//        return this.jdbcTemplate.queryForObject(getTownActivityMeDetailQuery,          //하나의 행을 불러오기 때문에 jdbcTemplate.queryForObject 실행
-//                (rs, rowNum) -> new GetTownActivityMeDetailRes(
-//                        rs.getInt("townActivityIdx"),             //각 칼럼은 DB와 매칭이 되어야 한다.
-//                        rs.getString("topicName"),
-//                        rs.getString("nickName"),
-//                        rs.getString("regionName"),
-//                        rs.getInt("authCount"),
-//                        rs.getString("createAt"),
-//                        rs.getString("content"),
-//                        rs.getString("image"),
-//                        rs.getInt("sympathyCount"),
-//                        rs.getInt("commentCount")),
-//                getTownActivityMeDetailParams);
-//    }
 
 
 
@@ -496,16 +427,8 @@ public class TADao {
         //쿼리문 생성
         String modifyContentQuery = "update TownActivity set content = ? where userIdx = ? and townActivityIdx = ? and status = 1";
 
-
-
-
         //쿼리 파라미터 생성
         Object[] modifyContentParams = new Object[]{patchTownActivityReq.getContent(), patchTownActivityReq.getUserIdx(), patchTownActivityReq.getTownActivityIdx()};
-
-
-
-
-
 
         //게시글 내용 변경 쿼리문 수행 (0,1로 반환됨)
         return this.jdbcTemplate.update(modifyContentQuery,modifyContentParams);
