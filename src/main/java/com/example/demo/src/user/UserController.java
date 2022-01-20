@@ -215,10 +215,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -305,10 +301,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -357,10 +349,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -410,10 +398,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -464,10 +448,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -510,10 +490,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -554,10 +530,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -616,10 +588,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -664,10 +632,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -707,10 +671,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -757,10 +717,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -775,11 +731,9 @@ public class UserController {
             /*접근 제한 구현 끝 */
 
 
-
             //사용자 신고
             postUserReportReq.setUserIdx(userIdx);
             userService.reportUser(postUserReportReq);
-
 
 
             //미노출 사용자 처리 (+미노출 처리 여부 확인 포함)
@@ -790,8 +744,6 @@ public class UserController {
                 userService.hideUser(postHideUserReq);       //미노출 사용자 추가 수행
                 hideResult = " 숨김 처리도 완료하였습니다.";
             }
-
-
             String result = "따뜻한 당근마켓을 위한 신고 감사드려요." + hideResult;
 
             return new BaseResponse<>(result);
@@ -818,10 +770,6 @@ public class UserController {
 
         try {
             /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
             //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -849,7 +797,6 @@ public class UserController {
                 userService.hideUser(postHideUserReq);       //미노출 사용자 추가 수행
                 hideResult = " 숨김 처리도 완료하였습니다.";
             }
-
 
             String result = "따뜻한 당근마켓을 위한 신고 감사드려요." + hideResult;
 
