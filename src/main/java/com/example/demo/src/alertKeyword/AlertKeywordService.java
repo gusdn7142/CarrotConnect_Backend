@@ -10,8 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 // Service Create, Update, Delete 의 로직 처리
@@ -35,6 +34,7 @@ public class AlertKeywordService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 알림키워드 등록-  createKeyword() */
+    @Transactional
     public PostAlertKeywordRes createKeyword(PostAlertKeywordReq postAlertKeywordReq) throws BaseException {
 
         //키워드 중복 검사
@@ -63,13 +63,8 @@ public class AlertKeywordService {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 알림 키워드 삭제 - deleteKeyword()  */
+    @Transactional
     public void deleteKeyword(PatchAlertKeywordReq patchAlertKeywordReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
-
-//        //알림 키워드 삭제 여부 확인
-//        if(alertKeywordProvider.checkdeleteKeyword(patchAlertKeywordReq) == 1){
-//            throw new BaseException(PATCH_KEYWORDS_DELETE_KEYWORD);      //"이미 삭제된 키워드입니다."
-//        }
-
 
         try{
             //알림 키워드 삭제
@@ -83,6 +78,7 @@ public class AlertKeywordService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 알림 동네 활성화 - activateRegionstatus()  */
+    @Transactional
     public void activateRegionstatus(PatchAlertKeywordReq patchAlertKeywordReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //알림 동네 활성화 여부 확인
@@ -105,6 +101,7 @@ public class AlertKeywordService {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 알림 동네 비활성화 - InActivateRegionstatus()  */
+    @Transactional
     public void InActivateRegionstatus(PatchAlertKeywordReq patchAlertKeywordReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //알림 동네 활성화 여부 확인

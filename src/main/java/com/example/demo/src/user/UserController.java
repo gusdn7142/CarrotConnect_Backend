@@ -63,7 +63,6 @@ public class UserController {
         }
 
 
-
         try{
             //유저 등록 (userIdx, authCode 반환)
             PostUserRes postUserRes = userService.createUser(postUserReq);
@@ -106,21 +105,15 @@ public class UserController {
             return new BaseResponse<>(POST_lOGINS_INVALID_AUTHCODE);
         }
 
-
-
         try{
             /* 로그인 진행 (useridx, authCode 전송) */
             PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);  //postLoginRes 변수에 userIdx와 jwt를 리턴
 
-
             //JWT 토큰 만료시간 확인 (추후 삭제)
             //jwtService.getJwtContents(postLoginRes.getJwt());
 
-
             // jwt토큰을 DB에 저장 (중복 부여는 고려하지 않아도 된다...)
             userService.saveJwt(postLoginRes);
-
-
 
             return new BaseResponse<>(postLoginRes);
         } catch (BaseException exception){
@@ -156,11 +149,8 @@ public class UserController {
                 return new BaseResponse<>(POST_USERS_INVALID_PHONENUMBER);
             }
 
-
             /* 회원가입 인증 진행 (userIdx 전송 -> userIdx, authCode 반환) */
             PostUserRes postUserRes = userService.JoinAuth(patchJoinAuthReq);  //postLoginRes 변수에 userIdx와 jwt를 리턴
-
-//        System.out.println(patchJoinAuthReq);
 
 
             return new BaseResponse<>(postUserRes);
@@ -186,14 +176,8 @@ public class UserController {
     public BaseResponse<String> logout (@PathVariable("idx") int userIdx){   //BaseResponse<String>      //@PathVariable("id") int userIdx
 
         try {
-//            /* 접근 제한 구현 */
-//            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-//            //String jwt = userProvider.getUserToken(userIdx);
-//            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-//
             //클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
-            //System.out.println(userIdxByJwt);
 
             //userIdx와 접근한 유저가 같은지 확인
             if(userIdx != userIdxByJwt){
@@ -208,8 +192,7 @@ public class UserController {
             PatchUserReq patchUserReq = new PatchUserReq(userIdx,null,null);
             //유저 로그아웃
             userService.logout(patchUserReq);
-//
-//
+
             String result = "유저가 로그아웃되었습니다.";   //정보 변경 성공시 메시지 지정
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
@@ -219,19 +202,16 @@ public class UserController {
 
 
     }
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 10. 프로필 수정 API
-     * [PATCH] /users/:idx
+     * 5. 자동 로그인 API (세션 상태 확인)- 토큰 시간에 따라 만료시킴
+     * [GET] /users/auto-logout/:id
      * @return BaseResponse<String>
      */
 
     @ResponseBody
-    @PatchMapping("/{idx}/profile")  //jwt가 탈취될수 있기 때문에 path-variable 방식 사용
-    public BaseResponse<String> modifyInfo(@PathVariable("idx") int userIdx, @RequestBody PatchUserReq patchUserReq){
-
+    @GetMapping("/{idx}/auto-login")
+    public BaseResponse<String> autoLogin (@PathVariable("idx") int userIdx){   //BaseResponse<String>
 
         try {
             /* 접근 제한 구현 */
@@ -239,7 +219,7 @@ public class UserController {
             //String jwt = userProvider.getUserToken(userIdx);
             //int userIdxByJwt = jwtService.getUserIdx2(jwt);
 
-            //클라이언트에서 받아온 토큰에서 Idx 추출
+            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
             //userIdx와 접근한 유저가 같은지 확인
@@ -247,33 +227,125 @@ public class UserController {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
+            //로그아웃된 유저 인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            //토큰 만료시간 확인
+            //jwtService.getJwtContents(request.getHeader("X-ACCESS-TOKEN"));
+
+
+            String result = "자동 로그인이 가능한 사용자입니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 6. 자동 로그아웃 API  - 토큰 만료시간이 지나면 사용자 로그아웃 처리
+     * [PATCH] /users/:idx/auto-logout
+     * @return BaseResponse<String>
+     */
+
+    @ResponseBody
+    @PatchMapping("/{idx}/auto-logout")
+    public BaseResponse<String> autoLogout (@PathVariable("idx") int userIdx){   //BaseResponse<String>
+
+        try {
+            /* 접근 제한 구현 */
+            //생략
+
             //로그아웃된 유저 (만료된 토큰 접근)인지 확인
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
             /*접근 제한 구현 끝 */
 
 
-            //유저 정보를 객체에 넣음
-            patchUserReq.setUserIdx(userIdx);
+            //토큰을 가져와서 만료 여부 확인
+            int checkJwtExpire = 0;
+            request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            checkJwtExpire = jwtService.checkJwtTime(request.getHeader("X-ACCESS-TOKEN"));
 
-            //유저 정보 변경
-            userService.modifyInfo(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
+            PatchUserReq patchUserReq = new PatchUserReq(userIdx,null,null);
+
+            //(토큰이 만료 되었다면, 변조되었다면) 유저 자동 로그아웃
+            String result = "";
+            if(checkJwtExpire == 1) {
+                userService.logout(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
+                result = "jwt 토큰이 만료되어 유저가 자동 로그아웃 처리되었습니다.";
+            }
+            else{
+                throw new BaseException(AUTO_LOGOUT_FAIL_USER);   //아직 유저의 jwt 토큰이 만료되지 않아 자동 로그아웃에 실패했습니다."
+            }
 
 
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
-            String result = "회원 정보 변경이 완료되었습니다.";   //정보 변경 성공시 메시지 지정
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 7. 회원 탈퇴 API
+     * [PATCH] /users/:Id/status
+     * @return BaseResponse<String>
+     */
+
+    @ResponseBody
+    @PatchMapping("/{idx}/status")
+    public BaseResponse<String> deleteUser(@PathVariable("idx") int userIdx){   //BaseResponse<String>
+
+        try {
+            /* 접근 제한 구현 */
+            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+            //String jwt = userProvider.getUserToken(userIdx);
+            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+
+            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            PatchUserReq patchUserReq = new PatchUserReq(userIdx,null,null);
+
+            //유저 상태 비활성화
+            userService.deleteUser(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
+
+            //동네 상태 비활성화
+            userService.deleteRegion(patchUserReq);    //동네정보에 들어갈 userIdx 설정
+
+            String result = "계정이 삭제되었습니다.";   //정보 변경 성공시 메시지 지정
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));  //어떤상황에서?.. 오류 뱉어줌
         }
+
     }
+
 
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 9. 프로필 조회 API
+     * 10. 프로필 조회 API
      * [GET] /users/:idx/profile?NickName=
      * @return BaseResponse<GetUserRes>
      */
@@ -324,17 +396,17 @@ public class UserController {
 
     }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 5. 자동 로그인 API (세션 상태 확인)- 토큰 시간에 따라 만료시킴
-     * [GET] /users/auto-logout/:id
+     * 11. 프로필 수정 API
+     * [PATCH] /users/:idx
      * @return BaseResponse<String>
      */
 
     @ResponseBody
-    @GetMapping("/{idx}/auto-login")
-    public BaseResponse<String> autoLogin (@PathVariable("idx") int userIdx){   //BaseResponse<String>
+    @PatchMapping("/{idx}/profile")  //jwt가 탈취될수 있기 때문에 path-variable 방식 사용
+    public BaseResponse<String> modifyInfo(@PathVariable("idx") int userIdx, @RequestBody PatchUserReq patchUserReq){
+
 
         try {
             /* 접근 제한 구현 */
@@ -342,45 +414,13 @@ public class UserController {
             //String jwt = userProvider.getUserToken(userIdx);
             //int userIdxByJwt = jwtService.getUserIdx2(jwt);
 
-            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
+            //클라이언트에서 받아온 토큰에서 Idx 추출
             int userIdxByJwt = jwtService.getUserIdx();
 
             //userIdx와 접근한 유저가 같은지 확인
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-
-            //로그아웃된 유저 인지 확인
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            /*접근 제한 구현 끝 */
-
-
-            //토큰 만료시간 확인
-            //jwtService.getJwtContents(request.getHeader("X-ACCESS-TOKEN"));
-
-
-            String result = "자동 로그인이 가능한 사용자입니다.";
-            return new BaseResponse<>(result);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * 자동 로그아웃 API  - 토큰 만료시간이 지나면 사용자 로그아웃 처리
-     * [PATCH] /users/:idx/auto-logout
-     * @return BaseResponse<String>
-     */
-
-    @ResponseBody
-    @PatchMapping("/{idx}/auto-logout")
-    public BaseResponse<String> autoLogout (@PathVariable("idx") int userIdx){   //BaseResponse<String>
-
-        try {
-            /* 접근 제한 구현 */
-            //생략
 
             //로그아웃된 유저 (만료된 토큰 접근)인지 확인
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
@@ -388,84 +428,25 @@ public class UserController {
             /*접근 제한 구현 끝 */
 
 
-            //토큰을 가져와서 만료 여부 확인
-            int checkJwtExpire = 0;
-            request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-            checkJwtExpire = jwtService.checkJwtTime(request.getHeader("X-ACCESS-TOKEN"));
-            //System.out.println("checkJwtTime 값 : " + checkJwtExpire);
+            //유저 정보를 객체에 넣음
+            patchUserReq.setUserIdx(userIdx);
+
+            //유저 정보 변경
+            userService.modifyInfo(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
 
 
-            //토큰 만료시간 확인
-            //jwtService.getJwtContents(request.getHeader("X-ACCESS-TOKEN"));
 
-
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx,null,null);
-
-            //(토큰이 만료 되었다면, 변조되었다면) 유저 자동 로그아웃
-            String result = "";
-            if(checkJwtExpire == 1) {
-                userService.logout(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
-                result = "jwt 토큰이 만료되어 유저가 자동 로그아웃 처리되었습니다.";
-            }
-            else{
-                throw new BaseException(AUTO_LOGOUT_FAIL_USER);   //아직 유저의 jwt 토큰이 만료되지 않아 자동 로그아웃에 실패했습니다."
-            }
-
-
-            return new BaseResponse<>(result);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * 6. 회원 탈퇴 API
-     * [PATCH] /users/:Id/status
-     * @return BaseResponse<String>
-     */
-
-    @ResponseBody
-    @PatchMapping("/{idx}/status")
-    public BaseResponse<String> deleteUser(@PathVariable("idx") int userIdx){   //BaseResponse<String>
-
-        try {
-            /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
-            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
-            int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            //로그아웃된 유저 인지 확인
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            /*접근 제한 구현 끝 */
-
-
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx,null,null);
-
-            //유저 상태 비활성화
-            userService.deleteUser(patchUserReq);  //userService.java로 patchUserReq객체 값 전송
-
-            //동네 상태 비활성화
-            userService.deleteRegion(patchUserReq);    //동네정보에 들어갈 userIdx 설정
-
-            String result = "계정이 삭제되었습니다.";   //정보 변경 성공시 메시지 지정
+            String result = "회원 정보 변경이 완료되었습니다.";   //정보 변경 성공시 메시지 지정
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));  //어떤상황에서?.. 오류 뱉어줌
         }
-
     }
+
+
+
+
+
 
 
 
@@ -473,7 +454,7 @@ public class UserController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 11. 사용자 차단 API
+     * 12. 사용자 차단 API
      * [Post] /users/:idx/blocks/:userIdx
      * @return BaseResponse<String>
      */
@@ -515,56 +496,6 @@ public class UserController {
 
 
     }
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * 13. 사용자 차단 해제 API
-     * [Post] /users/:idx/blocks-cancell
-     * @return BaseResponse<String>
-     */
-    @ResponseBody
-    @PatchMapping("/{idx}/blocks-cancell")
-    public BaseResponse<String> blockCancell(@PathVariable("idx") int userIdx, @RequestBody PatchUserBlockCancellReq PatchUserBlockCancellReq){   //BaseResponse<String>
-
-        try {
-            /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
-            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
-            int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            //로그아웃된 유저 인지 확인
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            /*접근 제한 구현 끝 */
-
-
-            //사용자 차단 해제
-            PatchUserBlockCancellReq.setUserIdx(userIdx);
-            userService.blockCancell(PatchUserBlockCancellReq);
-
-
-            String result = PatchUserBlockCancellReq.getBlockCancellNickName() + "님 차단을 해제했어요.";
-            return new BaseResponse<>(result);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-
-
-
-    }
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * 12. 차단한 사용자 조회 API
@@ -610,6 +541,56 @@ public class UserController {
     }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 13. 사용자 차단 해제 API
+     * [Post] /users/:idx/blocks-cancell
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/blocks/status")
+    public BaseResponse<String> blockCancell(@PathVariable("idx") int userIdx, @RequestBody PatchUserBlockCancellReq PatchUserBlockCancellReq){   //BaseResponse<String>
+
+        try {
+            /* 접근 제한 구현 */
+            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+            //String jwt = userProvider.getUserToken(userIdx);
+            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+
+            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            //사용자 차단 해제
+            PatchUserBlockCancellReq.setUserIdx(userIdx);
+            userService.blockCancell(PatchUserBlockCancellReq);
+
+
+            String result = PatchUserBlockCancellReq.getBlockCancellNickName() + "님 차단을 해제했어요.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+
+
+    }
+
+
+
+
+
 
 
 
@@ -625,7 +606,7 @@ public class UserController {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 48. 미노출 사용자 추가 API
+     * 15. 미노출 사용자 추가 API
      * [Post] /hidden-users/:userIdx
      * @return BaseResponse<String>
      */
@@ -669,11 +650,54 @@ public class UserController {
     }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 16. 미노출 사용자 조회 API
+     * [GET] /hidden-users/:userIdx
+     * @return BaseResponse<GetUserRes>
+     */
+
+    /* GET 방식 - Path-variable (패스 베리어블) */
+    @ResponseBody
+    @GetMapping("/{idx}/hiddens")
+    public BaseResponse<List<GetHiddenUserRes>> getHiddenUser(@PathVariable("idx") int userIdx) {
+
+        try {
+            /* 접근 제한 구현 */
+            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+            //String jwt = userProvider.getUserToken(userIdx);
+            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+
+            //클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            //미노출 사용자 정보 조회 - getBlockUser()
+            List<GetHiddenUserRes> getHiddenUserRes = userProvider.getHiddenUser(userIdx);
+
+
+
+            return new BaseResponse<>(getHiddenUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 49. 미노출 사용자 취소 API
+     * 17. 미노출 사용자 해제 API
      * [Post] /hidden-users/:userIdx/status
      * @return BaseResponse<String>
      */
@@ -720,59 +744,10 @@ public class UserController {
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * 50. 미노출 사용자 조회 API
-     * [GET] /hidden-users/:userIdx
-     * @return BaseResponse<GetUserRes>
-     */
-
-    /* GET 방식 - Path-variable (패스 베리어블) */
-    @ResponseBody
-    @GetMapping("/{idx}/hiddens")
-    public BaseResponse<List<GetHiddenUserRes>> getHiddenUser(@PathVariable("idx") int userIdx) {
-
-        try {
-            /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
-            //클라이언트에서 받아온 토큰에서 Idx 추출
-            int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            //로그아웃된 유저 인지 확인
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            /*접근 제한 구현 끝 */
-
-
-            //미노출 사용자 정보 조회 - getBlockUser()
-            List<GetHiddenUserRes> getHiddenUserRes = userProvider.getHiddenUser(userIdx);
-
-
-
-            return new BaseResponse<>(getHiddenUserRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-
-    }
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 51. 사용자 신고 API
+     * 18. 사용자 신고 API
      * [Post] /users/:idx/user-reports
      * @return BaseResponse<String>
      */
@@ -833,7 +808,7 @@ public class UserController {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * 51. 상품 게시글 신고 API
+     * 19. 상품 게시글 신고 API
      * [Post] /users/:idx/product-reports
      * @return BaseResponse<String>
      */

@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 
@@ -38,6 +38,7 @@ public class TAService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네생활 게시글 등록 -  createTownPost() */
+    @Transactional
     public int createTownPost(PostTownActivityReq postTownActivityReq) throws BaseException {
 
         //게시글 중복 검사 (이 유저가 이 주제와 내용으로 작성한 적이 있는지 검사)
@@ -59,6 +60,7 @@ public class TAService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네생활 게시글의 이미지 등록 -  createTownImage() */
+    @Transactional
     public void createTownImage(PostTownActivityReq postTownActivityReq, int townActivityIdx) throws BaseException {
 
         try{
@@ -76,6 +78,7 @@ public class TAService {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네생활 게시글 수정 - modifyTownActivity()  */
+    @Transactional
     public void modifyTownActivity(PatchTownActivityReq patchTownActivityReq) throws BaseException {
 
         try{
@@ -129,6 +132,7 @@ public class TAService {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네생활 게시글 삭제 - deleteTownActivity()  */
+    @Transactional
     public void deleteTownActivity(PatchTownActivityReq patchTownActivityReq) throws BaseException {
 
         try{

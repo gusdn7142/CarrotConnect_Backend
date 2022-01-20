@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 import static com.example.demo.config.BaseResponseStatus.*;
+import org.springframework.transaction.annotation.Transactional;
+
+
 
 //문자 알림에 적용
 //import java.util.HashMap;
@@ -45,6 +48,7 @@ public class UserService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 유저 등록 -  createUser() */
+    @Transactional
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
 
         //전화번호 중복 검사
@@ -109,15 +113,12 @@ public class UserService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 동네 등록 -  createRegion() */
+    @Transactional
     public void createRegion(PostUserReq postUserReq) throws BaseException {
 
         //동네 등록
         try{
             int regionIdx = userDao.createRegion(postUserReq);  //유저 IDX, 위치, 위도, 경도 전송
-//            postUserRes.setRegionIdx(regionIdx);  //지역 idx 출력시키기 위해 추가
-
-            //지역 idx
-//            return postUserRes;
 
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR_CREATE_REGION);  //동네 등록 실패 에러
@@ -128,6 +129,7 @@ public class UserService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 로그인시 jwt토큰을 DB에 저장 - saveJwt() */
+    @Transactional
     public void saveJwt(PostLoginRes postLoginRes) throws BaseException {    //UserController.java에서 객체 값( useridx, jwt)을 받아와서...
 
         //userDao.java에서 쿼리문 수행결과로 받아온 (0 or 1)값을 result 변수에 저장
@@ -144,12 +146,12 @@ public class UserService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 회원가입 인증 - userJoinCheck() */
+    @Transactional
     public PostUserRes JoinAuth(PatchJoinAuthReq patchJoinAuthReq) throws BaseException {
 
 
         //폰번호에 해당하는 유저가 존재하는지 확인 (회원가입 여부 확인)
         if (userProvider.JoinCheck(patchJoinAuthReq.getPhoneNumber()) == 0) {    //가입되지 않은 유저입니다.
-            System.out.println("회원가입이 되지 않은 유저입니다.");
             throw new BaseException(FAILED_TO_JOIN_CHECK);
         }
 
@@ -200,9 +202,6 @@ public class UserService {
 
             //유저 idx 값 조회 (phoneNumber 활용)
             User user = userProvider.getUserIdx(patchJoinAuthReq.getPhoneNumber());
-            //System.out.println(user.getMannerTemp());
-            //System.out.println(user.getTradeRate());
-
 
             //유저 idx, 인증코드 반환
             PostUserRes postUserRes =  new PostUserRes(user.getUserIdx(),authCode);
@@ -219,15 +218,11 @@ public class UserService {
 
 
 
-//// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /* 유저 로그아웃 - logout()  */
+    @Transactional
     public void logout(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
-
-//        //로그아웃 여부 확인
-//        if(userProvider.checklogoutUser(patchUserReq.getUserIdx()) == 1){
-//            throw new BaseException(logout_FAIL_USER);   //"이미 로그아웃 되었습니다."
-//        }
 
         try{
             //유저 로그아웃
@@ -241,6 +236,7 @@ public class UserService {
 
 ///// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 프로필 수정 - modifyInfo()  */
+    @Transactional
     public void modifyInfo(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //닉네임 중복 검사
@@ -253,9 +249,6 @@ public class UserService {
             if(patchUserReq.getImage() != null){
                 //이미지 변경
                 int result = userDao.modifyImage(patchUserReq);
-//            if(result == 0){
-//                throw new BaseException(MODIFY_FAIL_IMAGE);   //DB에서 Password 값의 수정 실패시이면 에러코드 반환 (이미 인가과정이 있어서 필요 없음)
-//            }
             }
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR_MODIFY_FAIL_USER_IMAGE);   //"사용자 이미지 변경에 실패하였습니다."
@@ -267,9 +260,6 @@ public class UserService {
         if(patchUserReq.getNickName() != null){
             //닉네임 정보 변경
             int result = userDao.modifyNickName(patchUserReq);
-//            if(result == 0){
-//                throw new BaseException(MODIFY_FAIL_NICKNAME);   //DB에서 nickName 값의 수정 실패시이면 에러코드 반환  (이미 인가과정이 있어서 필요 없음)
-//            }
         }
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR_MODIFY_FAIL_USER_NICKNAME);   //"사용자 닉네임 변경에 실패하였습니다."
@@ -283,6 +273,7 @@ public class UserService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 회원탈퇴 (유저 비활성화) - deleteUser()  */
+    @Transactional
     public void deleteUser(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //회원 탈퇴 여부 확인
@@ -293,9 +284,6 @@ public class UserService {
         try{
             //회원 탈퇴
             int result = userDao.deleteUser(patchUserReq);
-//            if(result == 0){
-//                throw new BaseException(FAILED_TO_DELETE_USER);   //'탈퇴할 사용자가 존재하지 않습니다.'
-//            }
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR_DELETE_USER);   //'회원 탈퇴(유저 비활성화)에 실패하였습니다.'
         }
@@ -304,6 +292,7 @@ public class UserService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 회원탈퇴 (동네 비활성화) - deleteUser()  */
+    @Transactional
     public void deleteRegion(PatchUserReq patchUserReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         try{
@@ -318,11 +307,9 @@ public class UserService {
 
 
 
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 사용자 차단 - blockUser()  */
+    @Transactional
     public void blockUser(PostUserBlockReq postUserBlockReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //사용자 차단 여부 확인
@@ -341,12 +328,8 @@ public class UserService {
 
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 사용자 차단 해제 - blockCancell()  */
+    @Transactional
     public void blockCancell(PatchUserBlockCancellReq patchUserBlockCancellReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
-
-//        //사용자 차단 해제 여부 확인
-//        if(userProvider.checkBlcokCancellUser(patchUserBlockCancellReq) == 1){              //닉네임이 중복이 되면 결과값인 1과 매핑이 되어 중복 여부를 판단 가능
-//            throw new BaseException(PATCH_USERS_BLOCKS_CANCELL_NICKNAME);                   //"이미 차단 해제한 사용자 입니다."
-//        }
 
         try{
             //사용자 차단 해제
@@ -360,6 +343,7 @@ public class UserService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 미노출 사용자 추가 - hideUser()  */
+    @Transactional
     public void hideUser(PostHideUserReq postHideUserReq) throws BaseException {
 
         //미노출 사용자 추가 여부 확인
@@ -380,6 +364,7 @@ public class UserService {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 미노출 사용자 취소 - hideUserCancell()  */
+    @Transactional
     public void hideUserCancell(PatchHideUserCancellReq patchHideUserCancellReq) throws BaseException {
 
         try{
@@ -396,6 +381,7 @@ public class UserService {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 사용자 신고 - reportUser()  */
+    @Transactional
     public void reportUser(PostUserReportReq postUserReportReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //사용자 신고 여부 확인
@@ -418,6 +404,7 @@ public class UserService {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* 상품 게시글 신고 - reportProduct()  */
+    @Transactional
     public void reportProduct(PostProductReportReq postProductReportReq) throws BaseException {    //UserController.java에서 객체 값( id, nickName)을 받아와서...
 
         //상품 게시글 신고 여부 확인

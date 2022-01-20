@@ -216,6 +216,7 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4028, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4029, "비밀번호 복호화에 실패하였습니다."),
 
+
     //product 리소스
     DATABASE_ERROR_NOT_EXIST_REGION(false, 4030, "데이터베이스에 존재하지 않는 지역입니다."),
     DATABASE_ERROR_NOT_EXIST_PRODUCT(false, 4031, "존재하지 않는 상품입니다."),
@@ -247,6 +248,9 @@ public enum BaseResponseStatus {
     DATABASE_ERROR_NOT_EXITS_SYMPATHIES(false, 4030, "사용자가 공감한 내역이 없습니다."),
     DATABASE_ERROR_NOT_EXITS_COMMENT(false, 4030, "존재하지 않는 댓글입니다."),
     DATABASE_ERROR_NOT_ACCESS_COMMENT(false, 4030, "(접근불가) 댓글을 남긴 사용자가 아닙니다. 사용자를 확인해주세요."),
+
+    DATABASE_ERROR_USER_LOGOUT(false, 4030, "로그아웃 상태 확인에 실패하였습니다."),
+
 
     //keyword 리소스
     DATABASE_ERROR_CREATE_KEYWORD(false, 4080, "키워드를 DB에 등록하지 못하였습니다."),

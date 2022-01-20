@@ -59,26 +59,17 @@ public class UserProvider {
     /* 로그인 진행 (idx와 authCode 받음) */
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException{
 
-        //useridx와 인증코드 일치 여부 확인
+        //useridx와 인증코드 일치 여부 확인 (회원가입이 되어 있는지 확인)
         int result = userDao.checkAuthCode(postLoginReq);
         if (result == 0){
             throw new BaseException(NOT_EXIST_USER);
         }
 
-//            //3.비활성화된 유저 확인(ex, status =0)
-//            user = userDao.checkUserStatus(postLoginReq.getEmail());
-//            //유저가 비활성화 상태일떄 에러 코드 응답
-//            if(user.getStatus() != 1){
-//                throw new BaseException(INACTIVE_USER_STATUS);   //계정이 활성화 상태가 아닙니다.
-//            }
-            //이메일을 통해 idx 값을 가져옴
-//            int userIdx = userDao.getUserInfo(postLoginReq).getId();
+        //userIdx를 통해 jwt토큰을 발급해 jwt 변수에 저장
+        String jwt = jwtService.createJwt(postLoginReq.getUserIdx());
 
-            //userIdx를 통해 jwt토큰을 발급해 jwt 변수에 저장
-            String jwt = jwtService.createJwt(postLoginReq.getUserIdx());
-
-            //userIdx와 jwt를 리턴
-            return new PostLoginRes(postLoginReq.getUserIdx(),jwt);
+        //userIdx와 jwt를 리턴
+        return new PostLoginRes(postLoginReq.getUserIdx(),jwt);
 
     }
 

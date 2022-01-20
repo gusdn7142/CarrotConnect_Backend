@@ -52,7 +52,7 @@ public class GatherController {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 33. 모아보기 추가 API
+     * 51. 모아보기 추가 API
      * [POST] /gathers/:userIdx
      * @return BaseResponse<PostKeywordReq>
      */
@@ -95,10 +95,101 @@ public class GatherController {
 
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 52. 모아보기한 상품 조회 API API
+     * [GET] /gathers/:userIdx/users
+     * @return BaseResponse<GetAlertkeywardRes>
+     */
+
+    @ResponseBody
+    @GetMapping("/{userIdx}/products")
+    public BaseResponse<List<GetGatherProductRes>> getGatherProduct(@PathVariable("userIdx") int userIdx) {              //BaseResponse<GetUserRes>
+
+        try {
+            /* 접근 제한 구현 */
+            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+            //String jwt = userProvider.getUserToken(userIdx);
+            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+
+            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            //모아보기한 상품 조회 - getGatherProduct()
+            List<GetGatherProductRes> getGatherProductRes = gatherProvider.getGatherProduct(userIdx);
+
+
+
+            return new BaseResponse<>(getGatherProductRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+
+
+
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 53. 모아보기한 사용자 조회 API API
+     * [GET] /gathers/:userIdx/users
+     * @return BaseResponse<GetAlertkeywardRes>
+     */
+
+    @ResponseBody
+    @GetMapping("/{userIdx}/users")
+    public BaseResponse<List<GetGatherUserRes>> getGatherUser(@PathVariable("userIdx") int userIdx) {              //BaseResponse<GetUserRes>
+
+        try {
+            /* 접근 제한 구현 */
+            //DB에서 JWT를 가져와 사용자의 IDX를 추출
+            //String jwt = userProvider.getUserToken(userIdx);
+            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
+
+            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            //userIdx와 접근한 유저가 같은지 확인
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            //로그아웃된 유저 인지 확인
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+            /*접근 제한 구현 끝 */
+
+
+            //모아보기한 사용자 조회 - getGatherUser()
+            List<GetGatherUserRes> getGatherUserRes = gatherProvider.getGatherUser(userIdx);
+
+
+
+            return new BaseResponse<>(getGatherUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+
+
+
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 34. 모아보기 취소 API
+     * 54. 모아보기 취소 API
      * [PATCH] /gathers/:userIdx/status
      * @return BaseResponse<String>
      */
@@ -145,100 +236,9 @@ public class GatherController {
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * 36. 모아보기한 사용자 조회 API API
-     * [GET] /gathers/:userIdx/users
-     * @return BaseResponse<GetAlertkeywardRes>
-     */
-
-    @ResponseBody
-    @GetMapping("/{userIdx}/users")
-    public BaseResponse<List<GetGatherUserRes>> getGatherUser(@PathVariable("userIdx") int userIdx) {              //BaseResponse<GetUserRes>
-
-        try {
-            /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
-            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
-            int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            //로그아웃된 유저 인지 확인
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            /*접근 제한 구현 끝 */
-
-
-            //모아보기한 사용자 조회 - getGatherUser()
-            List<GetGatherUserRes> getGatherUserRes = gatherProvider.getGatherUser(userIdx);
 
 
 
-            return new BaseResponse<>(getGatherUserRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-
-
-
-
-    }
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * 36. 모아보기한 상품 조회 API API
-     * [GET] /gathers/:userIdx/users
-     * @return BaseResponse<GetAlertkeywardRes>
-     */
-
-    @ResponseBody
-    @GetMapping("/{userIdx}/products")
-    public BaseResponse<List<GetGatherProductRes>> getGatherProduct(@PathVariable("userIdx") int userIdx) {              //BaseResponse<GetUserRes>
-
-        try {
-            /* 접근 제한 구현 */
-            //DB에서 JWT를 가져와 사용자의 IDX를 추출
-            //String jwt = userProvider.getUserToken(userIdx);
-            //int userIdxByJwt = jwtService.getUserIdx2(jwt);
-
-            //(jwt 토큰 만료 여부 확인 +) 클라이언트에서 받아온 토큰에서 Idx 추출
-            int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            //로그아웃된 유저 인지 확인
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest(); //토큰을 가져온다.
-            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            /*접근 제한 구현 끝 */
-
-
-            //모아보기한 상품 조회 - getGatherProduct()
-            List<GetGatherProductRes> getGatherProductRes = gatherProvider.getGatherProduct(userIdx);
-
-
-
-            return new BaseResponse<>(getGatherProductRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-
-
-
-
-    }
 
 
 
