@@ -75,4 +75,22 @@ public class CommentDao {
         Object[] patchCommentStatusParams = new Object[]{userIdx, postIdx, commentIdx};
         return this.jdbcTemplate.update(patchCommentStatusQuery,patchCommentStatusParams);
     }
+
+    @Transactional
+    public int checkPost(int postIdx){
+        String checkPostQuery = "select exists(select townActivityIdx from TownActivity where townActivityIdx = ? and status = 1) as exist ";
+        return this.jdbcTemplate.queryForObject(checkPostQuery, int.class, postIdx);
+    }
+
+    @Transactional
+    public int checkComment(int commentIdx){
+        String checkCommentQuery = "select exists(select commentIdx from TownActivityComment where commentIdx = ? and status = 1) as exist ";
+        return this.jdbcTemplate.queryForObject(checkCommentQuery, int.class, commentIdx);
+    }
+
+    @Transactional
+    public int checkAccess(int postIdx, int userIdx, int commentIdx){
+        String checkAccessQuery = "select exists(select commentIdx from TownActivityComment where postIdx = ? and userIdx = ? and commentIdx = ? and status = 1) as exist ";
+        return this.jdbcTemplate.queryForObject(checkAccessQuery, int.class, postIdx, userIdx, commentIdx);
+    }
 }

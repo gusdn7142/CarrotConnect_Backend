@@ -80,7 +80,7 @@ public class ChatController {
         try {
             if(postChatContent.getContent() == null){return new BaseResponse<>(POST_CHATS_EMPTY_MESSAGE);}
             if(postChatContent.getContent().length() < 1 || postChatContent.getContent().length() > 100){return new BaseResponse<>(POST_CHATS_INVALID_MESSAGE);}
-            if(postChatContent.getSenderIdx() == postChatContent.getReceiverIdx()){}
+            if(postChatContent.getSenderIdx() == postChatContent.getReceiverIdx() || postChatContent.getReceiverIdx() == 0){return new BaseResponse<>(POST_CHATS_SAME_USER);}
 
             int userIdxByJwt = jwtService.getUserIdx();
             if(postChatContent.getSenderIdx() != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
@@ -104,17 +104,13 @@ public class ChatController {
     @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/chats/:userIdx
     public BaseResponse<List<GetChatRoomList>> getChatRoomList(@PathVariable("userIdx") int userIdx) {
         try{
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            // Get ChatRoom List
+
             List<GetChatRoomList> getChatRoomList = chatProvider.getChatRoomList(userIdx);
+            if(getChatRoomList.size() == 0){return new BaseResponse<>(GET_CHATS_FAIL);}
             return new BaseResponse<>(getChatRoomList);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -131,21 +127,11 @@ public class ChatController {
     @GetMapping("/{userIdx}/{chatRoomIdx}/room") // (GET) 127.0.0.1:9000/chats/:userIdx/:chatRoomIdx/room
     public BaseResponse<List<GetChatContent>> getChatContent(@PathVariable("userIdx") int userIdx, @PathVariable("chatRoomIdx") int chatRoomIdx) {
         try{
-            /**
-             * validation 처리해야될것
-             * 1. 존재하는 채팅방인지
-             */
-
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            // Get ChatRoom
+
             List<GetChatContent> getChatContent = chatProvider.getChatContent(userIdx, chatRoomIdx);
             return new BaseResponse<>(getChatContent);
         } catch(BaseException exception){

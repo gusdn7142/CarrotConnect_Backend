@@ -101,4 +101,28 @@ public class ReviewDao {
         Object[] patchReviewSatusQuery = new Object[]{userIdx, reviewIdx};
         return this.jdbcTemplate.update(patchReviewStatusQuery,patchReviewSatusQuery);
     }
+
+    @Transactional
+    public int checkProduct(int productIdx){
+        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? ) as exits ";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, productIdx);
+    }
+
+    @Transactional
+    public int checkUser(int userIdx){
+        String checkUserQuery = "select exists (select userIdx from User where userIdx = ? and status = 1) as exits ";
+        return this.jdbcTemplate.queryForObject(checkUserQuery, int.class, userIdx);
+    }
+
+    @Transactional
+    public int checkReview(int reviewIdx){
+        String checkReviewQuery = "select exists(select reviewIdx from DealReview where reviewIdx = ? and status = 1) as exist ";
+        return this.jdbcTemplate.queryForObject(checkReviewQuery, int.class, reviewIdx);
+    }
+
+    @Transactional
+    public int checkAccess(int userIdx, int reviewIdx){
+        String checkReviewQuery = "select exists(select reviewIdx from DealReview where reviewIdx = ? and senderIdx = ? and status = 1) as exist ";
+        return this.jdbcTemplate.queryForObject(checkReviewQuery, int.class, userIdx, reviewIdx);
+    }
 }
