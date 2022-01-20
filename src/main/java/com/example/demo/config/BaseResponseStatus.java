@@ -105,19 +105,19 @@ public enum BaseResponseStatus {
     GET_PRODUCTS_LIST_FAIL(false, 3021, "전체 상품 조회에 실패했습니다."),
     GET_PRODUCTS_FAIL(false, 3022, "상품 조회에 실패했습니다."),
     PATCH_PRODUCTS_FAIL(false, 3023, "상품 삭제에 실패했습니다."),
-    GET_PRODUCTS_FAIL_SALE(false, 3024, "판매 중인 상품이 없습니다."),
-    GET_PRODUCTS_FAIL_COMPLETE(false, 3025, "거래 완료된 상품이 없습니다."),
-    GET_PRODUCTS_FAIL_HIDED(false, 3026, "숨겨진 상품이 없습니다."),
-    GET_PRODUCTS_FAIL_PURCHASED(false, 3027, "구매 내역이 없습니다."),
-    PATCH_PRODUCTS_FAIL_SALE_STATUS(false, 3028, "판매 상태 변경에 실패햇습니다."),
-    POST_PRODUCTS_FAIL_INTEREST(false, 3029, "관심 목록 등록에 실패했습니다."),
-    POST_PRODUCTS_EXISTS_INTEREST(false, 3030, "이미 관심 목록에 등록된 상품입니다."),
-    GET_PRODUCTS_FAIL_INTEREST(false, 3031, "관심 상품이 없습니다."),
-    PATCH_PRODUCTS_FAIL_INTEREST(false, 3032, "관심 목록 취소에 실패했습니다."),
+    GET_PRODUCTS_FAIL_SALE(true, 3024, "판매중인 상품이 없습니다."),
+    GET_PRODUCTS_FAIL_COMPLETE(true, 3025, "거래완료된 상품이 없습니다."),
+    GET_PRODUCTS_FAIL_HIDED(true, 3026, "숨겨진 상품이 없습니다."),
+    GET_PRODUCTS_FAIL_PURCHASED(true, 3027, "구매내역이 없습니다."),
+    PATCH_PRODUCTS_FAIL_SALE_STATUS(false, 3028, "판매상태 변경에 실패햇습니다."),
+    POST_PRODUCTS_FAIL_INTEREST(false, 3029, "관심목록 등록에 실패했습니다."),
+    POST_PRODUCTS_EXISTS_INTEREST(false, 3030, "이미 관심목록에 등록된 상품입니다."),
+    GET_PRODUCTS_FAIL_INTEREST(true, 3031, "관심상품이 없습니다."),
+    PATCH_PRODUCTS_FAIL_INTEREST(false, 3032, "관심목록 취소에 실패했습니다."),
 
     // category 리소스
     POST_CATEGORIES_FAIL(false, 3033, "관심 카테고리 등록에 실패했습니다."),
-    GET_CATEGORIES_FAIL(false, 3034, "관심 카테고리가 존재하지 않습니다."),
+    GET_CATEGORIES_FAIL(true, 3034, "관심 카테고리가 존재하지 않습니다."),
     PATCH_CATEGORIES_FAIL(false, 3035, "관심 카테고리 취소에 실패했습니다."),
 
     // region 리소스
@@ -138,7 +138,7 @@ public enum BaseResponseStatus {
     POST_CHATS_EXITS(false, 3070, "이미 존재하는 채팅방입니다."),
     POST_CHATS_FAIL(false, 3071, "채팅방 생성에 실패했습니다."),
     POST_CHATS_FAIL_MESSAGE(false, 3072, "메세지 전송에 실패했습니다."),
-    GET_CHATS_FAIL(false, 3073, "채팅 목록이 비어있습니다."),
+    GET_CHATS_FAIL(true, 3073, "채팅 목록이 비어있습니다."),
     GET_CHATS_FAIL_LIST(false, 3074, "채팅 목록 조회에 실패했습니다."),
 
     //review 리소스
@@ -149,10 +149,10 @@ public enum BaseResponseStatus {
     //post 리소스
     POST_SYMPATHIES_EXITS(false, 3150, "이미 공감한 게시글입니다."),
     POST_SYMPATHIES_FAIL(false, 3151, "공감에 실패했습니다."),
-    GET_SYMPATHIES_FAIL(false, 3152, "공감이 존재하지 않습니다."),
+    GET_SYMPATHIES_FAIL(true, 3152, "공감이 존재하지 않습니다."),
     PATCH_SYMPATHIES_FAIL(false, 3153, "공감 취소에 실패했습니다."),
     POST_COMMENTS_FAIL(false, 3154, "댓글 작성에 실패했습니다."),
-    GET_COMMENTS_FAIL(false, 3155, "댓글이 존재하지 않습니다."),
+    GET_COMMENTS_FAIL(true, 3155, "댓글이 존재하지 않습니다."),
     PATCH_COMMENTS_FAIL(false, 3156, "댓글이 삭제에 실패했습니다."),
 
     //Keyword 리소스

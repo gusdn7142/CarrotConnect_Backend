@@ -13,4 +13,7 @@ import lombok.Setter;
 public class PatchProductStatus {
     private int userIdx;
     private int status;
+
+    public PatchProductStatus(){
+    }
 }

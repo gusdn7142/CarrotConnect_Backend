@@ -1,6 +1,7 @@
 package com.example.demo.src.product;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponse;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.product.model.*;
 import com.example.demo.utils.AES128;
@@ -33,17 +34,16 @@ public class ProductService {
 
     }
 
-    public String patchProductStatus(int productIdx, int userIdx) throws BaseException {
+    public void patchProductStatus(int productIdx, int userIdx) throws BaseException {
         try{
+            int check = productDao.checkProduct(productIdx);
+            if(check == 0){throw new BaseException(DATABASE_ERROR_NOT_EXIST_PRODUCT);}
+
+            int access = productDao.checkProductAccessUser(productIdx, userIdx);
+            if(access == 0) {throw new BaseException(DATABASE_ERROR_NOT_ACCESS_PRODUCT);}
+
             int result = productDao.patchProductStatus(productIdx, userIdx);
-            String message = "상품 삭제 성공";
-            if(result == 0){
-                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패");
-                message = "삭제에 실패했습니다.";
-                return message;
-            }
-            return message;
+            if(result == 0) {throw new BaseException(PATCH_PRODUCTS_FAIL);}
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
@@ -109,5 +109,13 @@ public class ProductService {
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    public int checkRegionName(String regionName) throws BaseException{
+        return productDao.checkRegion(regionName);
+    }
+
+    public int checkProduct(int productIdx) throws BaseException{
+        return productDao.checkProduct(productIdx);
     }
 }

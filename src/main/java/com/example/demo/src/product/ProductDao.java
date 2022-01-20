@@ -76,6 +76,26 @@ public class ProductDao {
     }
 
     @Transactional
+    public int checkRegion(String regionName){
+        String checkRegionQuery = "select exists (select regionName from Region where regionName = ? ) as exits ";
+        String checkRegionParams = regionName;
+        return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, checkRegionParams);
+    }
+
+    @Transactional
+    public int checkProduct(int productIdx){
+        String checkProductQuery = "select exists (select productIdx from Product where productIdx = ? ) as exits ";
+        int checkProductParams = productIdx;
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, checkProductParams);
+    }
+
+    @Transactional
+    public int checkProductAccessUser(int productIdx, int userIdx){
+        String checkProductQuery = "select exists (select productIdx from Product where userIdx = ? and productIdx = ? ) as exits ";
+        return this.jdbcTemplate.queryForObject(checkProductQuery, int.class, userIdx, productIdx);
+    }
+
+    @Transactional
     public List<GetProduct> getProduct(int productIdx, int userIdx){
         String getProductQuery = "select u.userIdx as userIdx,\n" +
                 "       u.nickName as nickName,\n" +
