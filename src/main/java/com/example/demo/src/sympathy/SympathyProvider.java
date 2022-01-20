@@ -29,6 +29,9 @@ public class SympathyProvider {
 
     public List<GetSympathy> getSympathy(int postIdx) throws BaseException{
         try{
+            int checkPost = sympathyDao.checkPost(postIdx);
+            if(checkPost == 0){throw new BaseException(DATABASE_ERROR_NOT_EXITS_POST);}
+
             List<GetSympathy> getSympathy = sympathyDao.getSympathy(postIdx);
             return getSympathy;
         }

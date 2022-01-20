@@ -81,5 +81,17 @@ public class SympathyDao {
         Object[] patchSympathyParams = new Object[]{userIdx, postIdx};
         return this.jdbcTemplate.update(patchSympathyStatus,patchSympathyParams);
     }
+
+    @Transactional
+    public int checkPost(int postIdx){
+        String checkPostQuery = "select exists(select townActivityIdx from TownActivity where townActivityIdx = ? and status = 1) as exist ";
+        return this.jdbcTemplate.queryForObject(checkPostQuery, int.class, postIdx);
+    }
+
+    @Transactional
+    public int checkSympathy(int postIdx, int userIdx){
+        String checkSympathyQuery = "select exists(select sympathyIdx from TownActivitySympathy where postIdx = ? and userIdx = ? and status = 1) as exist;\n ";
+        return this.jdbcTemplate.queryForObject(checkSympathyQuery, int.class, postIdx, userIdx);
+    }
 }
 
