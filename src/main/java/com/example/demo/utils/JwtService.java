@@ -95,31 +95,6 @@ public class JwtService {
 
 
 
-////////////////////////////////////////////////////////////////
-//    //토큰 정보(만료시각) 확인 메서드
-//    public void getJwtContents(String jwt) {  //Claims
-//        Jws<Claims> claims;
-//        claims = Jwts.parser()  //유효한 토큰인지 확인,  즉 로그인시 부여한 jwt 토큰인지 확인
-//                .setSigningKey(Secret.JWT_SECRET_KEY)
-//                .parseClaimsJws(jwt);
-//        //try문 추가해야 만료되도 오류 안난다!!
-//
-//
-//        System.out.println("\n 현재!! 날짜!! ");                         //현재 날짜 및 시간 확인
-//        System.out.println(new Date(System.currentTimeMillis()));
-//        System.out.println("\n 현재!! 날짜를 초로 표시!! ");                         //현재 날짜 및 시간 확인
-//        System.out.println(new Date(System.currentTimeMillis()).getTime()/1000);
-//
-//        System.out.println("\n jwt 토큰 만료시각 (카카오 jwt는 현재 날짜와 6시간 차이)");
-//        System.out.println(claims.getBody().getExpiration());                    //토큰 정보 확인
-//        System.out.println("\n jwt 토큰 만료시각 (날짜를 초로 표시)!!");
-//        System.out.println(claims.getBody().getExpiration().getTime()/1000);   //토큰의 날짜를 초로 변환
-//
-//
-////        return claims;
-//    }
-
-
 
 
 
