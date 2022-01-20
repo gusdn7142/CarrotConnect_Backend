@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexPhoneNumber;
 
 @RestController
 @RequestMapping("/products")
@@ -239,6 +238,7 @@ public class ProductController {
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
             int result = productService.createProduct(userIdx, postProductReq);
+            if(result == 0) {return new BaseResponse<>(POST_PRODUCTS_FAIL);}
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -255,22 +255,13 @@ public class ProductController {
     @PostMapping("/{userIdx}/{productIdx}/interest")
     public BaseResponse<Integer> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
         try {
-            /**
-             * validation 처리해야될것
-             * 1. 존재하는 사용자인지
-             * 2. 존재하는 상품인지
-             */
-
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
+
             int result = productService.createInterestProduct(userIdx, productIdx);
+            if(result == 0){return new BaseResponse<>(POST_PRODUCTS_FAIL_INTEREST);}
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -280,24 +271,20 @@ public class ProductController {
     /**
      * 관심 목록 조회 API
      * [GET] /products/:userIdx/interest-list
-     * @return BaseResponse<GetProductPurchased>
+     * @return BaseResponse<GetProductInterest>
      */
     // Path-variable
     @ResponseBody
     @GetMapping("/{userIdx}/interest-list") // (GET) 127.0.0.1:9000/products/:userIdx/interest-list
     public BaseResponse<List<GetProductInterest>> getProductInterest(@PathVariable("userIdx") int userIdx) {
         try{
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
-
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            // Get Product Purchased
+
             List<GetProductInterest> getProductInterest = productProvider.getProductInterest(userIdx);
+            if(getProductInterest.size() == 0){return new BaseResponse<>(GET_PRODUCTS_FAIL_INTEREST);}
             return new BaseResponse<>(getProductInterest);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -313,17 +300,14 @@ public class ProductController {
     @PatchMapping("/{interestIdx}/interest-status")
     public BaseResponse<String> patchProductInterest(@PathVariable("interestIdx") int interestIdx, @RequestBody PatchProductInterest patchProductInterest){
         try {
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
             int userIdx = patchProductInterest.getUserIdx();
-
-            // userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            String result = productService.patchProductInterest(interestIdx, userIdx);
+
+            productService.patchProductInterest(interestIdx, userIdx);
+            String result = "성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -339,16 +323,15 @@ public class ProductController {
     @PatchMapping("/{userIdx}/{productIdx}/{saleStatus}")
     public BaseResponse<String> patchProductSaleStatus(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx, @PathVariable("saleStatus") int saleStatus){
         try {
-            // 헤더 (인증코드)에서 userIdx 추출.
-            int userIdxByJwt = jwtService.getUserIdx();
+            if(saleStatus < 0 || saleStatus > 5){return new BaseResponse<>(PATCH_PRODUCTS_FAIL_SALE_STATUS);}
 
-            // userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
-            String result = productService.patchProductSaleStatus(userIdx, productIdx, saleStatus);
+
+            productService.patchProductSaleStatus(userIdx, productIdx, saleStatus);
+            String result = "성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

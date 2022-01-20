@@ -96,6 +96,24 @@ public class ProductDao {
     }
 
     @Transactional
+    public int checkProductInterest(int productIdx, int userIdx){
+        String checkProductInterestQuery = "select exists (select userIdx from ProductInterest where userIdx = ? and productIdx = ? ) as exits";
+        return this.jdbcTemplate.queryForObject(checkProductInterestQuery, int.class, userIdx, productIdx);
+    }
+
+    @Transactional
+    public int checkProductInterestIdx(int interestIdx){
+        String checkProductInterestIdxQuery = "select exists (select productIdx from Product where productIdx = ? ) as exits ";
+        return this.jdbcTemplate.queryForObject(checkProductInterestIdxQuery, int.class, interestIdx);
+    }
+
+    @Transactional
+    public int checkProductInterestAccess(int interestIdx, int userIdx){
+        String checkProductInterestQuery = "select exists (select userIdx from ProductInterest where userIdx = ? and interestIdx = ? ) as exits";
+        return this.jdbcTemplate.queryForObject(checkProductInterestQuery, int.class, userIdx, interestIdx);
+    }
+
+    @Transactional
     public List<GetProduct> getProduct(int productIdx, int userIdx){
         String getProductQuery = "select u.userIdx as userIdx,\n" +
                 "       u.nickName as nickName,\n" +
