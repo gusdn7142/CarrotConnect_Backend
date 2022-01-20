@@ -21,7 +21,7 @@ public class RegionDao {
 
     @Transactional
     public int createRegion(int userIdx, PostRegion postRegion){
-        String regionResetQuery = "update Region set nowStatus = 0, authStatus = 0 where nowStatus = 1 and status = 1 and userIdx = ? ";
+        String regionResetQuery = "update Region set nowStatus = 0, authStatus = 0 where status = 1 and userIdx = ? ";
         Object[] regionResetParams = new Object[]{userIdx};
         this.jdbcTemplate.update(regionResetQuery,regionResetParams);
 
@@ -62,12 +62,42 @@ public class RegionDao {
 
     @Transactional
     public int patchRegionNow(int idx, int userIdx){
-        String patchRegionNowResetQuery = "update Region set nowStatus = 0, authStatus = 0 where nowStatus = 1 and status = 1 and userIdx = ? ";
+        String patchRegionNowResetQuery = "update Region set nowStatus = 0, authStatus = 0 where status = 1 and userIdx = ? ";
         Object[] patchRegionNowResetParams = new Object[]{userIdx};
         this.jdbcTemplate.update(patchRegionNowResetQuery,patchRegionNowResetParams);
 
         String patchRegionNowQuery = "update Region set nowStatus = 1 where nowStatus = 0 and status = 1 and regionIdx = ? and userIdx = ? ";
         Object[] patchRegionNowParams = new Object[]{idx, userIdx};
         return this.jdbcTemplate.update(patchRegionNowQuery,patchRegionNowParams);
+    }
+
+    @Transactional
+    public int checkCount(int userIdx){
+        String checkCountQuery = "select count(userIdx) as count from Region where userIdx = ? and status = 1";
+        return this.jdbcTemplate.queryForObject(checkCountQuery, int.class, userIdx);
+    }
+
+    @Transactional
+    public int checkRegion(int userIdx, String regionName){
+        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionName = ? and status = 1) as exits ";
+        return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, userIdx, regionName);
+    }
+
+    @Transactional
+    public int checkRegionIdx(int regionIdx){
+        String checkRegionQuery = "select exists (select regionIdx from Region where regionIdx = ? and status = 1) as exits ";
+        return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, regionIdx);
+    }
+
+    @Transactional
+    public int checkRegionAccess(int regionIdx, int userIdx){
+        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionIdx = ? and status = 1) as exits ";
+        return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, userIdx, regionIdx);
+    }
+
+    @Transactional
+    public int checkRegionNow(int regionIdx, int userIdx){
+        String checkRegionQuery = "select exists (select regionIdx from Region where userIdx= ? and regionIdx = ? and status = 1 and nowStatus = 1) as exits ";
+        return this.jdbcTemplate.queryForObject(checkRegionQuery, int.class, userIdx, regionIdx);
     }
 }

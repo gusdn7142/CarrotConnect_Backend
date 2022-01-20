@@ -1,5 +1,6 @@
 package com.example.demo.src.chat;
 
+import com.example.demo.src.user.UserProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -8,7 +9,10 @@ import com.example.demo.src.chat.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -26,44 +30,38 @@ public class ChatController {
     private final ChatService chatService;
     @Autowired
     private final JwtService jwtService;
+    @Autowired
+    private final UserProvider userProvider;
 
-    public ChatController(ChatProvider chatProvider, ChatService chatService, JwtService jwtService){
+    public ChatController(ChatProvider chatProvider, ChatService chatService, JwtService jwtService, UserProvider userProvider){
         this.chatProvider = chatProvider;
         this.chatService = chatService;
         this.jwtService = jwtService;
+        this.userProvider = userProvider;
     }
 
     /**
      * 채팅방 생성 API
      * [POST] /chats/:buyerIdx/:sellerIdx/:productIdx
-     * @return BaseResponse<String>
+     * @return BaseResponse<Integer>
      */
     // Body
     @ResponseBody
     @PostMapping("/{buyerIdx}/{sellerIdx}/{productIdx}")
-    public BaseResponse<String> createChatRoom(@PathVariable("buyerIdx") int buyerIdx,
+    public BaseResponse<Integer> createChatRoom(@PathVariable("buyerIdx") int buyerIdx,
                                               @PathVariable("sellerIdx") int sellerIdx,
                                               @PathVariable("productIdx") int productIdx,
                                               @RequestBody PostChatRoom postChatRoom) {
         try {
-            /**
-             * validation 처리해야될것
-             * 1. 올바른 값들인지
-             * 2. 존재하는 사용자인지
-             * 3. 존재하는 상품인지
-             * 4. 길이 확인
-             * 5. 중복 확인
-             */
+            if(postChatRoom.getContent() == null){return new BaseResponse<>(POST_CHATS_EMPTY_MESSAGE);}
+            if(postChatRoom.getContent().length() < 1 || postChatRoom.getContent().length() > 100){return new BaseResponse<>(POST_CHATS_INVALID_MESSAGE);}
 
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(buyerIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            //userIdx와 접근한 유저가 같은지 확인
-            if(buyerIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = chatService.createChatRoom(buyerIdx, sellerIdx, productIdx, postChatRoom);
+            int result = chatService.createChatRoom(buyerIdx, sellerIdx, productIdx, postChatRoom);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -73,31 +71,23 @@ public class ChatController {
     /**
      * 채팅 메세지 생성 API
      * [POST] /chats/:chatRoomIdx/content
-     * @return BaseResponse<String>
+     * @return BaseResponse<Integer>
      */
     // Body
     @ResponseBody
     @PostMapping("/{chatRoomIdx}/content")
-    public BaseResponse<String> createChatContent(@PathVariable("chatRoomIdx") int chatRoomIdx, @RequestBody PostChatContent postChatContent) {
+    public BaseResponse<Integer> createChatContent(@PathVariable("chatRoomIdx") int chatRoomIdx, @RequestBody PostChatContent postChatContent) {
         try {
-            /**
-             * validation 처리해야될것
-             * 1. 올바른 값들인지
-             * 2. 존재하는 사용자인지
-             * 3. 존재하는 상품인지
-             * 4. 길이 확인
-             * 5. 중복 확인
-             */
+            if(postChatContent.getContent() == null){return new BaseResponse<>(POST_CHATS_EMPTY_MESSAGE);}
+            if(postChatContent.getContent().length() < 1 || postChatContent.getContent().length() > 100){return new BaseResponse<>(POST_CHATS_INVALID_MESSAGE);}
+            if(postChatContent.getSenderIdx() == postChatContent.getReceiverIdx()){}
 
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(postChatContent.getSenderIdx() != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            //userIdx와 접근한 유저가 같은지 확인
-            if(postChatContent.getSenderIdx() != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = chatService.createChatContent(chatRoomIdx, postChatContent);
+            int result = chatService.createChatContent(chatRoomIdx, postChatContent);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -121,7 +111,8 @@ public class ChatController {
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
             // Get ChatRoom List
             List<GetChatRoomList> getChatRoomList = chatProvider.getChatRoomList(userIdx);
             return new BaseResponse<>(getChatRoomList);
@@ -152,7 +143,8 @@ public class ChatController {
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
             // Get ChatRoom
             List<GetChatContent> getChatContent = chatProvider.getChatContent(userIdx, chatRoomIdx);
             return new BaseResponse<>(getChatContent);

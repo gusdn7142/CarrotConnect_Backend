@@ -27,33 +27,39 @@ public class ChatService {
         this.jwtService = jwtService;
     }
 
-    public String createChatRoom(int buyerIdx, int sellerIdx, int productIdx, PostChatRoom postChatRoom) throws BaseException {
+    public int createChatRoom(int buyerIdx, int sellerIdx, int productIdx, PostChatRoom postChatRoom) throws BaseException {
         try{
+            int check = chatDao.checkProduct(productIdx);
+            if(check == 0){throw new BaseException(DATABASE_ERROR_NOT_EXIST_PRODUCT);}
+
+            int user = chatDao.checkUser(sellerIdx);
+            if(user == 0){throw new BaseException(DATABASE_ERRORS_NOT_EXITS_USER);}
+
+            int seller = chatDao.checkSeller(sellerIdx, productIdx);
+            if(seller == 0){throw new BaseException(DATABASE_ERROR_NOT_ACCESS_PRODUCT);}
+
+            int room = chatDao.checkRoom(buyerIdx, productIdx);
+            if(room == 1){throw new BaseException(POST_CHATS_EXITS);}
+
             int result = chatDao.createChatRoom(buyerIdx, sellerIdx, productIdx, postChatRoom);
-            String message = "chatRoomIdx: " + result;
-            if(result == 0){
-                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패, 예외는 곧 추가 예정");
-                message = "채팅방 생성 실패";
-                return message;
-            }
-            return message;
+            if(result == 0){throw new BaseException(POST_CHATS_FAIL);}
+            return result;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public String createChatContent(int chatRoomIdx, PostChatContent postChatContent) throws BaseException {
+    public int createChatContent(int chatRoomIdx, PostChatContent postChatContent) throws BaseException {
         try{
+            int checkRoom = chatDao.checkChatRoom(chatRoomIdx);
+            if(checkRoom == 0){throw new BaseException(DATABASE_ERRORS_NOT_EXITS_CHAT);}
+
+            int same = chatDao.checkParticipation(chatRoomIdx, postChatContent.getSenderIdx(), postChatContent.getReceiverIdx());
+            if(same == 0){throw new BaseException(DATABASE_ERROR_NOT_SAME);}
+
             int result = chatDao.createChatContent(chatRoomIdx, postChatContent);
-            String message = "chatContentIdx: " + result;
-            if(result == 0){
-                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패, 예외는 곧 추가 예정");
-                message = "채팅 메세지 보내기 실패";
-                return message;
-            }
-            return message;
+            if(result == 0){throw new BaseException(POST_CHATS_FAIL_MESSAGE);}
+            return result;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

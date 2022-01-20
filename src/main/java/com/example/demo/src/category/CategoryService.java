@@ -25,37 +25,30 @@ public class CategoryService {
         this.categoryDao = categoryDao;
         this.CategoryProvider = CategoryProvider;
         this.jwtService = jwtService;
-
     }
 
-    public String createInterestCategory(int userIdx, int categoryIdx) throws BaseException {
+    public int createInterestCategory(int userIdx, int categoryIdx) throws BaseException {
         try{
+            int check = categoryDao.checkCategoryExist(userIdx, categoryIdx);
+            if(check == 1) {throw new BaseException(POST_CATEGORIES_FAIL);}
+
             int result = categoryDao.createInterestCategory(userIdx, categoryIdx);
-            String message = "interestCategoryIdx: " + result;
-            if(result == 0){
-                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패, 예외는 곧 추가 예정");
-                message = "관심 카테고리 등록 실패";
-                return message;
-            }
-            return message;
+            return result;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public String patchCategoryInterest(int idx, int userIdx) throws BaseException {
+    public void patchCategoryInterest(int idx, int userIdx) throws BaseException {
         try{
-            int result = categoryDao.patchCategoryInterest(idx, userIdx);
-            String message = "관심 카테고리 삭제 성공";
+            int exits = categoryDao.checkInterestExist(idx);
+            if(exits == 0){throw new BaseException(DATABASE_ERROR_NOT_EXIST_CATEGORY);}
 
-            if(result == 0){
-                //throw new BaseException(/*MODIFY_FAIL_USERNAME*/);
-                System.out.println("실패, 예외는 곧 추가 예정");
-                message = "삭제에 실패했습니다.";
-                return message;
-            }
-            return message;
+            int access = categoryDao.checkCategoryAccessUser(idx, userIdx);
+            if(access == 0){throw new BaseException(DATABASE_ERROR_NOT_ACCESS_CATEGORY);}
+
+            int result = categoryDao.patchCategoryInterest(idx, userIdx);
+            if(result == 0){throw new BaseException(PATCH_CATEGORIES_FAIL);}
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

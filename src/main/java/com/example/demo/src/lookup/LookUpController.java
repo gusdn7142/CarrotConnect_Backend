@@ -1,5 +1,6 @@
 package com.example.demo.src.lookup;
 
+import com.example.demo.src.user.UserProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -7,11 +8,12 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexPhoneNumber;
 
 @RestController
 @RequestMapping("/lookups")
@@ -22,10 +24,13 @@ public class LookUpController {
     private final LookUpService lookUpService;
     @Autowired
     private final JwtService jwtService;
+    @Autowired
+    private final UserProvider userProvider;
 
-    public LookUpController(LookUpService lookUpService, JwtService jwtService){
+    public LookUpController(LookUpService lookUpService, JwtService jwtService, UserProvider userProvider){
         this.lookUpService = lookUpService;
         this.jwtService = jwtService;
+        this.userProvider = userProvider;
     }
 
     /**
@@ -38,21 +43,13 @@ public class LookUpController {
     @PostMapping("/{userIdx}/{productIdx}")
     public BaseResponse<String> createLookUpProduct(@PathVariable("userIdx") int userIdx, @PathVariable("productIdx") int productIdx) {
         try {
-            /**
-             * validation 처리해야될것
-             * 1. 존재하는 사용자인지
-             * 2. 존재하는 상품인지
-             */
-
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = lookUpService.createLookUpProduct(userIdx, productIdx);
+            lookUpService.createLookUpProduct(userIdx, productIdx);
+            String result = "성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

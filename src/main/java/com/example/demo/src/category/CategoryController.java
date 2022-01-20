@@ -8,11 +8,14 @@ import com.example.demo.src.category.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import com.example.demo.src.user.UserProvider;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexPhoneNumber;
 
 @RestController
 @RequestMapping("/interest-categorys")
@@ -26,11 +29,14 @@ public class CategoryController {
     private final CategoryService categoryService;
     @Autowired
     private final JwtService jwtService;
+    @Autowired
+    private final UserProvider userProvider;
 
-    public CategoryController(CategoryProvider categoryProvider, CategoryService categoryService, JwtService jwtService){
+    public CategoryController(CategoryProvider categoryProvider, CategoryService categoryService, JwtService jwtService, UserProvider userProvider){
         this.categoryProvider = categoryProvider;
         this.categoryService = categoryService;
         this.jwtService = jwtService;
+        this.userProvider = userProvider;
     }
 
     /**
@@ -43,16 +49,13 @@ public class CategoryController {
     @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/interst-categorys/:userIdx
     public BaseResponse<List<GetCategoryInterest>> getCategoryInterest(@PathVariable("userIdx") int userIdx) {
         try{
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            // Get Category Interest
             List<GetCategoryInterest> getCategoryInterest = categoryProvider.getCategoryInterest(userIdx);
+            if(getCategoryInterest.size() == 0){return new BaseResponse<>(GET_CATEGORIES_FAIL);}
             return new BaseResponse<>(getCategoryInterest);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -62,28 +65,22 @@ public class CategoryController {
     /**
      * 관심 카테고리 등록 API
      * [POST] /interst-categorys/:userIdx/:categoryIdx
-     * @return BaseResponse<String>
+     * @return BaseResponse<Integer>
      */
     // Path-variable
     @ResponseBody
     @PostMapping("/{userIdx}/{categoryIdx}")
-    public BaseResponse<String> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("categoryIdx") int categoryIdx) {
+    public BaseResponse<Integer> createInterestProduct(@PathVariable("userIdx") int userIdx, @PathVariable("categoryIdx") int categoryIdx) {
         try {
-            /**
-             * validation 처리해야될것
-             * 1. 존재하는 사용자인지
-             * 2. 존재하는 카테고리인지
-             */
+            if(categoryIdx < 0 || categoryIdx > 17){return new BaseResponse<>(POST_PRODUCTS_INVALID_CATEGORY);}
 
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            //userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = categoryService.createInterestCategory(userIdx, categoryIdx);
+            int result = categoryService.createInterestCategory(userIdx, categoryIdx);
+            if(result == 0){return new BaseResponse<>(POST_CATEGORIES_FAIL);}
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -99,16 +96,13 @@ public class CategoryController {
     @PatchMapping("/{idx}/status")
     public BaseResponse<String> patchProductInterest(@PathVariable("idx") int idx, @RequestBody PatchCategoryInterest patchCategoryInterest){
         try {
-            // 헤더 (인증코드)에서 userIdx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
             int userIdx = patchCategoryInterest.getUserIdx();
+            if(userIdx != userIdxByJwt){return new BaseResponse<>(INVALID_USER_JWT);}HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            userProvider.checkByUser(request.getHeader("X-ACCESS-TOKEN"));
 
-            // userIdx와 접근한 유저가 같은지 확인
-            if(userIdx != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-
-            String result = categoryService.patchCategoryInterest(idx, userIdx);
+            categoryService.patchCategoryInterest(idx, userIdx);
+            String result = "성공";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
