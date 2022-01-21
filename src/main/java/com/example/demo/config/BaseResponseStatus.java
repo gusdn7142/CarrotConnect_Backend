@@ -80,7 +80,15 @@ public enum BaseResponseStatus {
     //keyword 리소스
     POST_KEYWORDS_EMPTY_KEYWORD(false, 2050, "키워드를 입력해주세요.(예:자전거)"),
     GET_KEYWORDS_EMPTY_KEYWORD(false, 2051, "설정한 지역과 알림키워드에 해당하는 상품이 없습니다."),
+    POST_KEYWORDS_OVER_KEYWORD(false, 2052, "키워드는 10글자 이하만 입력 가능합니다."),
 
+
+    //townActivity 리소스
+    POST_TOWN_ACTIVITY_EMPTY_TOPICNAME(false, 2100, "게시글 주제를 입력해주세요."),
+    POST_TOWN_ACTIVITY_EMPTY_CONTENT(false, 2101, "게시글 내용을 입력해주세요."),
+    POST_TOWN_ACTIVITY_OVER_CONTENT(false, 2102, "300글자 이하만 작성 가능합니다."),
+    POST_TOWN_ACTIVITY_EMPTY_FIRST(false, 2103, "메인 이미지 상태 숫자를 입력해주세요."),
+    POST_TOWN_ACTIVITY_DIFFERENT_FIRST(false, 2104, "이미지 수와 메인 이미지 상태 수는 같아야 합니다."),
 
     /**
      * 3000 : Response 오류 (validation)
@@ -167,8 +175,7 @@ public enum BaseResponseStatus {
 
     //townActivity 리소스
     POST_TOWNACTIVITY_EXISTS(false,3130,"이미 작성하셨던 게시글 입니다."),
-    POST_TOWN_ACTIVITY_EMPTY_TOPICNAME(false, 3131, "게시글 주제를 입력해주세요."),
-    POST_TOWN_ACTIVITY_EMPTY_CONTENT(false, 3132, "게시글 내용을 입력해주세요."),
+
 
     //Search 리소스
     POST_SEARCHS_CHECK(false,3170,"이미 등록한 검색어입니다."),

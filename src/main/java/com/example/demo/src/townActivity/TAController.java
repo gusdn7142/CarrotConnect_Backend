@@ -79,6 +79,10 @@ public class TAController {
             return new BaseResponse<>(POST_TOWN_ACTIVITY_EMPTY_CONTENT);
         }
 
+        //내용 입력란 글자 수 체크
+        if(postTownActivityReq.getContent().length() > 300){
+            return new BaseResponse<>(POST_TOWN_ACTIVITY_OVER_CONTENT);
+        }
 
         try{
             /* 접근 제한 구현 */
@@ -101,7 +105,16 @@ public class TAController {
             int townActivityIdx = taService.createTownPost(postTownActivityReq);
 
             //동네생활 게시글의 이미지 따로 등록
-            if(postTownActivityReq.getImageList().size() != 0) {
+            if(postTownActivityReq.getImageList().size() > 0) {
+                //메인 이미지 상태 숫자 입력 여부 체크
+                if(postTownActivityReq.getFirstImageList() == null){
+                    return new BaseResponse<>(POST_TOWN_ACTIVITY_EMPTY_FIRST);
+                }
+                //이미지와 메인이미지 배열 개수 일치 확인
+                if(postTownActivityReq.getFirstImageList().size() != postTownActivityReq.getImageList().size()){
+                    return new BaseResponse<>(POST_TOWN_ACTIVITY_DIFFERENT_FIRST);
+                }
+
                 taService.createTownImage(postTownActivityReq, townActivityIdx);
             }
 
