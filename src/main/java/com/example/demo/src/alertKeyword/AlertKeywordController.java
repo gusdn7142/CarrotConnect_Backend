@@ -82,6 +82,11 @@ public class AlertKeywordController {
             return new BaseResponse<>(POST_KEYWORDS_EMPTY_KEYWORD);
         }
 
+        //키워드 입력란 글자 수 체크
+        if(postAlertKeywordReq.getKeyword().length() > 10){
+            return new BaseResponse<>(POST_KEYWORDS_OVER_KEYWORD);
+        }
+
 
         //알림키워드 등록 (keywordIdx 반환)
         postAlertKeywordReq.setUserIdx(userIdx);
