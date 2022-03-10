@@ -28,16 +28,17 @@
 </br>
 
 ## 3. ERD 설계
-![](png 파일)
+![CarrotMarket_ERD](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)
 
 </br>
 
 ## 4. 핵심 기능
-작성 중
+실제 당근마켓 서비스의 기능과 유사하게 기능을 구현하였습니다.
+</br> 이 서비스의 핵심 기능에는 동네생활과 중고거래를 위한 게시글 등록/조회/수정 기능 등이 있습니다.
+</br> 서비스의 세부적인 기능은 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)를 참고해 주시면 감사합니다.  
 
 </br>
 
 ## 5. 핵심 트러블 슈팅
-작성 중
-(DepthREADME.md 확인)
+[DepthREADME.md](https://github.com/gusdn7142/CarrotMarket_Clone_Server/blob/main/DepthREADME.md) 파일을 확인해 주시면 감사합니다.
 
