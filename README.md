@@ -35,7 +35,7 @@
 ## 4. 핵심 기능
 >실제 당근마켓 서비스의 기능과 유사하게 기능을 구현하였습니다.  
 >이 서비스의 핵심 기능에는 동네생활과 중고거래를 위한 게시글 등록/조회/수정 기능 등이 있습니다.  
->서비스의 세부적인 기능은 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)를 참고해 주시면 감사합니다.  
+>서비스의 세부적인 기능은 [프로젝트 기획서](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit?usp=sharing)와 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)를 참고해 주시면 감사합니다.  
 
 </br>
 
