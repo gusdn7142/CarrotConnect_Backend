@@ -28,7 +28,7 @@
 
 </br>
 
-## 3. ERD 설계
+## 3. ERD 설계도
 ![CarrotMarket_ERD](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)
 
 </br>
