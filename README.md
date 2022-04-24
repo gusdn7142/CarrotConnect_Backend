@@ -37,6 +37,13 @@
 >실제 당근마켓 서비스의 기능과 유사하게 기능을 구현하였습니다.  
 >이 서비스의 핵심 기능에는 동네생활과 중고거래를 위한 게시글 등록/조회/수정 기능 등이 있습니다.  
 >서비스의 세부적인 기능은 [프로젝트 기획서](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit?usp=sharing)와 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)를 참고해 주시면 감사합니다.  
+- 담당 API
+    - 사용자 : 회원가입 API, 로그인 API, 프로필 조회∘수정 API, 사용자 신고∘차단 API
+    - 키워드 알림 : 알림 키워드 등록∘조회∘삭제 API, 키워드 알림 상품 조회 API   
+    - 모아보기 : 모아보기 추가∘취소 API, 모아보기한 상품/사용자 조회 API
+    - 동네생활 : 동네생활 게시글 등록∘조회∘취소 API
+    - 검색 : 검색어 등록∘조회∘삭제 API, 중고거래 글/동네생활 글/사용자 검색 API
+- 담당 API 분배 기준 : 다른 서버 개발자(예레나)와 Github으로 협업시 코드 충돌을 방지하기 위해 도메인별로 API를 분배하여 개발을 진행하였습니다.
 
 </br>
 
