@@ -10,8 +10,7 @@
 ## 💁‍♂️ Wiki
 - 📄 [프로젝트 기획서](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit)
 - 📰 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)
-- 📦 [ERD 설계도](https://aquerytool.com/aquerymain/index/?rurl=b0da8ff3-3f4b-4d0e-aee4-2b1f93770017)    
-    - 비밀번호 : o51kvi   
+- 📦 [ERD 설계도](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)    
 - 📁 [디렉토리 구조](https://github.com/gusdn7142/CarrotMarket_Clone_Server/wiki/%F0%9F%93%81-Directory-Structure)
 - 📽 시연 영상 : API 명세서의 postman 시연 화면으로 대체
 
