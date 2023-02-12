@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+
 public class PostLoginReq {
     private int userIdx;
     private Integer authCode;

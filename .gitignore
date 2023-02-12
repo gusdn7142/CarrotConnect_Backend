@@ -1,8 +1,32 @@
-src/main/resources
+#default
+.gradle
+.idea
+.Alert SMS Library/
+build/classes
+build/reports
+build/test-results
+build/tmp
+build/bootJarMainClassName
+gradle/
+build.gradle
+gradlew
+gradlew.bat
+settings.gradle
+.DS_Store
+
+
+#Secret Info
 src/main/java/com/example/demo/config/secret/Secret.java
-
 out/production/classes/com/example/demo/config/secret/Secret.class
-out/production/resources/application.yml
-
-build/resources/main/application.yml
 build/classes/java/main/com/example/demo/config/secret/Secret.class
+
+
+#RDS Info
+src/main/resources
+out/production/resources/application.yml
+build/resources/main/application.yml
+
+
+
+
+
