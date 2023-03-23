@@ -8,6 +8,7 @@
 </br>
 
 ## 💁‍♂️ Wiki
+- ✍ [개발일지](https://github.com/gusdn7142/CarrotMarket_Clone_Server/blob/main/DepthREADME.md)
 - 📄 [프로젝트 기획서](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit)
 - 📰 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)
 - 📦 [ERD 설계도](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)    
@@ -40,19 +41,15 @@
 
 ## 🔎 핵심 기능 및 담당 기능
 >당근마켓 서비스의 핵심기능은 개인간의 중고 직거래와 동네생활 정보 공유입니다.  
->서비스의 세부적인 기능은 [프로젝트 기획서](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit?usp=sharing)와 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)를 참고해 주시면 감사합니다.  
-- 담당 기능  
-    - 사용자 : 회원가입 API, 로그인 API, 프로필 조회∘수정 API, 사용자 신고∘차단 API
-    - 키워드 알림 : 알림 키워드 등록∘조회∘삭제 API, 키워드 알림 상품 조회 API   
-    - 모아보기 : 모아보기 추가∘취소 API, 모아보기한 상품/사용자 조회 API
-    - 동네생활 : 동네생활 게시글 등록∘조회∘취소 API
-    - 검색 : 검색어 등록∘조회∘삭제 API, 중고거래 글/동네생활 글/사용자 검색 API
-- 담당 API 분배 기준 : 다른 서버 개발자(예레나)와 Github으로 협업시 코드 충돌을 방지하기 위해 도메인별로 API를 분배하여 개발을 진행하였습니다.  
+>구현한 핵심 기능은 이 [페이지](https://fir-lancer-6bb.notion.site/Rest-API-a824767bf4e84fa3bfbf8935df239344#297901da3a894b358b466b336e9a93ed)를 참고해 주시면 감사합니다.
+
+
 
 </br>
 
 ## 🌟 트러블 슈팅
->개발일지인 [DepthREADME.md](https://github.com/gusdn7142/CarrotMarket_Clone_Server/blob/main/DepthREADME.md) 파일을 확인해 주시면 감사합니다.
+>핵심 트러블 슈팅은 이 [페이지](https://fir-lancer-6bb.notion.site/Rest-API-a824767bf4e84fa3bfbf8935df239344#7ad983622099476492e99313d9ec5299)를 참고해 주시면 감사합니다.
+
 
 </br>
 
