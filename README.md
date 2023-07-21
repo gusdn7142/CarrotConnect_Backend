@@ -18,7 +18,7 @@
 </br>
 
 ## 🛠 사용 기술
-![tech stack](https://github.com/gusdn7142/ReadMe_Collection/assets/62496215/ee4ee498-faa6-4186-82cc-caf5e12e3f2a)
+![tech stack](https://github.com/gusdn7142/InstarEye_Backend/assets/62496215/aa38bf26-5892-4c28-94bf-f3df413be5a1)
 
 </br>
 
@@ -29,10 +29,10 @@
 
 ## 🔩 시스템 구성도
 ### 1. 전체 서비스 구조  
-![Architecture](https://github.com/gusdn7142/ReadMe_Collection/assets/62496215/28cc1dcd-4eda-41e5-988f-0af3f9246df5)
+![Architecture](https://github.com/gusdn7142/InstarEye_Backend/assets/62496215/b085761a-daa2-4619-bc58-24e8092cfaf6)
 
 ### 2. 서버 동작 흐름
-![Server Flow](https://github.com/gusdn7142/ReadMe_Collection/assets/62496215/d613ebc7-9975-4032-b993-d0aef6e0260b)
+![Server Flow](https://github.com/gusdn7142/InstarEye_Backend/assets/62496215/41ae26b8-cd7f-4401-88ce-7864420ef85a)
 - 회원가입과 로그인(or 로그아웃) API 호출시의 서버 동작 흐름입니다.
 - 회원가입 API 동작 흐름
   - Client <-> UserController <-> UserService <-> UserRepository <-> MySQL DB
