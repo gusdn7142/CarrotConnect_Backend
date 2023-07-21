@@ -1,60 +1,133 @@
-# 📝 프로젝트 소개
->약 2주 동안 클라이언트 개발자 1명, 백엔드 개발자 2명이서 진행한 [당근마켓](https://www.daangn.com/) 클론 프로젝트입니다.  
-- 제작 기간 : 2022년 1월 8일 ~ 1월 21일  
-- 팀 프로젝트 협업자  
-    - 안드로이드 개발자 : 맥스
-    - 서버 개발자 : 뎁스(본인), 예레나
+
+## 📝 프로젝트 개요
+> [당근마켓](https://www.daangn.com/)을 모티브로 하여 만든 Rest API 서버입니다.
+- 목적 : 협업을 통해 당근마켓과 같은 지역별 중고거래 서비스 개발 
+- 기간 : 2022년 1월 8일 ~ 2022년 1월 21일 
+- 팀 구성 : 프론트 1명, 백엔드 2명
 
 </br>
+<!--  -->
 
-## 💁‍♂️ Wiki
-- ✍ [개발일지](https://github.com/gusdn7142/CarrotMarket_Clone_Server/blob/main/DepthREADME.md)
+## 💁‍♂️ Wiki  (보류)
 - 📄 [프로젝트 기획서](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit)
 - 📰 [API 명세서](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478)
-- 📦 [ERD 설계도](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)    
-- 📁 [디렉토리 구조](https://github.com/gusdn7142/CarrotMarket_Clone_Server/wiki/%F0%9F%93%81-Directory-Structure)
-- 📽 시연 영상 : API 명세서의 postman 시연 화면으로 대체
-
+<!---📦 [ERD 설계도](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)-->   
+<!--- 📁 [디렉토리 구조](https://github.com/gusdn7142/CarrotMarket_Clone_Server/wiki/%F0%9F%93%81-Directory-Structure)-->
+<!--- 📽 시연 영상 : API 명세서의 postman 실행 결과 화면으로 대체--> 
 
 </br>
 
 ## 🛠 사용 기술
-#### `Back-end`
-  - Java 15
-  - Spring Boot 2.4.2 (소프트스퀘어드 Template 사용)
-  - Gradle 6.7.1
-  - Spring JDBC 
-#### `DevOps`  
-  - AWS EC2 (Ubuntu 20.04)  
-  - AWS RDS (Mysql 8.0)
-  - Nginx
-  - GitHub
-#### `Etc`  
-  - JWT
+![tech stack](https://github.com/gusdn7142/ReadMe_Collection/assets/62496215/ee4ee498-faa6-4186-82cc-caf5e12e3f2a)
 
 </br>
 
 ## 📦 ERD 설계도
-![CarrotMarket_ERD](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)
+![CarrotMarket_ERD](https://user-images.githubusercontent.com/62496215/157592220-fffa6e71-23be-4de9-b9c3-a1428a2784a5.png)  
+  
+</br>
+
+## 🔩 시스템 구성도
+### 1. 전체 서비스 구조  
+![Architecture](https://github.com/gusdn7142/ReadMe_Collection/assets/62496215/28cc1dcd-4eda-41e5-988f-0af3f9246df5)
+
+### 2. 서버 동작 흐름
+![Server Flow](https://github.com/gusdn7142/ReadMe_Collection/assets/62496215/d613ebc7-9975-4032-b993-d0aef6e0260b)
+- 회원가입과 로그인(or 로그아웃) API 호출시의 서버 동작 흐름입니다.
+- 회원가입 API 동작 흐름
+  - Client <-> UserController <-> UserService <-> UserRepository <-> MySQL DB
+- 로그인 API 동작 흐름  
+  - JWT 발급 : Client <-> UserController <-> UserService <-> JwtService 
+  - JWT 저장 : UserController <-> UserService <-> UserRepository -> MySQL DB
+
+### 3. 디렉터리 구조
+```bash
+📂 src
+ └── 📂 main         
+      ├── 📂 java.com.example.demo        			
+      |    ├── 📂 src                        #도메인 관리  
+      |    |    ├── 📂 alertkeyword            
+      |    |    ├── 📂 category
+      |    |    ├── 📂 chat
+      |    |    ├── 📂 comment
+      |    |    ├── 📂 gather
+      |    |    ├── 📂 lookup
+      |    |    ├── 📂 product
+      |    |    ├── 📂 region
+      |    |    ├── 📂 review
+      |    |    ├── 📂 search
+      |    |    ├── 📂 sympathy
+      |    |    ├── 📂 townActivity
+      |    |    └── 📂 user                    #사용자 도메인
+      |    |         ├── 📂 model                #도메인과 데이터 전송 객체 
+      |    |         ├── 📄 UserController        #컨트롤러 계층 
+      |    |         ├── 📄 UserService           #서비스 계층
+      |    |         ├── 📄 UserProvider          #프로바이더 계층
+      |    |         └── 📄 UserDao               #레포지토리 계층 
+      |    ├── 📂 config                     #환경설정 관리 (시큐리티, 보안 관련, 예외 처리)
+      |    ├── 📂 utils                      #JWT 토큰, 정규표현식 관련
+      |    └── 📄 DemoApplication.java  #애플리케이션 실행 클래스
+      └── 📂 resources
+           └── 📄 applicaiton.yml            #DB 연결 설정
+📄 .gitignore                                #깃허브 업로드시 제외 파일 관리  
+📄 build.gradle                                                                   
+📄 README.md
+``` 
+<!-- - 도메인형으로 패키지 구조를 설계했습니다.
+- 디렉터리별 세부 파일 구조는 [Wiki](https://github.com/gusdn7142/Instagram_Clone_Server/wiki/%F0%9F%93%81-Directory-Structure)를 참고해 주시면 감사합니다.  -->
+
+
 
 </br>
 
-## 🔎 핵심 기능 및 담당 기능
->당근마켓 서비스의 핵심기능은 개인간의 중고 직거래와 동네생활 정보 공유입니다.  
->구현한 핵심 기능은 이 [페이지](https://fir-lancer-6bb.notion.site/Rest-API-a824767bf4e84fa3bfbf8935df239344#297901da3a894b358b466b336e9a93ed)를 참고해 주시면 감사합니다.
+## 👨🏻‍🏫 프로젝트 주요 관심사
 
+####  2명의 개발자와 협업하며 기획부터 개발 환경 구축, 기능 개발까지 진행 
+- [기획서 작성을 통해 개발 범위와 우선순위를 정하고 역할을 분담](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit)
+- [구글 스프레드시트로 API 문서 관리 및 협업](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478) 
 
+#### 사용자 관리 Rest API 서버 설계 및 개발    
+- [Spring JDBC Template으로 CRUD 로직 구현](https://fir-lancer-6bb.notion.site/Spring-JDBC-Template-CRUD-de12da8281414919a96c3ef9b60a9dac?pvs=4)
+- [패스워드 대신 일회성 인증코드를 사용해 계정 보안 강화](https://fir-lancer-6bb.notion.site/7693d95d134247be8e1607d4495dd17a?pvs=4)     
+
+#### JWT 토큰을 사용해 사용자 인증 및 인가 처리
+- [JWT 토큰으로 사용자의 API 접근 검증 및 DB 테이블로 JWT 토큰 관리](https://fir-lancer-6bb.notion.site/JWT-API-DB-JWT-38b41a7d8ec744029d89368608296f96?pvs=4)
+
+#### 인프라 구축 및 고도화    
+- [깃허브로 AWS EC2에 API 배포](https://fir-lancer-6bb.notion.site/AWS-EC2-API-85772c33aecf4ce3ba6390ae6ca5ebfa?pvs=4)
+
+#### 리버스 프록시 서버로 CORS 에러 해결
+- [리버스 프록시 서버 구축](https://fir-lancer-6bb.notion.site/123d87c32b4c46f792b63403fe027049?pvs=4)
 
 </br>
 
-## 🌟 트러블 슈팅
->핵심 트러블 슈팅은 이 [페이지](https://fir-lancer-6bb.notion.site/Rest-API-a824767bf4e84fa3bfbf8935df239344#7ad983622099476492e99313d9ec5299)를 참고해 주시면 감사합니다.
+## 💡 서버 실행시 주의사항
 
+### 환경변수 설정
+applicaiton.yml 파일에 애플리케이션 정보, DB 정보를 기입해 주시면 됩니다.
+  
+```
+# Application
+server:
+  port: 9000
 
+# MYSQL DB
+spring:
+  datasource:
+    platform: mysql
+    url:
+    username: 
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+``` 
+  
+### 빌드 및 실행 방법  
+```
+# 프로젝트 빌드 
+$ ./gradlew clean build
+
+# Jar 파일 실행
+$ java -jar build/libs/demo-0.0.1-SNAPSHOT.jar
+``` 
+  
 </br>
-
-## ❕ 회고 / 느낀점
->프로젝트 개발 회고 글
-- 2주간의 짧은 시간이였지만, 실제 당근마켓 서비스를 개발한다는 마음으로 모의 외주를 진행하였고 제 자신을 하루 하루 채찍질 하며 이 상황에 더욱 몰입되게 함으로써 목표로 했던 40개의 API를 모두 개발하였고 이를 통해 뿌듯함과 자신감을 얻을 수 있었습니다.  
-- 프로젝트 중 있었던 일을 회상해 보면 저는 안드로이드 개발자(맥스)와 다른 서버 개발자(예레나)와 원활한 소통을 위해 노션 페이지를 만들어 공유해야할 이슈나 개발 리더님과의 피드백 결과를 적는데 활용하였습니다. 또한, 카카오톡과 화상회의 프로그램(Google Meet)을 활용하여 실시간으로 이슈나 토의 사항을 논의하였습니다.  
-- 힘들었던 점을 상기시켜보면 서버 개발자 (예레나)와 같은 Github Repository로 협업을 하다보니 pull과 push 하는 과정에서 충돌이 많이 발생하였는데, 그때마다 몇시간씩 구글링을 하며 머리를 싸맨게 기억에 남고 어떻게든 2주안에 모든 API를 개발하기 위해 하루 16시간 이상을 투자하며 제 스스로가 이 프로젝트에 완전히 몰입하고 있다는 것이 느껴졌습니다. 끝으로 저는 이 경험을 통해 책임감과 몰입력, 커뮤니케이션 역량이 전보다 향상 되었다고 생각합니다. 
