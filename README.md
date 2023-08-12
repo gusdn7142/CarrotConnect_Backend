@@ -80,7 +80,7 @@
 
 </br>
 
-## 👨🏻‍🏫 프로젝트 주요 관심사
+## 👨🏻‍🏫 성과
 
 ####  2명의 개발자와 협업하며 기획부터 개발 환경 구축, 기능 개발까지 진행 
 - [기획서 작성을 통해 개발 범위와 우선순위를 정하고 역할을 분담](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit)
