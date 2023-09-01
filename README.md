@@ -82,19 +82,11 @@
 
 ## 👨🏻‍🏫 성과
 
-####  2명의 개발자와 협업하며 기획부터 개발 환경 구축, 기능 개발까지 진행 
-- [기획서 작성을 통해 개발 범위와 우선순위를 정하고 역할을 분담](https://docs.google.com/document/d/1_Vou9ztPNuIda4ut12qDLIkIAlxaGnKM0SUuyv5ibpc/edit)
-- [구글 스프레드시트로 API 문서 관리 및 협업](https://docs.google.com/spreadsheets/d/1B9NBjDoiH_AhRWvvDPoLE7wYosEl6iXz3fKVGy87UuY/edit#gid=1272810478) 
-
 #### 사용자 관리 Rest API 서버 설계 및 개발    
-- [Spring JDBC Template으로 CRUD 로직 구현](https://fir-lancer-6bb.notion.site/Spring-JDBC-Template-CRUD-de12da8281414919a96c3ef9b60a9dac?pvs=4)
 - [패스워드 대신 일회성 인증코드를 사용해 계정 보안 강화](https://fir-lancer-6bb.notion.site/7693d95d134247be8e1607d4495dd17a?pvs=4)     
 
-#### JWT 토큰을 사용해 사용자 인증 및 인가 처리
+#### 사용자 인가 로직 구현
 - [JWT 토큰으로 사용자의 API 접근 검증 및 DB 테이블로 JWT 토큰 관리](https://fir-lancer-6bb.notion.site/JWT-API-DB-JWT-38b41a7d8ec744029d89368608296f96?pvs=4)
-
-#### 인프라 구축 및 고도화    
-- [깃허브로 AWS EC2에 API 배포](https://fir-lancer-6bb.notion.site/AWS-EC2-API-85772c33aecf4ce3ba6390ae6ca5ebfa?pvs=4)
 
 #### 리버스 프록시 서버로 CORS 에러 해결
 - [리버스 프록시 서버 구축](https://fir-lancer-6bb.notion.site/123d87c32b4c46f792b63403fe027049?pvs=4)
